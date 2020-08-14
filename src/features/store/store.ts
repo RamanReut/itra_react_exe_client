@@ -1,4 +1,4 @@
-import { configureStore, combineReducers, createSlice } from '@reduxjs/toolkit'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
 const rootReducer = combineReducers({
     //Add here new reducers
