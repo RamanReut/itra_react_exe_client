@@ -1,3 +1,4 @@
 import Layout from './Layout'
+import { reducer } from './reducer'
 
-export { Layout }
+export { Layout, reducer }

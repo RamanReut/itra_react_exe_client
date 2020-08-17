@@ -1,6 +1,6 @@
 import React from 'react'
 import Box from '@material-ui/core/Box'
-import Header from './Header'
+import HeaderContainer from './HeaderContainer'
 import Grid from '@material-ui/core/Grid'
 import Navbar from './Navbar'
 import { makeStyles } from '@material-ui/core/styles'
@@ -28,7 +28,7 @@ export default function Layout({ children }: LayoutProps) {
 
     return (
         <Box className={classes.root}>
-            <Header></Header>
+            <HeaderContainer></HeaderContainer>
             <Grid 
                 container
                 justify='flex-start'
