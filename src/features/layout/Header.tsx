@@ -1,13 +1,15 @@
-import React, { ReactElement } from 'react'
+import React, { ChangeEvent } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/icons/Menu'
 import MenuOpen from '@material-ui/icons/MenuOpen'
-import { makeStyles, Theme } from '@material-ui/core/styles'
-import Breadcrumbs from '@material-ui/core/Breadcrumbs'
-import { Link } from '@material-ui/core'
-import { NavbarPosition } from './Navbar'
+import { makeStyles, Theme, fade } from '@material-ui/core/styles'
+import { types } from './reducer'
+import TextField from '@material-ui/core/TextField'
+import Avatar from '@material-ui/core/Avatar'
+import Path from './Path'
+import Hidden from '@material-ui/core/Hidden'
 
 const useStylesHiddenButton = makeStyles((theme: Theme) => ({
     iconWrapper: {
@@ -15,17 +17,20 @@ const useStylesHiddenButton = makeStyles((theme: Theme) => ({
     }
 }));
 
-const useStylesPath = makeStyles((theme: Theme) => ({
-    li: {
-        color: theme.palette.primary.contrastText
-    }, 
-    separator: {
-        color: theme.palette.grey[500],
+const useHeaderStyles = makeStyles((theme: Theme) => ({
+    input: {
+        backgroundColor: fade(theme.palette.common.white, 0.55),
+        '& :focus': {
+            backgroundColor: fade(theme.palette.common.white, 0.3),
+        },
+    },
+    blockWrapper: {
+        margin: '0 0.5em',
     },
 }));
 
 interface HideButtonProps {
-    state: NavbarPosition,
+    state: types.NavbarPosition,
     onClick?: () => void,
 }
 
@@ -53,59 +58,76 @@ function HideButton({ state, onClick}: HideButtonProps) {
     );
 }
 
-function Path() {
-    const classes = useStylesPath();
-
-    return (
-        <Breadcrumbs 
-            classes={classes}
-            maxItems={4}
-        >
-            {createPathPoints(['main', 'data'])}
-        </Breadcrumbs>
-    );
-}
-
-function createPathPoints(points: string[]): ReactElement[] {
-    return points.map((elem: string, key: number) => {
-        return <Link color="inherit" key={elem}>{elem}</Link>
-    });
-}
-
 export interface HeaderProps {
-    navbarPosition: NavbarPosition;
+    navbarPosition: types.NavbarPosition;
     onNavbarButtonClick: () => void;
+    searchText: string;
+    onSearchTextChange: (event: ChangeEvent<HTMLInputElement>) => void,
 }
 
 export default function Header({
     navbarPosition,
     onNavbarButtonClick,
+    searchText,
+    onSearchTextChange,
 }: HeaderProps) {
+    const classes = useHeaderStyles();
+
     return (
         <AppBar>
             <Grid 
                 container
                 justify='space-between'
                 wrap='nowrap'
+                alignItems='center'
             >
                 <Grid 
+                    className={classes.blockWrapper}
                     item 
-                    container
-                    alignItems='center'
-                    spacing={3}
                 >
-                    <Grid item>
-                        <HideButton 
-                            state={navbarPosition}
-                            onClick={onNavbarButtonClick}
-                        ></HideButton>
-                    </Grid>
-                    <Grid item>
-                        <Path></Path>
+                    <Grid 
+                        container
+                        alignItems='center'
+                        spacing={3}
+                    >
+                        <Grid item>
+                            <HideButton 
+                                state={navbarPosition}
+                                onClick={onNavbarButtonClick}
+                            ></HideButton>
+                        </Grid>
+                        <Grid item>
+                            <Hidden xsDown>
+                                <Path></Path>
+                            </Hidden>
+                        </Grid>
                     </Grid>
                 </Grid>
-                <Grid item>
-
+                <Grid 
+                    item
+                    className={classes.blockWrapper}
+                >
+                    <Grid 
+                        container
+                        alignItems='center'
+                        spacing={3}
+                        wrap='nowrap'
+                    >
+                        <Grid item>
+                                <TextField
+                                    className={classes.input}
+                                    variant='filled'
+                                    type='search'
+                                    color='primary'
+                                    label='Search'
+                                    value={searchText}
+                                    onChange={onSearchTextChange}
+                                ></TextField> 
+                        </Grid>
+                        <Grid item>
+                            <Avatar></Avatar>                  
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </AppBar>
