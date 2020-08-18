@@ -74,7 +74,7 @@ export default function Header({
     const classes = useHeaderStyles();
 
     return (
-        <AppBar>
+        <AppBar position='static'>
             <Grid 
                 container
                 justify='space-between'
@@ -83,10 +83,13 @@ export default function Header({
             >
                 <Grid 
                     className={classes.blockWrapper}
-                    item 
+                    item
+                    container
+                    alignItems='center'
                 >
                     <Grid 
                         container
+                        item
                         alignItems='center'
                         spacing={3}
                     >

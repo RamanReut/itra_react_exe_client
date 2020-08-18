@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@material-ui/core/Box'
 import HeaderContainer from './HeaderContainer'
 import Grid from '@material-ui/core/Grid'
-import Navbar from './Navbar'
+import Navbar from './NavbarContainer'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
@@ -15,6 +15,9 @@ const useStyles = makeStyles({
         width: '100%',
     },
     navbarWrapper: {
+        height: '100%',
+    },
+    fullHeight: {
         height: '100%',
     }
 });
@@ -33,6 +36,7 @@ export default function Layout({ children }: LayoutProps) {
                 container
                 justify='flex-start'
                 wrap='nowrap'
+                className={classes.fullHeight}
             >
                 <Grid 
                     item

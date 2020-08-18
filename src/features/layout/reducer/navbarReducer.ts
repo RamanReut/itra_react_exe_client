@@ -1,4 +1,4 @@
-import { createSlice, Action } from '@reduxjs/toolkit'
+import { createSlice, Action, PayloadAction } from '@reduxjs/toolkit'
 import { NavbarState, NavbarPosition } from './types'
 
 const initialState: NavbarState = {
@@ -11,7 +11,13 @@ const slice = createSlice({
     reducers: {
         togglePosition(state: NavbarState, action: Action): void {
             state.position = state.position === 'open' ? 'hide' : 'open';
-        }
+        },
+        setPosition(
+            state: NavbarState, 
+            { payload }: PayloadAction<NavbarPosition>
+        ): void {
+            state.position = payload;
+        },
     }
 });
 
