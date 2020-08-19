@@ -17,6 +17,7 @@ export default function Path() {
 
     return (
         <Breadcrumbs 
+            data-testid='header-path'
             classes={classes}
             maxItems={4}
         >

@@ -1,21 +1,14 @@
 import React, { ChangeEvent } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Grid from '@material-ui/core/Grid'
-import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/icons/Menu'
-import MenuOpen from '@material-ui/icons/MenuOpen'
 import { makeStyles, Theme, fade } from '@material-ui/core/styles'
 import { types } from './reducer'
 import TextField from '@material-ui/core/TextField'
 import Avatar from '@material-ui/core/Avatar'
 import Path from './Path'
 import Hidden from '@material-ui/core/Hidden'
-
-const useStylesHiddenButton = makeStyles((theme: Theme) => ({
-    iconWrapper: {
-        color: theme.palette.primary.contrastText
-    }
-}));
+import MenuButton from './MenuButton'
+import Box from '@material-ui/core/Box'
 
 const useHeaderStyles = makeStyles((theme: Theme) => ({
     input: {
@@ -27,36 +20,10 @@ const useHeaderStyles = makeStyles((theme: Theme) => ({
     blockWrapper: {
         margin: '0 0.5em',
     },
-}));
-
-interface HideButtonProps {
-    state: types.NavbarPosition,
-    onClick?: () => void,
-}
-
-function HideButton({ state, onClick}: HideButtonProps) {
-    const classes = useStylesHiddenButton();
-    let Icon: any;
-
-    switch(state) {
-        case 'hide':
-            Icon = Menu;
-            break;
-        case 'open':
-            Icon = MenuOpen;
-            break;
+    path: {
+        paddingLeft: '0.5em'
     }
-
-    return (
-        <IconButton 
-            color='secondary'
-            className={classes.iconWrapper}
-            onClick={onClick}
-        >
-            <Icon></Icon>
-        </IconButton>
-    );
-}
+}));
 
 export interface HeaderProps {
     navbarPosition: types.NavbarPosition;
@@ -74,7 +41,10 @@ export default function Header({
     const classes = useHeaderStyles();
 
     return (
-        <AppBar position='static'>
+        <AppBar 
+            data-testid='header'
+            position='static'
+        >
             <Grid 
                 container
                 justify='space-between'
@@ -84,24 +54,24 @@ export default function Header({
                 <Grid 
                     className={classes.blockWrapper}
                     item
-                    container
-                    alignItems='center'
                 >
                     <Grid 
                         container
                         item
                         alignItems='center'
-                        spacing={3}
+                        spacing={0}
                     >
                         <Grid item>
-                            <HideButton 
+                            <MenuButton 
                                 state={navbarPosition}
                                 onClick={onNavbarButtonClick}
-                            ></HideButton>
+                            ></MenuButton>
                         </Grid>
                         <Grid item>
                             <Hidden xsDown>
-                                <Path></Path>
+                                <Box className={classes.path}>
+                                    <Path></Path>
+                                </Box>
                             </Hidden>
                         </Grid>
                     </Grid>
@@ -117,18 +87,19 @@ export default function Header({
                         wrap='nowrap'
                     >
                         <Grid item>
-                                <TextField
-                                    className={classes.input}
-                                    variant='filled'
-                                    type='search'
-                                    color='primary'
-                                    label='Search'
-                                    value={searchText}
-                                    onChange={onSearchTextChange}
-                                ></TextField> 
+                            <TextField
+                                data-testid='header-searchInput'
+                                className={classes.input}
+                                variant='filled'
+                                type='search'
+                                color='primary'
+                                label='Search'
+                                value={searchText}
+                                onChange={onSearchTextChange}
+                            ></TextField> 
                         </Grid>
                         <Grid item>
-                            <Avatar></Avatar>                  
+                            <Avatar data-testid='header-avatar'></Avatar>                  
                         </Grid>
                     </Grid>
                 </Grid>

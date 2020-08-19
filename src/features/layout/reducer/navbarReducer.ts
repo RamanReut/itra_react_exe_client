@@ -18,6 +18,9 @@ const slice = createSlice({
         ): void {
             state.position = payload;
         },
+        reset(state: NavbarState, action: Action) {
+            return initialState;
+        }
     }
 });
 
