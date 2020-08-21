@@ -3,24 +3,23 @@ import Box from '@material-ui/core/Box'
 import HeaderContainer from './HeaderContainer'
 import Grid from '@material-ui/core/Grid'
 import Navbar from './NavbarContainer'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, fade } from '@material-ui/core/styles'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         height: '100vh',
-        width: '100vw',
-        overflow: 'hidden',
+        overflowX: 'hidden',
     },
     childrenWrapper: {
         width: '100%',
     },
     navbarWrapper: {
-        height: '100%',
+        backgroundColor: fade(theme.palette.common.black, 0.1),        
     },
     fullHeight: {
-        height: '100%',
+       minHeight: '95vh'
     }
-});
+}));
 
 interface LayoutProps {
     children?: JSX.Element,

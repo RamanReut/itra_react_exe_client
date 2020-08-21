@@ -8,7 +8,6 @@ import List from './NavbarList'
 
 const useStyles = makeStyles({
     root: {
-        height: '100%',
     }
 })
 

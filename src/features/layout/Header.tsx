@@ -43,7 +43,7 @@ export default function Header({
     return (
         <AppBar 
             data-testid='header'
-            position='static'
+            position='sticky'
         >
             <Grid 
                 container
