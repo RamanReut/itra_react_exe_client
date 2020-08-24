@@ -20,6 +20,7 @@
     "@types/testing-library__jest-dom": "^5.9.2",
     "classnames": "^2.2.6",
     "material-table": "^1.68.1",
+    "msw": "^0.20.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
@@ -49,5 +50,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:4000"
+  "proxy": "http://localhost:4000",
+  "devDependencies": {
+    "canvas": "^2.6.1"
+  }
 }

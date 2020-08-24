@@ -1,6 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction, Action } from '@reduxjs/toolkit'
 import * as types from './types'
-import { Action } from 'material-table';
 
 const initialState: types.DataTableState = {
     visibleColumns: [
@@ -36,6 +35,9 @@ const slice = createSlice({
             } else {
                 state.visibleColumns.splice(index, 1);
             }
+        },
+        reset(state: types.DataTableState, action: Action) {
+            return initialState;
         }
     },
     extraReducers: builder => {

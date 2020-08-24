@@ -4,7 +4,7 @@ import { types } from './reducer'
 import Box from '@material-ui/core/Box'
 import ControlColumnVisibility from './ControlColumnVisibility'
 
-const columnsLocalizations = new Map<types.Columns, string>([
+export const columnsLocalizations = new Map<types.Columns, string>([
     ['order_id',        'Order ID'],
     ['order_status',    'Order status'],
     ['order_date',      'Order date'],

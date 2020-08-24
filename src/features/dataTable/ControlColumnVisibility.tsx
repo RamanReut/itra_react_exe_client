@@ -22,11 +22,17 @@ export default function ControlColumnVisibility({
             justify='center'
         >
             {chipProps.map(
-                (props) => (
-                    <Grid item>
-                        <Chip {...props}></Chip>
-                    </Grid>
-                )
+                (props) => {
+                    const {key, ...rest} = props;
+                    return (
+                        <Grid 
+                            item 
+                            key={key}
+                        >
+                            <Chip {...rest}></Chip>
+                        </Grid>
+                    );
+                }
             )}
         </Grid>
     );
