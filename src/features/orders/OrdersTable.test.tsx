@@ -1,11 +1,11 @@
 import React from 'react'
 import { render, screen, waitForElementToBeRemoved, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import DataTable, { columnsLocalizations } from './DataTable'
+import DataTable, { columnsLocalizations } from './OrdersTable'
 import { types } from './reducer'
 import userEvent from '@testing-library/user-event'
 
-const defaultData: Array<types.Row> = [
+const defaultData: Array<types.Record> = [
     {
         order_id: 1,
         order_status: 2,
@@ -16,6 +16,7 @@ const defaultData: Array<types.Row> = [
         customer_name: 'intersting client',
         email: 'some@mail.em',
         address: 'address',
+        order_items: [],
     }, {
         order_id: 2,
         order_status: 3,
@@ -26,11 +27,16 @@ const defaultData: Array<types.Row> = [
         customer_name: 'some buyer',
         email: 'another@mail.em',
         address: 'address2',
+        order_items: [],
     }
 ]
 const defaultVisible: Array<types.Columns> = ['order_id', 'customer_name'];
 const defaultHandleFetch = () => {};
-const defaultHandleToggleVisibility = (id: string) => {}
+const defaultHandleToggleVisibility = (id: string) => {};
+const defaultHandleDetailOpen = (id: number) => {};
+const defaultHandleDetailClose = () => {};
+const defaultHandleToggleDetailExpandGroup = () => {};
+const defaultHandleToggleDetailExpandProduct = () => {};
 
 test('dataTable-DataTable', () => {
     let isFetched = false;
@@ -41,6 +47,14 @@ test('dataTable-DataTable', () => {
             data={defaultData}
             visibleColumns={defaultVisible}
             onToggleVisibility={defaultHandleToggleVisibility}
+            isDetailOpen={false}
+            detailId={0}
+            onDetailOpen={defaultHandleDetailOpen}
+            onDetailClose={defaultHandleDetailClose}
+            expandedDetailGroups={[]}
+            onToggleDetailExpandGroup={defaultHandleToggleDetailExpandGroup}
+            expandedDetailProduct={[]}
+            onToggleDetailExpandProduct={defaultHandleToggleDetailExpandProduct}
         ></DataTable>
     )
     
@@ -64,6 +78,14 @@ test('dataTable-DataTable-filter', async () => {
             data={defaultData}
             visibleColumns={defaultVisible}
             onToggleVisibility={defaultHandleToggleVisibility}
+            isDetailOpen={false}
+            detailId={0}
+            onDetailOpen={defaultHandleDetailOpen}
+            onDetailClose={defaultHandleDetailClose}
+            expandedDetailGroups={[]}
+            onToggleDetailExpandGroup={defaultHandleToggleDetailExpandGroup}
+            expandedDetailProduct={[]}
+            onToggleDetailExpandProduct={defaultHandleToggleDetailExpandProduct}
         ></DataTable>
     );
     const { rerender } = render(<Component></Component>);

@@ -8,9 +8,9 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { store } from '../store'
-import { columnsLocalizations } from './DataTable'
-import DataTableContainer from './DataTableContainer'
-import { actions, DataTableSelector } from './reducer'
+import { columnsLocalizations } from './OrdersTable'
+import OrdersTableContainer from './OrdersTableContainer'
+import { actions, OrdersTableSelector } from './reducer'
 
 const defaultData = [
     {
@@ -45,7 +45,7 @@ const server = setupServer(
 beforeAll(() => server.listen());
 afterEach(() => {
     server.resetHandlers();
-    store.dispatch(actions.reset());
+    store.dispatch(actions.ordersTable.reset());
 });
 afterAll(() => server.close());
 
@@ -53,7 +53,7 @@ function Component() {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <DataTableContainer></DataTableContainer>
+                <OrdersTableContainer></OrdersTableContainer>
             </BrowserRouter>
         </Provider>
     );
@@ -82,7 +82,7 @@ test('dataTable-DataTableContainer', async () => {
 
 test('dataTable-DataTableContainer-columnsVisibility', async () => {
     const { rerender } = render(<Component></Component>);
-    const createSelector = () => new DataTableSelector(store.getState());
+    const createSelector = () => new OrdersTableSelector(store.getState());
 
     await waitManagerName(rerender);
     const emailButton = () => screen.getByRole((role: string, element: Element) => {

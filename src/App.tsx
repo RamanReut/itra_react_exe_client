@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 import { Layout } from './features/layout';
-import { DataTable } from './features/dataTable';
+import { Orders } from './features/orders';
 
 function App() {
   return (
     <div className="App">
           <Layout>
-            <DataTable></DataTable>
+            <Orders></Orders>
           </Layout>      
     </div>
   );

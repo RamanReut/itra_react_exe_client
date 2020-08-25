@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction, Action } from '@reduxjs/toolkit'
 import * as types from './types'
+import { ROOT_REDUCER_NAME } from './constants'
 
-const initialState: types.DataTableState = {
+const REDUCER_NAME = `${ROOT_REDUCER_NAME}/ordersTable`
+
+const initialState: types.OrdersTableState = {
     visibleColumns: [
         'order_id', 
         'order_status', 
@@ -9,11 +12,11 @@ const initialState: types.DataTableState = {
         'required_date',
         'manager_name',
     ],
-    data: new Array<types.Row>(),
+    data: {},
 }
 
 const fetchData = createAsyncThunk(
-    'dataTable/fetchData',
+    `${REDUCER_NAME}/fetchData`,
     async () => {
         const response = await fetch('/api/orders');
         if(response.ok) {
@@ -22,12 +25,11 @@ const fetchData = createAsyncThunk(
     }
 );
 
-
 const slice = createSlice({
-    name: 'dataTable',
+    name: REDUCER_NAME,
     initialState: initialState,
     reducers: {
-        toggleVisibility(state: types.DataTableState, { payload }: PayloadAction<types.Columns>) {
+        toggleVisibility(state: types.OrdersTableState, { payload }: PayloadAction<types.Columns>) {
             const index = state.visibleColumns.indexOf(payload);
 
             if (index === -1) {
@@ -36,15 +38,17 @@ const slice = createSlice({
                 state.visibleColumns.splice(index, 1);
             }
         },
-        reset(state: types.DataTableState, action: Action) {
+        reset(state: types.OrdersTableState, action: Action) {
             return initialState;
-        }
+        },
     },
     extraReducers: builder => {
         builder.addCase(
             fetchData.fulfilled, 
-            (state: types.DataTableState, { payload }: PayloadAction<any>) => {
-                state.data = payload as Array<types.Row>;
+            (state: types.OrdersTableState, { payload }: PayloadAction<any>) => {
+                (payload as Array<types.Record>).forEach((elem) => {
+                    state.data[elem.order_id] = elem;
+                });
            });
     },
 });
