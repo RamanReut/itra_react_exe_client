@@ -20,7 +20,7 @@ export default function NavbarDrawer({ position, onClose }: NavbarDrawerProps) {
             open={position === 'open'}
             onClose={onClose}
         >
-            <List></List>
+            <List onChangePosition={onClose}></List>
         </Drawer>
     );
 }

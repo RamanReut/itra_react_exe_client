@@ -5,15 +5,20 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { createThemeWithInitialWidth } from '../../share/testTools'
 import { store } from '../store'
-import { actions, NavbarSelector } from './reducer'
+import { actions } from './reducer'
 import { Provider } from 'react-redux'
 import NavbarContainer from './NavbarContainer'
+import userEvent from '@testing-library/user-event'
 
 const desktopTheme = createThemeWithInitialWidth('lg');
 const mobileTheme = createThemeWithInitialWidth('xs');
 
-test('navbarContainer-desktop', () => {
-    render(
+afterEach(() => {
+    store.dispatch(actions.navbar.reset());
+});
+
+function DesktopComponent() {
+    return (
         <BrowserRouter>
             <Provider store={store}>
                 <ThemeProvider theme={desktopTheme}>
@@ -22,17 +27,24 @@ test('navbarContainer-desktop', () => {
             </Provider>
         </BrowserRouter>
     );
+}
+
+test('in desktop version navbar must not be contain in drawer', () => {
+    render(<DesktopComponent></DesktopComponent>);
     
-    const navbarSelector = new NavbarSelector(store.getState());
-    expect(navbarSelector.position).toEqual('open');
     expect(screen.queryByTestId('navbar-drawer')).not.toBeInTheDocument();
     expect(screen.getByRole('navigation')).toBeInTheDocument();
-
-    store.dispatch(actions.navbar.reset());
 });
 
-test('navbarContainer-mobile', () => {
-    const Component = () => (
+test('after click on hide button navbar shoul be collapsed', () => {
+    const { rerender } = render(<DesktopComponent></DesktopComponent>)
+    userEvent.click(screen.getByRole('button', { name: '' }));
+    rerender(<DesktopComponent></DesktopComponent>);
+    expect(screen.getByText('Home')).toBeInTheDocument();
+});
+
+test('in mobile version navigation menu must be hide after component mount', () => {
+    render(
         <BrowserRouter>
             <Provider store={store}>
                 <ThemeProvider theme={mobileTheme}>
@@ -41,19 +53,5 @@ test('navbarContainer-mobile', () => {
             </Provider>
         </BrowserRouter>
     );
-
-    const { rerender } = render(<Component></Component>);
-    rerender(<Component></Component>);
-    
-    let navbarSelector = new NavbarSelector(store.getState());
-    expect(navbarSelector.position).toEqual('hide');
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
-    
-    store.dispatch(actions.navbar.setPosition('open'));
-    rerender(<Component></Component>);
-    navbarSelector = new NavbarSelector(store.getState());
-    expect(navbarSelector.position).toEqual('open');
-    expect(screen.getByRole('navigation')).toBeInTheDocument();
-
-    store.dispatch(actions.navbar.reset());
 });

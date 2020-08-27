@@ -1,27 +1,37 @@
 import React, { ChangeEvent } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles, Theme, fade } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { types } from './reducer'
 import TextField from '@material-ui/core/TextField'
 import Avatar from '@material-ui/core/Avatar'
 import Path from './Path'
 import Hidden from '@material-ui/core/Hidden'
-import MenuButton from './MenuButton'
 import Box from '@material-ui/core/Box'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import SearchIcon from '@material-ui/icons/Search'
+import { HEADER_HEIGHT } from './constants'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
 
 const useHeaderStyles = makeStyles((theme: Theme) => ({
-    input: {
-        backgroundColor: fade(theme.palette.common.white, 0.55),
-        '& :focus': {
-            backgroundColor: fade(theme.palette.common.white, 0.3),
-        },
+    root: {
+        padding: '0 1em',
+        height: `${HEADER_HEIGHT}vh`
     },
     blockWrapper: {
-        margin: '0 0.5em',
+        margin: '0.5em 0',
     },
     path: {
         paddingLeft: '0.5em'
+    }, 
+    input: {
+        '& .MuiOutlinedInput-root': {
+            backgroundColor: theme.palette.common.white,
+        }
+    },
+    menuButton: {
+        color: theme.palette.primary.main,
     }
 }));
 
@@ -44,8 +54,10 @@ export default function Header({
         <AppBar 
             data-testid='header'
             position='sticky'
+            color='default'
         >
             <Grid 
+                className={classes.root}
                 container
                 justify='space-between'
                 wrap='nowrap'
@@ -62,10 +74,12 @@ export default function Header({
                         spacing={0}
                     >
                         <Grid item>
-                            <MenuButton 
-                                state={navbarPosition}
+                            <IconButton
                                 onClick={onNavbarButtonClick}
-                            ></MenuButton>
+                                className={classes.menuButton}
+                            >
+                                <MenuIcon></MenuIcon>
+                            </IconButton>             
                         </Grid>
                         <Grid item>
                             <Hidden xsDown>
@@ -88,12 +102,20 @@ export default function Header({
                     >
                         <Grid item>
                             <TextField
-                                data-testid='header-searchInput'
                                 className={classes.input}
-                                variant='filled'
+                                data-testid='header-searchInput'
+                                variant='outlined'
                                 type='search'
                                 color='primary'
-                                label='Search'
+                                size='small'
+                                placeholder='Quick search...'
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position='start'>
+                                            <SearchIcon></SearchIcon>
+                                        </InputAdornment>                       
+                                    ),
+                                }}
                                 value={searchText}
                                 onChange={onSearchTextChange}
                             ></TextField> 

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect'
 import Drawer from './NavbarDrawer'
 import { BrowserRouter } from 'react-router-dom'
 
-test('navbar-drawer', () => {
+test('check on navigation menu exist into drawer', () => {
     render(
         <BrowserRouter>
             <Drawer
@@ -17,7 +17,7 @@ test('navbar-drawer', () => {
     expect(screen.getByRole('navigation')).toBeInTheDocument();
 });
 
-test('navbar-drawer-onClose', () => {
+test('in mobile mode navigation menu must be closed after mount', () => {
     let isHandleCloseCalled = false;
     const handleClose = () => {isHandleCloseCalled = true}
 
