@@ -1,13 +1,23 @@
 import React from 'react';
 import './App.css';
 import { Layout } from './features/layout';
+import { makeStyles, Theme } from '@material-ui/core/styles'
+import classnames from 'classnames'
+
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        backgroundColor: theme.palette.background.default,
+    }
+}));
 
 function App() {
-  return (
-    <div className="App">
-        <Layout></Layout>      
-    </div>
-  );
+    const classes = useStyles();
+
+    return (
+        <div className={classnames('App', classes.root)}>
+            <Layout></Layout>      
+        </div>
+    );
 }
 
 export default App;

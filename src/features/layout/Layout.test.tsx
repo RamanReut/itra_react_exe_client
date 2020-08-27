@@ -27,7 +27,7 @@ test('layout', () => {
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
     expect((new HeaderSelector(store.getState())).navbarPosition).toEqual('hide');
 
-    userEvent.click(screen.getByTestId('header-menuButton'));
+    userEvent.click(screen.getByRole('button'));
     rerender(<Component></Component>);
     expect(screen.getByRole('navigation')).toBeInTheDocument();
     expect((new HeaderSelector(store.getState())).navbarPosition).toEqual('open');

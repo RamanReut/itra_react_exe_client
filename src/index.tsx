@@ -6,13 +6,17 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { store } from './features/store'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { theme } from './features/theme'
+import { ThemeProvider } from '@material-ui/core/styles'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <App />
+        </Router>
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

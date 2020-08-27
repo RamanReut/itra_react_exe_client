@@ -4,6 +4,7 @@ import HeaderContainer from './HeaderContainer'
 import Grid from '@material-ui/core/Grid'
 import Navbar from './NavbarContainer'
 import { makeStyles } from '@material-ui/core/styles'
+import { HEADER_HEIGHT } from './constants'
 
 const useStyles = makeStyles({
     root: {
@@ -17,8 +18,8 @@ const useStyles = makeStyles({
     navbarWrapper: {
         height: '100%',
     },
-    fullHeight: {
-        height: '100%',
+    contentHeight: {
+        minHeight: `${100 - HEADER_HEIGHT}vh`,
     }
 });
 
@@ -36,7 +37,7 @@ export default function Layout({ children }: LayoutProps) {
                 container
                 justify='flex-start'
                 wrap='nowrap'
-                className={classes.fullHeight}
+                className={classes.contentHeight}
             >
                 <Grid 
                     item

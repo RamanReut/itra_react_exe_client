@@ -15,6 +15,7 @@ function mapStateToProps(state: types.RootState) {
 
 function mapDispatchToProps(dispatch: Dispatch<any>) {
     return {
-        onClose: () => dispatch(actions.navbar.setPosition('hide')),
+        onChangePosition: () => 
+            dispatch(actions.navbar.togglePosition()),
     }
 }

@@ -15,7 +15,7 @@ test('navbar', () => {
             <ThemeProvider theme={desktopTheme}>
                 <Navbar
                     position='open'
-                    onClose={() => {}}
+                    onChangePosition={() => {}}
                 ></Navbar>
             </ThemeProvider>
         </BrowserRouter>
@@ -30,7 +30,7 @@ test('navbar-desktop', () => {
             <ThemeProvider theme={desktopTheme}>
                 <Navbar
                     position='open'
-                    onClose={() => {}}
+                    onChangePosition={() => {}}
                 ></Navbar>
             </ThemeProvider>
         </BrowserRouter>
@@ -48,7 +48,7 @@ test('navbar-mobile', () => {
             <ThemeProvider theme={mobileTheme}>
                 <Navbar
                     position='open'
-                    onClose={handleClose}
+                    onChangePosition={handleClose}
                 ></Navbar>
             </ThemeProvider>
         </BrowserRouter>
