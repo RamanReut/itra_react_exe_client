@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles, Theme, fade } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { types } from './reducer'
 import TextField from '@material-ui/core/TextField'
 import Avatar from '@material-ui/core/Avatar'

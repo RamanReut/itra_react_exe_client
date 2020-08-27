@@ -1,34 +1,38 @@
 import React from 'react'
-import { render, screen, fireEvent, getByRole } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
-import NavbarChangePosition from './NavbarChangePosition';
+import NavbarChangePosition from './NavbarChangePosition'
 
-test('NavbarChangePosition-exist', () => {
-    render (<NavbarChangePosition state='open'></NavbarChangePosition>);
+let isClicked = false;
+function defaultClickHandler() {
+    isClicked = true;
+}
 
-    expect(screen.getByRole('button')).toBeInTheDocument();
+let rerender: (ui: React.ReactElement) => void;
+
+beforeEach(() => {
+    const { rerender: r } = render(
+        <NavbarChangePosition 
+            state='open' 
+            onClick={defaultClickHandler}
+        ></NavbarChangePosition>
+    );
+    rerender = r;
 });
 
-test('NavbarChangePosition-click', () => {
-    let isClicked = false;
-    const handleClick = () => {isClicked = true};
+afterEach(() => {
+    isClicked = false;
+});
 
-    render(<NavbarChangePosition state='open' onClick={handleClick}></NavbarChangePosition>);
+test('pass click handler function', () => {
     fireEvent.click(screen.getByRole('button'));
-
     expect(isClicked).toBeTruthy()
 });
 
-test('NavbarChangePosition-changeIcon', () => {
-    const { rerender } = render(
-        <NavbarChangePosition 
-            state='open' 
-            onClick={()=>{}}
-        ></NavbarChangePosition>
-    );
+test('different icon for different state', () => {
     const icon = screen.getByRole('button').getElementsByTagName('svg')[0];
-    
+
     rerender(
         <NavbarChangePosition 
             state='hide' 
