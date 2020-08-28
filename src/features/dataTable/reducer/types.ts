@@ -26,6 +26,6 @@ export type Columns =
     'email'         |
     'address'       ;   
 
-    export interface RootState {
-        dataTable: DataTableState;
-    }
+export interface RootState {
+    dataTable: DataTableState;
+}    

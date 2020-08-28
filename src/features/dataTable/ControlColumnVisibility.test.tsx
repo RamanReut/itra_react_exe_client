@@ -1,33 +1,56 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
 import ControlColumnVisibility from './ControlColumnVisibility'
 import userEvent from '@testing-library/user-event'
 
-test('dataTable-ControlColumnVisibility', () => {
-    const columns = new Map<string, string>([['first', 'firstLabel'], ['second', 'secondLabel']]);
-    let lastClick: string;
-    const handleClick = (id: string) => { lastClick = id };
-    render (
+const defaultColumns = new Map<string, string>([
+    ['first', 'firstLabel'], 
+    ['second', 'secondLabel']
+]);
+const defaultVisible = ['first', 'second'];
+const defaultHandleClick = (id: string) => {};
+
+function Component({
+    columns = defaultColumns,
+    visible = defaultVisible,
+    onClick = defaultHandleClick,
+}) {
+    return (
         <ControlColumnVisibility
             columns={columns}
-            visible={['second']}
-            onClick={handleClick}
+            visible={visible}
+            onClick={onClick}
         ></ControlColumnVisibility>
     );
+}
 
-    columns.forEach((label, id) => {
-        const testNode = screen.getByText(label);
+function getButtonWithId(id: string) {
+    return screen.getByRole('button', { name: defaultColumns.get(id) });
+}
 
-        expect(testNode).toBeInTheDocument();
+test('component should render two buttons with label firstLabel and secondLabel', () => {
+    render(<Component></Component>);
 
-        userEvent.click(testNode);
-        expect(lastClick).toEqual(id);
-
-        if(id === 'second') {
-            expect(testNode.parentElement).toHaveClass('MuiChip-colorPrimary');
-        } else {
-            expect(testNode.parentElement).not.toHaveClass('MuiChip-colorPrimary');
-        }
+    expect(screen.getAllByRole('button')).toHaveLength(defaultColumns.size);
+    defaultColumns.forEach((name) => {
+        expect(screen.getByRole('button', { name: name })).toBeInTheDocument();
     });
+});
+
+test('visible and unvisible button should have different classes', () => {
+    render(<Component visible={['second']}></Component>);
+
+    expect(getButtonWithId('first').className)
+        .not.toEqual(getButtonWithId('second').className);  
+});
+
+test('after user click event handler should return button id', () => {
+    let buttonId = '';
+    const handleClick = (id: string) => { buttonId = id};
+
+    render(<Component onClick={handleClick}></Component>);
+    userEvent.click(getButtonWithId('first'));
+    expect(buttonId).toEqual('first');
 });

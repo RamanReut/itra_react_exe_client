@@ -1,8 +1,9 @@
+import 'jest-environment-jsdom-sixteen'
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, waitForElement } from '@testing-library/react'
+import { render, screen, waitForElement, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { rest } from 'msw'
+import { rest, ResponseResolver, MockedRequest, restContext } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -36,16 +37,20 @@ const defaultData = [
     },
 ]
 
+let requestSpy = jest.fn(() => {});
+
 const server = setupServer(
     rest.get('/api/orders', (req, resp, ctx) => {
-        return resp(ctx.json({ orders: defaultData}));
-    })
+        requestSpy();
+        return resp(ctx.json({ orders: defaultData }));
+    }),
 );
 
 beforeAll(() => server.listen());
 afterEach(() => {
     server.resetHandlers();
     store.dispatch(actions.reset());
+    requestSpy = jest.fn(() => {});
 });
 afterAll(() => server.close());
 
@@ -59,52 +64,22 @@ function Component() {
     );
 }
 
-function waitManagerName(rerender: any) {
-    return waitForElement(() => {
-        rerender(<Component></Component>);
-        return screen.getAllByText(
-            (content: string, element: Element) => {
-                for (let dataSet of defaultData) {
-                    if (content === dataSet.manager_name) {
-                        return true;
-                    }
-                }
-                return false;
-        });
-    });
-}
+test('component should get data from api', async () => {
+    render(<Component></Component>);
 
-test('dataTable-DataTableContainer', async () => {
-    const { rerender } = render(<Component></Component>);
-
-    await waitManagerName(rerender);
-});
-
-test('dataTable-DataTableContainer-columnsVisibility', async () => {
-    const { rerender } = render(<Component></Component>);
-    const createSelector = () => new DataTableSelector(store.getState());
-
-    await waitManagerName(rerender);
-    const emailButton = () => screen.getByRole((role: string, element: Element) => {
-        if (role === 'button') {
-            return element.className.includes('MuiChip') && 
-                element.firstChild?.textContent === columnsLocalizations.get('email');
-        }
-        return false;
-    });
-    userEvent.click(emailButton());
-    rerender(<Component></Component>);
-    let selector = createSelector();
-    expect(selector.visibleColumns).toContain('email');
-    expect(screen.getByRole('columnheader', { name: columnsLocalizations.get('email') }))
-        .toBeInTheDocument();
-    expect(screen.getByText(defaultData[0].email)).toBeInTheDocument();
-    
-    userEvent.click(emailButton());
-    rerender(<Component></Component>);
-    selector = createSelector();
-    expect(selector.visibleColumns).not.toContain('email');
-    expect(screen.queryByRole('columnheader', { name: columnsLocalizations.get('email') }))
-        .not.toBeInTheDocument();
-    expect(screen.queryByText(defaultData[0].email)).not.toBeInTheDocument();
+    await waitFor(() => expect(requestSpy).toHaveBeenCalled());
 })
+
+test('information should display in table', async () => {
+    const { rerender } = render(<Component></Component>);
+
+    await waitFor(() => expect(requestSpy).toBeCalled());
+    rerender(<Component></Component>);
+    expect(getAllRowWithData()).toHaveLength(2)
+})
+
+function getAllRowWithData() {
+    return screen.getAllByRole('row', { name: (name: string) => {
+        return name.includes('major dude') || name.includes('gallant man');
+    }});
+}
