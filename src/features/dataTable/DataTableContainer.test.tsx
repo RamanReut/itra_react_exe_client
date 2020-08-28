@@ -1,17 +1,15 @@
 import 'jest-environment-jsdom-sixteen'
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, waitForElement, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { rest, ResponseResolver, MockedRequest, restContext } from 'msw'
+import { render, screen, waitFor } from '@testing-library/react'
+import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { store } from '../store'
-import { columnsLocalizations } from './DataTable'
 import DataTableContainer from './DataTableContainer'
-import { actions, DataTableSelector } from './reducer'
+import { actions } from './reducer'
 
 const defaultData = [
     {
