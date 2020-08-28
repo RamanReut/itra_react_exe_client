@@ -3,9 +3,10 @@ import Box from '@material-ui/core/Box'
 import HeaderContainer from './HeaderContainer'
 import Grid from '@material-ui/core/Grid'
 import Navbar from './NavbarContainer'
-import { makeStyles, fade } from '@material-ui/core/styles'
+import { makeStyles, fade, Theme } from '@material-ui/core/styles'
+import { HEADER_HEIGHT } from './constants'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {
         height: '100vh',
         overflowX: 'hidden',
@@ -14,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
     },
     navbarWrapper: {
-        backgroundColor: fade(theme.palette.common.black, 0.1),        
+        backgroundColor: fade(theme.palette.common.black, 0.1),
     },
-    fullHeight: {
-       minHeight: '95vh'
+    contentHeight: {
+        minHeight: `${100 - HEADER_HEIGHT}vh`,
     }
 }));
 
@@ -35,7 +36,7 @@ export default function Layout({ children }: LayoutProps) {
                 container
                 justify='flex-start'
                 wrap='nowrap'
-                className={classes.fullHeight}
+                className={classes.contentHeight}
             >
                 <Grid 
                     item
