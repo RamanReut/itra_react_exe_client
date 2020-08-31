@@ -5,8 +5,7 @@ import { ROOT_REDUCER_NAME } from './constants'
 const initialState = {
     isOpen: false,
     id: 0,
-    expandedGroups: ['main' as types.DetailGroup],
-    expandedProduct: [],
+    tab: 0,
 }
 
 const slice = createSlice({
@@ -16,7 +15,6 @@ const slice = createSlice({
         open(state: types.DetailState, { payload }: PayloadAction<number>) {
             state.isOpen = true;
             state.id = payload;
-            state.expandedProduct = [];
         },
         close(state: types.DetailState, action: Action) {
             state.isOpen = false;
@@ -24,28 +22,9 @@ const slice = createSlice({
         reset(state: types.DetailState, action: Action) {
             return initialState;
         },
-        toggleExpandGroup(
-            state: types.DetailState, 
-            { payload }: PayloadAction<types.DetailGroup>,
-        ) {
-            const i = state.expandedGroups.indexOf(payload);
-            if(i > -1) {
-                state.expandedGroups.splice(i, 1);
-            } else {
-                state.expandedGroups.push(payload);
-            }
+        setTab(state: types.DetailState, { payload }: PayloadAction<number>) {
+            state.tab = payload;
         },
-        toggleExpandProduct(
-            state: types.DetailState,
-            { payload }: PayloadAction<string>,
-        ) {
-            const i = state.expandedProduct.indexOf(payload);
-            if(i > -1) {
-                state.expandedProduct.splice(i, 1);
-            } else {
-                state.expandedProduct.push(payload);
-            }
-        }
     }
 });
 

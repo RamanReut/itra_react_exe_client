@@ -11,8 +11,7 @@ export interface OrdersTableState {
 export interface DetailState {
     isOpen: boolean;
     id: number;
-    expandedGroups: Array<DetailGroup>;
-    expandedProduct: Array<string>;
+    tab: number;
 }
 
 export interface DataIndexable {
@@ -58,5 +57,3 @@ export type Columns =
 export interface RootState {
     orders: OrdersState;
 }
-
-export type DetailGroup = 'main' | 'customer' | 'items';

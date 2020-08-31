@@ -1,4 +1,3 @@
-import 'jest-environment-jsdom-sixteen'
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, waitFor } from '@testing-library/react'

@@ -14,8 +14,7 @@ function mapStateToProps(state: types.RootState) {
         visibleColumns: tableSelector.visibleColumns,
         isDetailOpen: detailSelector.isOpen,
         detailId: detailSelector.id,
-        expandedDetailGroups: detailSelector.expandedGroups,
-        expandedDetailProduct: detailSelector.expandedProduct,
+        tab: detailSelector.tab,
     }
 }
 
@@ -28,9 +27,8 @@ function mapDispatchToProps(dispatch: Dispatch<any>) {
             dispatch(actions.detail.open(id)),
         onDetailClose: () => 
             dispatch(actions.detail.close()),
-        onToggleDetailExpandGroup: (group: types.DetailGroup) =>
-            dispatch(actions.detail.toggleExpandGroup(group)),
-        onToggleDetailExpandProduct: (product: string) => 
-            dispatch(actions.detail.toggleExpandProduct(product)),
+        onChangeTab: (id: number) => {
+            dispatch(actions.detail.setTab(id));
+        },
     }
 }

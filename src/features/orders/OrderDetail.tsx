@@ -2,11 +2,14 @@ import React from 'react'
 import { types } from './reducer'
 import Drawer from '@material-ui/core/Drawer'
 import Box from '@material-ui/core/Box'
-import OrderInfo from './OrderInfo'
 import { makeStyles, fade, Theme } from '@material-ui/core/styles'
-import DetailWrapper from './DetailWrapper'
-import CustomerInfo from './CustomerInfo'
-import DetailItemsInfo from './DetailItemsInfo'
+import Grid from '@material-ui/core/Grid'
+import Icon from '@material-ui/core/Icon'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
+import Typography from '@material-ui/core/Typography'
+import OrderIcon from '@material-ui/icons/ShoppingCart'
+import OrderTabPanel from './OrderTabPanel'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -14,18 +17,19 @@ const useStyles = makeStyles((theme: Theme) => ({
         width: '40em',
         backgroundColor: fade(theme.palette.common.black, 0.1),
         minHeight: '100%',
-    }
+    },
+    detailIdWrapper: {
+        marginLeft: '1em',
+    },
 }));
 
 export interface OrderDetailProps {
-    isOpen: boolean,
-    id: number,
-    data: types.DataIndexable,
-    onClose: () => void,
-    expandedGroups: Array<types.DetailGroup>,
-    onToggleExpandGroup: (group: types.DetailGroup) => void,
-    expandedProduct: Array<string>,
-    onToggleExpandProduct: (product: string) => void,
+    isOpen: boolean;
+    id: number;
+    data: types.DataIndexable;
+    onClose: () => void;
+    tab: number;
+    onChangeTab: (id: number) => void;
 }
 
 export default function OrderDetail({
@@ -33,10 +37,8 @@ export default function OrderDetail({
     id,
     data,
     onClose,
-    expandedGroups,
-    onToggleExpandGroup,
-    expandedProduct,
-    onToggleExpandProduct,
+    tab,
+    onChangeTab,
 }: OrderDetailProps) {
     const classes = useStyles();
 
@@ -47,31 +49,50 @@ export default function OrderDetail({
             onClose={onClose}
         >
             <Box className={classes.root}>
-                <DetailWrapper 
-                    title='Order'
-                    isExpand={expandedGroups.includes('main')}
-                    onChange={() => onToggleExpandGroup('main')}
+                <Grid 
+                    container
+                    direction='column'
+                    spacing={2}
                 >
-                    <OrderInfo {...data[id]}></OrderInfo>
-                </DetailWrapper>
-                <DetailWrapper
-                    title='Customer'
-                    isExpand={expandedGroups.includes('customer')}
-                    onChange={() => onToggleExpandGroup('customer')}
-                >
-                    <CustomerInfo {...data[id]}></CustomerInfo>                   
-                </DetailWrapper>
-                <DetailWrapper
-                    title='Items'
-                    isExpand={expandedGroups.includes('items')}
-                    onChange={() => onToggleExpandGroup('items')}
-                >
-                    <DetailItemsInfo 
-                        items={data[id] ? data[id].order_items : []}
-                        expandedItems={expandedProduct}
-                        onToggleExpandItem={onToggleExpandProduct}
-                    ></DetailItemsInfo>
-                </DetailWrapper>
+                    <Grid 
+                        item
+                        container
+                        justify='space-between'
+                        alignItems='center'
+                    >
+                        <Grid item>
+                            <Grid 
+                                container
+                                alignItems='center'
+                                spacing={2}
+                                className={classes.detailIdWrapper}
+                            >
+                                <Grid item>
+                                    <Icon color='primary'>
+                                        <OrderIcon></OrderIcon>
+                                    </Icon>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant='h5' color='primary'>
+                                        {id}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item>
+                            <IconButton onClick={onClose}>
+                                <CloseIcon></CloseIcon>
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <OrderTabPanel
+                            tab={tab}
+                            onChangeTab={onChangeTab}
+                            data={data[id]}
+                        ></OrderTabPanel>
+                    </Grid>
+                </Grid>
             </Box>
         </Drawer>
     );

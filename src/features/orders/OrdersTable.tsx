@@ -22,14 +22,12 @@ export interface DataTableProps {
     visibleColumns: Array<types.Columns>;
     onFetch: () => void;
     onToggleVisibility: (id: string) => void;
-    isDetailOpen: boolean,
-    detailId: number,
-    onDetailOpen: (id: number) => void,
-    onDetailClose: () => void,
-    expandedDetailGroups: Array<types.DetailGroup>,
-    onToggleDetailExpandGroup: (group: types.DetailGroup) => void,
-    expandedDetailProduct: Array<string>,
-    onToggleDetailExpandProduct: (product: string) => void,
+    isDetailOpen: boolean;
+    detailId: number;
+    onDetailOpen: (id: number) => void;
+    onDetailClose: () => void;
+    tab: number;
+    onChangeTab: (id: number) => void;
 }
 
 export default function OrdersTable({
@@ -41,10 +39,8 @@ export default function OrdersTable({
     detailId,
     onDetailOpen,
     onDetailClose,
-    expandedDetailGroups,
-    onToggleDetailExpandGroup,
-    expandedDetailProduct,
-    onToggleDetailExpandProduct,
+    tab,
+    onChangeTab,
 }: DataTableProps ) {
     const columns = useMemo(() => createColumnsList(visibleColumns), [visibleColumns]);
     const dataExistable = useMemo(() => createExistableData(data), [data]);
@@ -88,10 +84,8 @@ export default function OrdersTable({
                 id={detailId}
                 data={data}
                 onClose={onDetailClose}
-                expandedGroups={expandedDetailGroups}
-                onToggleExpandGroup={onToggleDetailExpandGroup}
-                expandedProduct={expandedDetailProduct}
-                onToggleExpandProduct={onToggleDetailExpandProduct}
+                tab={tab}
+                onChangeTab={onChangeTab}
             ></OrderDetail>
         </Box>
     );
