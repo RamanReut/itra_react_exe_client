@@ -2,17 +2,14 @@ import React, { ChangeEvent } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { types } from './reducer'
-import TextField from '@material-ui/core/TextField'
 import Avatar from '@material-ui/core/Avatar'
 import Path from './Path'
 import Hidden from '@material-ui/core/Hidden'
 import Box from '@material-ui/core/Box'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import SearchIcon from '@material-ui/icons/Search'
 import { HEADER_HEIGHT } from './constants'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
+import SearchInput from './SearchInput'
 
 const useHeaderStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -25,25 +22,23 @@ const useHeaderStyles = makeStyles((theme: Theme) => ({
     path: {
         paddingLeft: '0.5em'
     }, 
-    input: {
-        '& .MuiOutlinedInput-root': {
-            backgroundColor: theme.palette.common.white,
-        }
-    },
     menuButton: {
         color: theme.palette.primary.main,
+    },
+    searchInputWrapper: {
+        [theme.breakpoints.up('sm')]: {
+            width: '20em',
+        },
     }
 }));
 
 export interface HeaderProps {
-    navbarPosition: types.NavbarPosition;
     onNavbarButtonClick: () => void;
     searchText: string;
     onSearchTextChange: (event: ChangeEvent<HTMLInputElement>) => void,
 }
 
 export default function Header({
-    navbarPosition,
     onNavbarButtonClick,
     searchText,
     onSearchTextChange,
@@ -74,12 +69,14 @@ export default function Header({
                         spacing={0}
                     >
                         <Grid item>
-                            <IconButton
-                                onClick={onNavbarButtonClick}
-                                className={classes.menuButton}
-                            >
-                                <MenuIcon></MenuIcon>
-                            </IconButton>             
+                            <Hidden smUp>
+                                <IconButton
+                                    onClick={onNavbarButtonClick}
+                                    className={classes.menuButton}
+                                >
+                                    <MenuIcon></MenuIcon>
+                                </IconButton>  
+                            </Hidden>           
                         </Grid>
                         <Grid item>
                             <Hidden xsDown>
@@ -100,25 +97,14 @@ export default function Header({
                         spacing={3}
                         wrap='nowrap'
                     >
-                        <Grid item>
-                            <TextField
-                                className={classes.input}
-                                data-testid='header-searchInput'
-                                variant='outlined'
-                                type='search'
-                                color='primary'
-                                size='small'
-                                placeholder='Quick search...'
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position='start'>
-                                            <SearchIcon></SearchIcon>
-                                        </InputAdornment>                       
-                                    ),
-                                }}
-                                value={searchText}
+                        <Grid 
+                            item
+                            className={classes.searchInputWrapper}
+                        >
+                            <SearchInput 
+                                text={searchText}
                                 onChange={onSearchTextChange}
-                            ></TextField> 
+                            ></SearchInput>         
                         </Grid>
                         <Grid item>
                             <Avatar data-testid='header-avatar'></Avatar>                  

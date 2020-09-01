@@ -3,10 +3,11 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import ListItem from '@material-ui/core/ListItem'
 import Icon from '@material-ui/core/ListItemIcon'
 import Text from '@material-ui/core/ListItemText'
-import { NavLink  } from 'react-router-dom'
+import { NavLink, LinkProps  } from 'react-router-dom'
 import * as constants from './constants'
 import { types } from './reducer'
 import classnames from 'classnames'
+import { Omit } from '@material-ui/types'
 
 const useStyles = makeStyles((theme: Theme) => ({
     gutters: {
@@ -70,18 +71,25 @@ export interface ItemProps {
 
 export default function Item({ icon, text, to, state }: ItemProps) {
     const classes = useStyles();
+    const Link = 
+        React.forwardRef<any, Omit<LinkProps, 'to'>>((props, ref) => (
+            <NavLink 
+                activeClassName={classes.active} 
+                exact 
+                to={to}
+                {...props}
+                ref={ref}
+            ></NavLink>
+        ));
 
     return (
         <ListItem 
             classes={{ 
                 gutters: classes.gutters, 
-                root: classnames(classes.root, { [classes.collapseItem]: state === 'hide'}) }}
+                root: classnames(classes.root, { [classes.collapseItem]: state === 'hide'}) ,
+            }}
             button
-            component={
-                (props) => 
-                    <NavLink activeClassName={classes.active} exact {...props}></NavLink>
-            }
-            to={to}
+            component={Link}
         >
             <Icon className={classes.icon}>
                 {icon}
