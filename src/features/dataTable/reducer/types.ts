@@ -1,6 +1,7 @@
 export interface DataTableState {
     data: Array<Row>;
     visibleColumns: Array<Columns>;
+    isControlColumnsOpen: boolean;
 }
 
 export interface Row {

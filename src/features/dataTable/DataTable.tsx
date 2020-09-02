@@ -1,8 +1,15 @@
 import React, { useMemo, useEffect } from 'react'
 import MaterialTable, { MTableToolbar } from 'material-table'
 import { types } from './reducer'
-import Box from '@material-ui/core/Box'
-import ControlColumnVisibility from './ControlColumnVisibility'
+import ColumnVisibillity from './ColumnVisibility'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+    labelWrapper: {
+        minWidth: '5em',
+    },
+});
 
 export const columnsLocalizations = new Map<types.Columns, string>([
     ['order_id',        'Order ID'],
@@ -20,15 +27,21 @@ export interface DataTableProps {
     data: Array<types.Row>;
     visibleColumns: Array<types.Columns>;
     onFetch: () => void;
-    onToggleVisibility: (id: string) => void;
+    isControlColumnsOpen: boolean;
+    onControlColumnsOpenChange: (state: boolean) => void;
+    onVisibilityChange: (visible: Array<types.Columns>) => void;
 }
 
 export default function DataTable({
     data,
     visibleColumns,
     onFetch,
-    onToggleVisibility,
+    isControlColumnsOpen,
+    onControlColumnsOpenChange,
+    onVisibilityChange
 }: DataTableProps ) {
+    const classes = useStyles();
+
     const columns = useMemo(() => createColumnsList(visibleColumns), [visibleColumns]);
     const dataExistable = useMemo(() => createExistableData(data), [data]);
 
@@ -42,14 +55,26 @@ export default function DataTable({
             data={dataExistable}
             components={{
                 Toolbar: props => (
-                    <Box>
-                        <MTableToolbar {...props}></MTableToolbar>
-                        <ControlColumnVisibility 
-                            columns={columnsLocalizations}
-                            visible={visibleColumns}
-                            onClick={onToggleVisibility}
-                        ></ControlColumnVisibility>
-                    </Box>
+                    <Grid 
+                        container
+                        alignItems='center'
+                    >
+                        <Grid 
+                            item
+                            className={classes.labelWrapper}
+                        >
+                            <MTableToolbar {...props}></MTableToolbar>
+                        </Grid>
+                        <Grid item>
+                            <ColumnVisibillity
+                                columns={columnsLocalizations}
+                                visible={visibleColumns}
+                                isOpen={isControlColumnsOpen}
+                                onOpenChange={onControlColumnsOpenChange}
+                                onVisibilityChange={onVisibilityChange}
+                            ></ColumnVisibillity>
+                        </Grid>
+                    </Grid>
                 )
             }}
             options={{

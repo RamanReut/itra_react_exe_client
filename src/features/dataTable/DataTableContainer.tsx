@@ -11,12 +11,17 @@ function mapStateToProps(state: types.RootState) {
     return {
         data: selector.data,
         visibleColumns: selector.visibleColumns,
+        isControlColumnsOpen: selector.isControlColumnsOpen,
     }
 }
 
-function mapDispatchToProps(dispath: Dispatch<any>) {
+function mapDispatchToProps(dispatch: Dispatch<any>) {
     return {
-        onFetch: () => dispath(actions.fetchData()),
-        onToggleVisibility: (id: string) => dispath(actions.toggleVisibility(id as types.Columns)),
+        onFetch: () => 
+            dispatch(actions.fetchData()),
+        onControlColumnsOpenChange: (state: boolean) => 
+            dispatch(actions.setIsControlColumnsOpen(state)),
+        onVisibilityChange: (visibileColumns: Array<types.Columns>) =>
+            dispatch(actions.setVisibilityColumns(visibileColumns)),
     }
 }

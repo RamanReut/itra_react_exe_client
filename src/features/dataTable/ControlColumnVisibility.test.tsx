@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
-import ControlColumnVisibility from './ControlColumnVisibility'
+import ControlColumnVisibility from './ColumnVisibilityControl'
 import userEvent from '@testing-library/user-event'
 
 const defaultColumns = new Map<string, string>([

@@ -13,4 +13,8 @@ export class DataTableSelector extends RootSelector<types.RootState> {
     public get data(): Array<types.Row> {
         return this.DataTable.data;
     }
+
+    public get isControlColumnsOpen(): boolean {
+        return this.DataTable.isControlColumnsOpen;
+    }
 }

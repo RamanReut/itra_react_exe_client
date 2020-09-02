@@ -10,6 +10,7 @@ const initialState: types.DataTableState = {
         'manager_name',
     ],
     data: new Array<types.Row>(),
+    isControlColumnsOpen: false,
 }
 
 const fetchData = createAsyncThunk(
@@ -27,18 +28,23 @@ const slice = createSlice({
     name: 'dataTable',
     initialState: initialState,
     reducers: {
-        toggleVisibility(state: types.DataTableState, { payload }: PayloadAction<types.Columns>) {
-            const index = state.visibleColumns.indexOf(payload);
-
-            if (index === -1) {
-                state.visibleColumns.push(payload);
-            } else {
-                state.visibleColumns.splice(index, 1);
-            }
+        setVisibilityColumns(
+            state:types.DataTableState,
+            { payload }: PayloadAction<Array<types.Columns>>,
+        ) {
+            state.visibleColumns = payload;
         },
+
+        setIsControlColumnsOpen(
+            state: types.DataTableState, 
+            { payload }: PayloadAction<boolean>
+        ) {
+            state.isControlColumnsOpen = payload;
+        },
+
         reset(state: types.DataTableState, action: Action) {
             return initialState;
-        }
+        },
     },
     extraReducers: builder => {
         builder.addCase(
