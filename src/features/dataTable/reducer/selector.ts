@@ -17,4 +17,8 @@ export class DataTableSelector extends RootSelector<types.RootState> {
     public get isControlColumnsOpen(): boolean {
         return this.DataTable.isControlColumnsOpen;
     }
+
+    public get isLoading(): boolean {
+        return this.DataTable.isLoading;
+    }
 }

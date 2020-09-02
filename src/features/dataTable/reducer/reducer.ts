@@ -11,6 +11,7 @@ const initialState: types.DataTableState = {
     ],
     data: new Array<types.Row>(),
     isControlColumnsOpen: false,
+    isLoading: false,
 }
 
 const fetchData = createAsyncThunk(
@@ -51,7 +52,14 @@ const slice = createSlice({
             fetchData.fulfilled, 
             (state: types.DataTableState, { payload }: PayloadAction<any>) => {
                 state.data = payload as Array<types.Row>;
+                state.isLoading = false;
            });
+        builder.addCase(
+            fetchData.pending,
+            (state: types.DataTableState, action: Action) => {
+                state.isLoading = true;
+            },
+        )
     },
 });
 

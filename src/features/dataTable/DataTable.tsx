@@ -30,6 +30,7 @@ export interface DataTableProps {
     isControlColumnsOpen: boolean;
     onControlColumnsOpenChange: (state: boolean) => void;
     onVisibilityChange: (visible: Array<types.Columns>) => void;
+    isLoading: boolean;
 }
 
 export default function DataTable({
@@ -38,7 +39,8 @@ export default function DataTable({
     onFetch,
     isControlColumnsOpen,
     onControlColumnsOpenChange,
-    onVisibilityChange
+    onVisibilityChange,
+    isLoading,
 }: DataTableProps ) {
     const classes = useStyles();
 
@@ -51,6 +53,7 @@ export default function DataTable({
 
     return (
         <MaterialTable
+            isLoading={isLoading}
             columns={columns}
             data={dataExistable}
             components={{

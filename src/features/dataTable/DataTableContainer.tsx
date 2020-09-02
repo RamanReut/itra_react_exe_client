@@ -12,6 +12,7 @@ function mapStateToProps(state: types.RootState) {
         data: selector.data,
         visibleColumns: selector.visibleColumns,
         isControlColumnsOpen: selector.isControlColumnsOpen,
+        isLoading: selector.isLoading,
     }
 }
 
