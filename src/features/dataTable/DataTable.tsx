@@ -44,7 +44,7 @@ export default function DataTable({
 }: DataTableProps ) {
     const classes = useStyles();
 
-    const columns = useMemo(() => createColumnsList(visibleColumns), [visibleColumns]);
+    const columns = useMemo(() => createColumnList(visibleColumns), [visibleColumns]);
     const dataExistable = useMemo(() => createExistableData(data), [data]);
 
     useEffect(() => {
@@ -92,22 +92,49 @@ export default function DataTable({
 }
 
 interface Column {
-    field: string,
-    title: string,
+    field: string;
+    title: string;
+    type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency';
 }
 
-function createColumnsList(columns: Array<types.Columns>): Array<Column>{
+function createColumnList(columns: Array<types.Columns>): Array<Column> {
+    return modifyColumnList(createColumnLocalizationList(columns));
+}
+
+interface modifier {
+    (list: Array<Column>): void;
+}
+
+const modifiers: Array<modifier> = [
+    modifyRequiredDate,
+];
+
+function modifyColumnList(columns: Array<Column>): Array<Column> {
+    modifiers.forEach((mod) => {
+        mod(columns);
+    });
+    return columns;
+}
+
+function modifyRequiredDate(columns: Array<Column>) {
+    columns.forEach((elem) => {
+        if (elem.field.includes('_date')) {
+            elem.type = 'date';
+        }
+    })
+}
+
+function createColumnLocalizationList(columns: Array<types.Columns>): Array<Column>{
     return columns.map((column) => {
         return {
             field: column,
             title: columnsLocalizations.get(column) || '',
-
         }
     });
 }
 
 function createExistableData(data: Array<types.Row>) {
     return data.map((elem) => {
-        return {...elem};
+        return {...elem}
     });
 }
