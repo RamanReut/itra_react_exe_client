@@ -7,22 +7,21 @@ import { types } from './reducer'
 import { DialogActions } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
-
-export interface ColumnVisibilityPopoverProps {
-    columns: Map<string, string>;
+export interface ColumnVisibilityDialogProps {
+    columns: Map<types.Columns, string>;
     visible: Array<types.Columns>;
     isOpen: boolean;
     onClose: () => void;
     onVisibilityChange: (visibleColumns: Array<types.Columns>) => void;
 }
 
-export default function ColumnVisibilityPopper({
+export default function ColumnVisibilityDialog({
     columns,
     visible,
     isOpen,
     onClose,
     onVisibilityChange,
-}: ColumnVisibilityPopoverProps) {
+}: ColumnVisibilityDialogProps) {
     const  [ visibleColumns, setVisibleColumns ] = useState<Array<types.Columns>>([]);
 
     const handleClick = useCallback((column: types.Columns) => {

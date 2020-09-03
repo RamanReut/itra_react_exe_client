@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { types } from './reducer'
 
 export interface ColumnVisibilityControlProps {
-    columns: Map<string, string>;
+    columns: Map<types.Columns, string>;
     visible: Array<types.Columns>;
     onClick: (id: types.Columns) => void;
 }
@@ -16,8 +16,8 @@ export default function ColumnVisibilityControlProps({
     visible,
     onClick,
 }: ColumnVisibilityControlProps) {
-    const chipProps = useMemo(
-        () => createChipProps(columns, visible, onClick), 
+    const checkboxProps = useMemo(
+        () => createCheckboxProps(columns, visible, onClick), 
         [columns, visible, onClick]
     );
 
@@ -28,7 +28,7 @@ export default function ColumnVisibilityControlProps({
                 spacing={2}
                 justify='flex-start'
             >
-                {chipProps.map(
+                {checkboxProps.map(
                     (props) => {
                         const {key, label, ...rest} = props;
 
@@ -56,20 +56,20 @@ export default function ColumnVisibilityControlProps({
     );
 }
 
-interface ChipProps {
+interface CheckboxProps {
     key: string;
     onClick: () => void;
     checked: boolean,
     label: string,
 }
 
-function createChipProps(
-    columns: Map<string, string>, 
+function createCheckboxProps(
+    columns: Map<types.Columns, string>, 
     visible: Array<types.Columns>, 
     onClick: (id: types.Columns) => void
-): Array<ChipProps> {
+): Array<CheckboxProps> {
     const visibleSet = new Set<string>(visible);
-    let propList = new Array<ChipProps>();
+    let propList = new Array<CheckboxProps>();
 
     columns.forEach((title, id) => {
         propList.push({

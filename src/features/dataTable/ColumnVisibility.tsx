@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box'
 import { types } from './reducer'
 
 export interface ColumnVisibilityProps {
-    columns: Map<string, string>,
+    columns: Map<types.Columns, string>,
     visible: Array<types.Columns>;
     onOpenChange: (state: boolean) => void;
     isOpen: boolean;
