@@ -52,7 +52,11 @@ const slice = createSlice({
         builder.addCase(
             fetchData.fulfilled, 
             (state: types.OrdersTableState, { payload }: PayloadAction<any>) => {
-                state.data = payload as Array<types.Record>;
+                const data: types.DataIndexable = {};
+                (payload as Array<types.Record>).forEach((record) => {
+                    data[record.order_id] = record;
+                });
+                state.data = data;
                 state.isLoading = false;
            });
         builder.addCase(

@@ -26,7 +26,7 @@ export const columnsLocalizations = new Map<types.Columns, string>([
 ]);
 
 export interface OrdersTableProps {
-    data: Array<types.Record>;
+    data: types.DataIndexable;
     visibleColumns: Array<types.Columns>;
     onFetch: () => void;
     isControlColumnsOpen: boolean;
@@ -162,8 +162,12 @@ function createColumnLocalizationList(columns: Array<types.Columns>): Array<Colu
     });
 }
 
-function createExistableData(data: Array<types.Row>) {
-    return data.map((elem) => {
-        return {...elem}
-    });
+function createExistableData(data: types.DataIndexable): Array<types.Row> {
+    let res = new Array<types.Row>();
+
+    for(let index in data) {
+        const { order_items, ...rest } = data[index];
+        res.push(rest);
+    }
+    return res;
 }

@@ -6,7 +6,7 @@ export class OrdersTableSelector extends OrdersSelector {
         return this.ordersTable.visibleColumns;
     }
 
-    public get data(): Array<types.Record> {
+    public get data(): types.DataIndexable {
         return this.ordersTable.data;
     }
 
