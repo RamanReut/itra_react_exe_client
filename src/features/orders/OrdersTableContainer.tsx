@@ -12,6 +12,8 @@ function mapStateToProps(state: types.RootState) {
     return {
         data: tableSelector.data,
         visibleColumns: tableSelector.visibleColumns,
+        isControlColumnsOpen: tableSelector.isControlColumnsOpen,
+        isLoading: tableSelector.isLoading,
         isDetailOpen: detailSelector.isOpen,
         detailId: detailSelector.id,
         tab: detailSelector.tab,
@@ -21,8 +23,10 @@ function mapStateToProps(state: types.RootState) {
 function mapDispatchToProps(dispatch: Dispatch<any>) {
     return {
         onFetch: () => dispatch(actions.ordersTable.fetchData()),
-        onToggleVisibility: (id: string) => 
-            dispatch(actions.ordersTable.toggleVisibility(id as types.Columns)),
+        onControlColumnsOpenChange: (state: boolean) => 
+            dispatch(actions.ordersTable.setIsControlColumnsOpen(state)),
+        onVisibilityChange: (columns: Array<types.Columns>) => 
+            dispatch(actions.ordersTable.setVisibilityColumns(columns)),
         onDetailOpen: (id: number) => 
             dispatch(actions.detail.open(id)),
         onDetailClose: () => 

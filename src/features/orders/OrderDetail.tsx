@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export interface OrderDetailProps {
     isOpen: boolean;
     id: number;
-    data: types.DataIndexable;
+    data: Array<types.Record>;
     onClose: () => void;
     tab: number;
     onChangeTab: (id: number) => void;

@@ -12,7 +12,9 @@ const initialState: types.OrdersTableState = {
         'required_date',
         'manager_name',
     ],
-    data: {},
+    data: new Array<types.Record>(),
+    isControlColumnsOpen: false,
+    isLoading: false,
 }
 
 const fetchData = createAsyncThunk(
@@ -29,14 +31,18 @@ const slice = createSlice({
     name: REDUCER_NAME,
     initialState: initialState,
     reducers: {
-        toggleVisibility(state: types.OrdersTableState, { payload }: PayloadAction<types.Columns>) {
-            const index = state.visibleColumns.indexOf(payload);
+        setVisibilityColumns(
+            state:types.OrdersTableState,
+            { payload }: PayloadAction<Array<types.Columns>>,
+        ) {
+            state.visibleColumns = payload;
+        },
 
-            if (index === -1) {
-                state.visibleColumns.push(payload);
-            } else {
-                state.visibleColumns.splice(index, 1);
-            }
+        setIsControlColumnsOpen(
+            state: types.OrdersTableState, 
+            { payload }: PayloadAction<boolean>
+        ) {
+            state.isControlColumnsOpen = payload;
         },
         reset(state: types.OrdersTableState, action: Action) {
             return initialState;
@@ -46,10 +52,15 @@ const slice = createSlice({
         builder.addCase(
             fetchData.fulfilled, 
             (state: types.OrdersTableState, { payload }: PayloadAction<any>) => {
-                (payload as Array<types.Record>).forEach((elem) => {
-                    state.data[elem.order_id] = elem;
-                });
+                state.data = payload as Array<types.Record>;
+                state.isLoading = false;
            });
+        builder.addCase(
+            fetchData.pending,
+            (state: types.OrdersTableState, action: Action) => {
+                state.isLoading = true;
+            },
+        )
     },
 });
 

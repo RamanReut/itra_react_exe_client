@@ -4,18 +4,16 @@ export interface OrdersState {
 }
 
 export interface OrdersTableState {
-    data: DataIndexable;
+    data: Array<Record>;
     visibleColumns: Array<Columns>;
+    isControlColumnsOpen: boolean;
+    isLoading: boolean;
 }
 
 export interface DetailState {
     isOpen: boolean;
     id: number;
     tab: number;
-}
-
-export interface DataIndexable {
-    [index: number]: Record;
 }
 
 export interface Record extends Row {

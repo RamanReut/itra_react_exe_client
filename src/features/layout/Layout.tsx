@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     childrenWrapper: {
         width: '100%',
+        minHeight: `${100 - HEADER_HEIGHT / 2}vh`
     },
     navbarWrapper: {
         backgroundColor: fade(theme.palette.common.black, 0.1),

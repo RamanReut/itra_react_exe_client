@@ -2,8 +2,16 @@ import React, { useMemo, useEffect, useCallback } from 'react'
 import MaterialTable, { MTableToolbar } from 'material-table'
 import { types } from './reducer'
 import Box from '@material-ui/core/Box'
-import ControlColumnVisibility from './ControlColumnVisibility'
 import OrderDetail from './OrderDetail'
+import ColumnVisibillity from './ColumnVisibility'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+    labelWrapper: {
+        minWidth: '5em',
+    },
+});
 
 export const columnsLocalizations = new Map<types.Columns, string>([
     ['order_id',        'Order ID'],
@@ -17,11 +25,14 @@ export const columnsLocalizations = new Map<types.Columns, string>([
     ['address',         'Address'],
 ]);
 
-export interface DataTableProps {
-    data: types.DataIndexable;
+export interface OrdersTableProps {
+    data: Array<types.Record>;
     visibleColumns: Array<types.Columns>;
     onFetch: () => void;
-    onToggleVisibility: (id: string) => void;
+    isControlColumnsOpen: boolean;
+    onControlColumnsOpenChange: (state: boolean) => void;
+    onVisibilityChange: (visible: Array<types.Columns>) => void;
+    isLoading: boolean;   
     isDetailOpen: boolean;
     detailId: number;
     onDetailOpen: (id: number) => void;
@@ -34,15 +45,20 @@ export default function OrdersTable({
     data,
     visibleColumns,
     onFetch,
-    onToggleVisibility,
+    isControlColumnsOpen,
+    onControlColumnsOpenChange,
+    onVisibilityChange,
+    isLoading,
     isDetailOpen,
     detailId,
     onDetailOpen,
     onDetailClose,
     tab,
     onChangeTab,
-}: DataTableProps ) {
-    const columns = useMemo(() => createColumnsList(visibleColumns), [visibleColumns]);
+}: OrdersTableProps ) {
+    const classes = useStyles();
+
+    const columns = useMemo(() => createColumnList(visibleColumns), [visibleColumns]);
     const dataExistable = useMemo(() => createExistableData(data), [data]);
 
     const handleRowClick = useCallback((_, { order_id }) => {
@@ -56,18 +72,31 @@ export default function OrdersTable({
     return (
         <Box>
             <MaterialTable
+                isLoading={isLoading}
                 columns={columns}
                 data={dataExistable}
                 components={{
                     Toolbar: props => (
-                        <Box>
-                            <MTableToolbar {...props}></MTableToolbar>
-                            <ControlColumnVisibility 
-                                columns={columnsLocalizations}
-                                visible={visibleColumns}
-                                onClick={onToggleVisibility}
-                            ></ControlColumnVisibility>
-                        </Box>
+                        <Grid 
+                            container
+                            alignItems='center'
+                        >
+                            <Grid 
+                                item
+                                className={classes.labelWrapper}
+                            >
+                                <MTableToolbar {...props}></MTableToolbar>
+                            </Grid>
+                            <Grid item>
+                                <ColumnVisibillity
+                                    columns={columnsLocalizations}
+                                    visible={visibleColumns}
+                                    isOpen={isControlColumnsOpen}
+                                    onOpenChange={onControlColumnsOpenChange}
+                                    onVisibilityChange={onVisibilityChange}
+                                ></ColumnVisibillity>
+                            </Grid>
+                        </Grid>
                     )
                 }}
                 options={{
@@ -92,25 +121,49 @@ export default function OrdersTable({
 }
 
 interface Column {
-    field: string,
-    title: string,
+    field: string;
+    title: string;
+    type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency';
 }
 
-function createColumnsList(columns: Array<types.Columns>): Array<Column>{
+function createColumnList(columns: Array<types.Columns>): Array<Column> {
+    return modifyColumnList(createColumnLocalizationList(columns));
+}
+
+interface modifier {
+    (list: Array<Column>): void;
+}
+
+const modifiers: Array<modifier> = [
+    modifyRequiredDate,
+];
+
+function modifyColumnList(columns: Array<Column>): Array<Column> {
+    modifiers.forEach((mod) => {
+        mod(columns);
+    });
+    return columns;
+}
+
+function modifyRequiredDate(columns: Array<Column>) {
+    columns.forEach((elem) => {
+        if (elem.field.includes('_date')) {
+            elem.type = 'date';
+        }
+    })
+}
+
+function createColumnLocalizationList(columns: Array<types.Columns>): Array<Column>{
     return columns.map((column) => {
         return {
             field: column,
             title: columnsLocalizations.get(column) || '',
-
         }
     });
 }
 
-function createExistableData(data: types.DataIndexable): Array<types.Row> {
-    let res: Array<types.Row> = [];
-    for(let i in data) {
-        let { order_items, ...rest} = {...data[i]}
-        res.push(rest);         //material-table require extensible elements
-    }
-    return res;
+function createExistableData(data: Array<types.Row>) {
+    return data.map((elem) => {
+        return {...elem}
+    });
 }

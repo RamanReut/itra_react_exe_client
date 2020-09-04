@@ -6,7 +6,15 @@ export class OrdersTableSelector extends OrdersSelector {
         return this.ordersTable.visibleColumns;
     }
 
-    public get data(): types.DataIndexable {
+    public get data(): Array<types.Record> {
         return this.ordersTable.data;
+    }
+
+    public get isControlColumnsOpen(): boolean {
+        return this.ordersTable.isControlColumnsOpen;
+    }
+
+    public get isLoading(): boolean {
+        return this.ordersTable.isLoading;
     }
 }
