@@ -24,7 +24,7 @@ export default function DetailItems({
         <Box className={classes.root}>
             {items.map((product: types.OrderItem, index, array) => {
                 return (
-                    <Box>
+                    <Box key={product.product}>
                         <DetailItemInfo {...product}></DetailItemInfo>
                         { array.length !== index + 1 ? <Divider></Divider> : <div></div> }
                     </Box>
