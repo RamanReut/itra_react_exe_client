@@ -2,7 +2,7 @@ import React from 'react'
 import { types } from './reducer'
 import Drawer from '@material-ui/core/Drawer'
 import Box from '@material-ui/core/Box'
-import { makeStyles, fade, Theme } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
@@ -13,14 +13,15 @@ import OrderTabPanel from './OrderTabPanel'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        maxWidth: '80vw',
+        maxWidth: '90vw',
         width: '40em',
-        backgroundColor: fade(theme.palette.common.black, 0.1),
-        minHeight: '100%',
     },
     detailIdWrapper: {
         marginLeft: '1em',
     },
+    background: {
+        backgroundColor: theme.palette.background.default,
+    }
 }));
 
 export interface OrderDetailProps {
@@ -47,6 +48,7 @@ export default function OrderDetail({
             anchor='right'
             open={isOpen}
             onClose={onClose}
+            classes={{ paper: classes.background }}
         >
             <Box className={classes.root}>
                 <Grid 
