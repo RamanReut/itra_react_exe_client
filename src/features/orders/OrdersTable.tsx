@@ -6,6 +6,7 @@ import OrderDetail from './OrderDetail'
 import ColumnVisibillity from './ColumnVisibility'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
+import { MAP_STATUS_ID_TO_TEXT } from './constants'
 
 const useStyles = makeStyles({
     labelWrapper: {
@@ -124,6 +125,7 @@ interface Column {
     field: string;
     title: string;
     type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency';
+    lookup?: types.MapNumberToString,
 }
 
 function createColumnList(columns: Array<types.Columns>): Array<Column> {
@@ -136,6 +138,7 @@ interface modifier {
 
 const modifiers: Array<modifier> = [
     modifyRequiredDate,
+    modifyOrderStatus,
 ];
 
 function modifyColumnList(columns: Array<Column>): Array<Column> {
@@ -151,6 +154,14 @@ function modifyRequiredDate(columns: Array<Column>) {
             elem.type = 'date';
         }
     })
+}
+
+function modifyOrderStatus(columns: Array<Column>) {
+    columns.forEach((elem) => {
+        if (elem.field === 'order_status') {
+            elem.lookup = MAP_STATUS_ID_TO_TEXT;
+        }
+    });
 }
 
 function createColumnLocalizationList(columns: Array<types.Columns>): Array<Column>{

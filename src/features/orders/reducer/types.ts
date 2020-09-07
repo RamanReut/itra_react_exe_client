@@ -59,3 +59,7 @@ export type Columns =
 export interface RootState {
     orders: OrdersState;
 }
+
+export interface MapNumberToString {
+    [index: number]: string;
+}
