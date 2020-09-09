@@ -1,20 +1,11 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
-import MaterialTable, { MTableToolbar } from 'material-table'
+import MaterialTable from 'material-table'
 import { types, actions, selectors } from './reducer'
-import ColumnVisibillity from './ColumnVisibility'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
 import { useSelector, useDispatch  } from 'react-redux'
 import { COLUMNS_LOCALIZATIONS } from './constants'
-
-const useStyles = makeStyles({
-    labelWrapper: {
-        minWidth: '5em',
-    },
-});
+import TableToolbar from './TableToolbar'
 
 export default function DataTable() {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const handleFetch = useCallback(
@@ -40,22 +31,7 @@ export default function DataTable() {
             columns={columns}
             data={dataExistable}
             components={{
-                Toolbar: props => (
-                    <Grid 
-                        container
-                        alignItems='center'
-                    >
-                        <Grid 
-                            item
-                            className={classes.labelWrapper}
-                        >
-                            <MTableToolbar {...props}></MTableToolbar>
-                        </Grid>
-                        <Grid item>
-                            <ColumnVisibillity></ColumnVisibillity>
-                        </Grid>
-                    </Grid>
-                )
+                Toolbar: props => (<TableToolbar {...props}></TableToolbar>),
             }}
             options={{
                 pageSize: 15,
