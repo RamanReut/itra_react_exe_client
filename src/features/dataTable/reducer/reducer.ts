@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction, Action } from '@reduxjs/toolkit'
 import * as types from './types'
+import axios from 'axios'
 
 const initialState: types.DataTableState = {
     visibleColumns: [
@@ -12,15 +13,14 @@ const initialState: types.DataTableState = {
     data: new Array<types.Row>(),
     isControlColumnsOpen: false,
     isLoading: false,
+    isLoadingFailed: false,
 }
 
 const fetchData = createAsyncThunk(
     'dataTable/fetchData',
     async () => {
-        const response = await fetch('/api/orders');
-        if(response.ok) {
-            return (await response.json()).orders as Array<types.Row>;
-        }
+        const response = await axios.get('/api/orders');
+        return response.data.orders as Array<types.Row>;
     }
 );
 
@@ -60,13 +60,22 @@ const slice = createSlice({
             (state: types.DataTableState, { payload }: PayloadAction<any>) => {
                 state.data = payload as Array<types.Row>;
                 state.isLoading = false;
-           });
+                state.isLoadingFailed = false;
+           }
+        );
         builder.addCase(
             fetchData.pending,
             (state: types.DataTableState, action: Action) => {
                 state.isLoading = true;
             },
-        )
+        );
+        builder.addCase(
+            fetchData.rejected,
+            (state: types.DataTableState, action: Action) => {
+                state.isLoading = false;
+                state.isLoadingFailed = true;
+            },
+        );
     },
 });
 

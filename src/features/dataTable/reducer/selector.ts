@@ -24,3 +24,8 @@ export const isLoading = createSelector(
     dataTable,
     (state) => state.isLoading,
 );
+
+export const isLoadingFailed = createSelector(
+    dataTable,
+    (state) => state.isLoadingFailed,
+);

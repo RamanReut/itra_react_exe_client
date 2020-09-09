@@ -4,6 +4,8 @@ import { types, actions, selectors } from './reducer'
 import { useSelector, useDispatch  } from 'react-redux'
 import { COLUMNS_LOCALIZATIONS } from './constants'
 import TableToolbar from './TableToolbar'
+import TableBackdrop from './TableBackdrop'
+import LoadingError from './LoadingError'
 
 export default function DataTable() {
     const dispatch = useDispatch();
@@ -17,6 +19,7 @@ export default function DataTable() {
     const visibleColumns = useSelector(selectors.visibleColumns);
     const data = useSelector(selectors.data);
     const isLoading = useSelector(selectors.isLoading);
+    const isLoaingFailed = useSelector(selectors.isLoadingFailed);
 
     const columns = useMemo(() => createColumnList(visibleColumns), [visibleColumns]);
     const dataExistable = useMemo(() => createExistableData(data), [data]);
@@ -25,9 +28,16 @@ export default function DataTable() {
         handleFetch();
     }, [handleFetch])
 
+    if(isLoading) {
+        return <TableBackdrop></TableBackdrop>;
+    }
+
+    if(isLoaingFailed) {
+        return <LoadingError></LoadingError>
+    }
+
     return (
         <MaterialTable
-            isLoading={isLoading}
             columns={columns}
             data={dataExistable}
             components={{

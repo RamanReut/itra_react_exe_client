@@ -3,6 +3,7 @@ export interface DataTableState {
     visibleColumns: Array<Columns>;
     isControlColumnsOpen: boolean;
     isLoading: boolean;
+    isLoadingFailed: boolean;
 }
 
 export interface Row {
