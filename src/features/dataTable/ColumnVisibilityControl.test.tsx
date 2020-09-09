@@ -5,6 +5,7 @@ import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ColumnVisibilityControl from './ColumnVisibilityControl'
 import { types } from './reducer'
+import { COLUMNS_LOCALIZATIONS } from './constants'
 import { COLUMNS, VISIBLE } from './testConstants'
 
 let lastClickedCheckbox: types.Columns | null;
@@ -17,14 +18,12 @@ function createHandleClick() {
 }
 
 function Component({
-    columns = COLUMNS,
     visible = VISIBLE,
     onClick = handleClick,
 }) {
     return (
         <ColumnVisibilityControl
-            columns={columns}
-            visible={visible}
+            visibleColumns={visible}
             onClick={onClick}
         ></ColumnVisibilityControl>
     );
@@ -38,14 +37,14 @@ beforeEach(() => {
 });
 
 test('all columns should be displayed as checkbox', () => {
-    expect(screen.getAllByRole('checkbox')).toHaveLength(COLUMNS.size);
-    COLUMNS.forEach((name) => {
+    expect(screen.getAllByRole('checkbox')).toHaveLength(COLUMNS_LOCALIZATIONS.size);
+    COLUMNS_LOCALIZATIONS.forEach((name) => {
         expect(screen.getByRole('checkbox', { name: name }));
     });
 });
 
 test('all column names must be exist in the document', () => {
-    COLUMNS.forEach((name) => {
+    COLUMNS_LOCALIZATIONS.forEach((name) => {
         expect(screen.getByText(name)).toBeInTheDocument();
     });
 });
@@ -91,5 +90,5 @@ function getColumnCheckbox(column: types.Columns) {
 }
 
 function getColumnName(column: types.Columns): string {
-    return COLUMNS.get(column) as string;
+    return COLUMNS_LOCALIZATIONS.get(column) as string;
 }

@@ -1,4 +1,4 @@
-import DataTable from './DataTableContainer'
+import DataTable from './DataTable'
 export { reducer } from './reducer'
 
 export { DataTable }

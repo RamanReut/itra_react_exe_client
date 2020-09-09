@@ -1,9 +1,11 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useCallback } from 'react'
 import MaterialTable, { MTableToolbar } from 'material-table'
-import { types } from './reducer'
+import { types, actions, selectors } from './reducer'
 import ColumnVisibillity from './ColumnVisibility'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
+import { useSelector, useDispatch  } from 'react-redux'
+import { COLUMNS_LOCALIZATIONS } from './constants'
 
 const useStyles = makeStyles({
     labelWrapper: {
@@ -11,45 +13,26 @@ const useStyles = makeStyles({
     },
 });
 
-export const columnsLocalizations = new Map<types.Columns, string>([
-    ['order_id',        'Order ID'],
-    ['order_status',    'Order status'],
-    ['order_date',      'Order date'],
-    ['required_date',   'Required date'],
-    ['shipped_date',    'Shipped date'],
-    ['manager_name',    'Manager name'],
-    ['customer_name',   'Customer name'],
-    ['email',           'Email'],
-    ['address',         'Address'],
-]);
-
-export interface DataTableProps {
-    data: Array<types.Row>;
-    visibleColumns: Array<types.Columns>;
-    onFetch: () => void;
-    isControlColumnsOpen: boolean;
-    onControlColumnsOpenChange: (state: boolean) => void;
-    onVisibilityChange: (visible: Array<types.Columns>) => void;
-    isLoading: boolean;
-}
-
-export default function DataTable({
-    data,
-    visibleColumns,
-    onFetch,
-    isControlColumnsOpen,
-    onControlColumnsOpenChange,
-    onVisibilityChange,
-    isLoading,
-}: DataTableProps ) {
+export default function DataTable() {
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const handleFetch = useCallback(
+        () => {
+            dispatch(actions.fetchData());
+        },
+        [dispatch],
+    );
+    const visibleColumns = useSelector(selectors.visibleColumns);
+    const data = useSelector(selectors.data);
+    const isLoading = useSelector(selectors.isLoading);
 
     const columns = useMemo(() => createColumnList(visibleColumns), [visibleColumns]);
     const dataExistable = useMemo(() => createExistableData(data), [data]);
 
     useEffect(() => {
-        onFetch();
-    }, [onFetch])
+        handleFetch();
+    }, [handleFetch])
 
     return (
         <MaterialTable
@@ -69,13 +52,7 @@ export default function DataTable({
                             <MTableToolbar {...props}></MTableToolbar>
                         </Grid>
                         <Grid item>
-                            <ColumnVisibillity
-                                columns={columnsLocalizations}
-                                visible={visibleColumns}
-                                isOpen={isControlColumnsOpen}
-                                onOpenChange={onControlColumnsOpenChange}
-                                onVisibilityChange={onVisibilityChange}
-                            ></ColumnVisibillity>
+                            <ColumnVisibillity></ColumnVisibillity>
                         </Grid>
                     </Grid>
                 )
@@ -128,7 +105,7 @@ function createColumnLocalizationList(columns: Array<types.Columns>): Array<Colu
     return columns.map((column) => {
         return {
             field: column,
-            title: columnsLocalizations.get(column) || '',
+            title: COLUMNS_LOCALIZATIONS.get(column) || '',
         }
     });
 }

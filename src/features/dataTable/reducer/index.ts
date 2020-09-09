@@ -1,5 +1,5 @@
 import * as types from './types'
+import * as selectors from './selector';
 
-export { types }
+export { types, selectors }
 export * from './reducer';
-export { DataTableSelector } from './selector'

@@ -29,18 +29,25 @@ const slice = createSlice({
     name: 'dataTable',
     initialState: initialState,
     reducers: {
-        setVisibilityColumns(
+        updateVisibleColumns(
             state:types.DataTableState,
             { payload }: PayloadAction<Array<types.Columns>>,
         ) {
             state.visibleColumns = payload;
         },
 
-        setIsControlColumnsOpen(
+        openVisibleColumnsDialog(
             state: types.DataTableState, 
-            { payload }: PayloadAction<boolean>
+            action: Action,
         ) {
-            state.isControlColumnsOpen = payload;
+            state.isControlColumnsOpen = true;
+        },
+
+        closeVisibleColumnsDialog(
+            state: types.DataTableState,
+            action: Action,
+        ) {
+             state.isControlColumnsOpen = false;
         },
 
         reset(state: types.DataTableState, action: Action) {

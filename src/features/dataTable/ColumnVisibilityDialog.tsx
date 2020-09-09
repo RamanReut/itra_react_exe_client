@@ -3,61 +3,63 @@ import ControlColumnVisibility from './ColumnVisibilityControl'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
-import { types } from './reducer'
+import { types, actions, selectors } from './reducer'
 import { DialogActions } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import { useSelector, useDispatch, batch } from 'react-redux'
 
-export interface ColumnVisibilityDialogProps {
-    columns: Map<types.Columns, string>;
-    visible: Array<types.Columns>;
-    isOpen: boolean;
-    onClose: () => void;
-    onVisibilityChange: (visibleColumns: Array<types.Columns>) => void;
-}
+export default function ColumnVisibilityDialog() {
+    const dispatch = useDispatch();
 
-export default function ColumnVisibilityDialog({
-    columns,
-    visible,
-    isOpen,
-    onClose,
-    onVisibilityChange,
-}: ColumnVisibilityDialogProps) {
-    const  [ visibleColumns, setVisibleColumns ] = useState<Array<types.Columns>>([]);
+    const isOpen = useSelector(selectors.isControlColumnsOpen);
+    const visibleColumns = useSelector(selectors.visibleColumns);
 
+    const  [ checkedColumns, setCheckedColumns ] = useState<Array<types.Columns>>([]);
+
+    const handleClose = useCallback(() => {
+        dispatch(actions.closeVisibleColumnsDialog());
+    }, [dispatch]);
+    const handleVisibleColumnsChange = useCallback(
+        (visibleColumns: Array<types.Columns>) => {
+            dispatch(actions.updateVisibleColumns(visibleColumns));
+        }, 
+        [dispatch],
+    );
     const handleClick = useCallback((column: types.Columns) => {
-        const index = visibleColumns.indexOf(column);
+        const index = checkedColumns.indexOf(column);
 
         if (index === -1) {
-            setVisibleColumns([
-                ...visibleColumns, 
+            setCheckedColumns([
+                ...checkedColumns, 
                 column
             ]);
         } else {
-            setVisibleColumns([
-                ...visibleColumns.slice(0, index), 
-                ...visibleColumns.slice(index+1),
+            setCheckedColumns([
+                ...checkedColumns.slice(0, index), 
+                ...checkedColumns.slice(index+1),
             ]);
         }
-    }, [visibleColumns]);
+    }, [checkedColumns]);
     const handleOk = useCallback(() => {
-        onVisibilityChange(visibleColumns);
-        onClose();
-    }, [visibleColumns, onVisibilityChange, onClose]);
+        batch(() => {
+            handleVisibleColumnsChange(checkedColumns);
+            handleClose();
+        });
+    }, [checkedColumns, handleVisibleColumnsChange, handleClose]);
 
     useEffect(() => {
-        setVisibleColumns(visible);
-    }, [visible])
+        setCheckedColumns(visibleColumns);
+    }, [visibleColumns])
 
     return ( 
         <Dialog
             open={isOpen}
-            onClose={onClose}
+            onClose={handleClose}
         >
             <DialogTitle>Visible Columns</DialogTitle>
             <DialogContent>
                 <ControlColumnVisibility
-                    columns={columns}
-                    visible={visibleColumns}
+                    visibleColumns={checkedColumns}
                     onClick={handleClick}
                 ></ControlColumnVisibility>
             </DialogContent>
@@ -69,7 +71,7 @@ export default function ColumnVisibilityDialog({
                     Ok
                 </Button>
                 <Button 
-                    onClick={onClose}
+                    onClick={handleClose}
                     color='primary'
                 >
                     Cancel

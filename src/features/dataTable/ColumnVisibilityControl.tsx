@@ -4,21 +4,20 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { types } from './reducer'
+import { COLUMNS_LOCALIZATIONS } from './constants'
 
 export interface ColumnVisibilityControlProps {
-    columns: Map<types.Columns, string>;
-    visible: Array<types.Columns>;
+    visibleColumns: Array<types.Columns>;
     onClick: (id: types.Columns) => void;
 }
 
 export default function ColumnVisibilityControlProps({
-    columns,
-    visible,
+    visibleColumns,
     onClick,
 }: ColumnVisibilityControlProps) {
     const checkboxProps = useMemo(
-        () => createCheckboxProps(columns, visible, onClick), 
-        [columns, visible, onClick]
+        () => createCheckboxProps(COLUMNS_LOCALIZATIONS, visibleColumns, onClick), 
+        [visibleColumns, onClick]
     );
 
     return (
