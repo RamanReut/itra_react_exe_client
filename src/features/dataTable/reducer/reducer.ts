@@ -14,6 +14,7 @@ const initialState: types.DataTableState = {
     isControlColumnsOpen: false,
     isLoading: false,
     isLoadingFailed: false,
+    checkedColumns: new Array<types.Columns>(),
 }
 
 const fetchData = createAsyncThunk(
@@ -23,7 +24,6 @@ const fetchData = createAsyncThunk(
         return response.data.orders as Array<types.Row>;
     }
 );
-
 
 const slice = createSlice({
     name: 'dataTable',
@@ -48,6 +48,33 @@ const slice = createSlice({
             action: Action,
         ) {
              state.isControlColumnsOpen = false;
+        },
+
+        initCheckedColumns(
+            state: types.DataTableState,
+            action: Action,
+        ) {
+            state.checkedColumns = state.visibleColumns;
+        },
+
+        checkColumns(
+            state: types.DataTableState,
+            { payload }: PayloadAction<types.Columns>,
+        ) { 
+            const i = state.checkedColumns.indexOf(payload);
+            if( i === -1 ) {
+                state.checkedColumns.push(payload);
+            } else {
+                state.checkedColumns.splice(i, 1);
+            }
+        },
+
+        applyVisibleColumns(
+            state: types.DataTableState,
+            action: Action,
+        ) {
+            state.visibleColumns = state.checkedColumns;
+            state.isControlColumnsOpen = false;
         },
 
         reset(state: types.DataTableState, action: Action) {

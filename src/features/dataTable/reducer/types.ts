@@ -4,6 +4,7 @@ export interface DataTableState {
     isControlColumnsOpen: boolean;
     isLoading: boolean;
     isLoadingFailed: boolean;
+    checkedColumns: Array<Columns>;
 }
 
 export interface Row {

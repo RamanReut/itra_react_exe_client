@@ -23,7 +23,7 @@ export default function DataTable() {
 
     const columns = useMemo(
         () => createColumnSettingList(visibleColumns), [visibleColumns]);
-    const dataExistable = useMemo(() => createExistableData(data), [data]);
+    const dataExpandable = useMemo(() => createExpandableData(data), [data]);
 
     useEffect(() => {
         handleFetch();
@@ -40,7 +40,7 @@ export default function DataTable() {
     return (
         <MaterialTable
             columns={columns}
-            data={dataExistable}
+            data={dataExpandable}
             components={{
                 Toolbar: props => (<TableToolbar {...props}></TableToolbar>),
             }}
@@ -55,9 +55,7 @@ export default function DataTable() {
     );
 }
 
-
-
-function createExistableData(data: Array<types.Row>) {
+function createExpandableData(data: Array<types.Row>) {
     return data.map((elem) => {
         return {...elem}
     });

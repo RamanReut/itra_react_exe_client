@@ -29,3 +29,8 @@ export const isLoadingFailed = createSelector(
     dataTable,
     (state) => state.isLoadingFailed,
 );
+
+export const checkedColumns = createSelector(
+    dataTable,
+    (state) => state.checkedColumns,
+);
