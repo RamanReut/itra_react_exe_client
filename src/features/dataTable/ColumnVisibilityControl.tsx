@@ -63,21 +63,22 @@ interface CheckboxProps {
 }
 
 function createCheckboxProps(
-    columns: Map<types.Columns, string>, 
+    columns: types.MapColumnToColumnName, 
     visible: Array<types.Columns>, 
     onClick: (id: types.Columns) => void
 ): Array<CheckboxProps> {
     const visibleSet = new Set<string>(visible);
     let propList = new Array<CheckboxProps>();
 
-    columns.forEach((title, id) => {
+    for (let columnId in columns) {
+        const column = columnId as types.Columns;
         propList.push({
-            key: id,
-            onClick: () => onClick(id as types.Columns),
-            checked: visibleSet.has(id),
-            label: title,
+            key: column,
+            onClick: () => onClick(column),
+            checked: visibleSet.has(column),
+            label: columns[column],
         });
-    });
+    }
     
     return propList;
 }

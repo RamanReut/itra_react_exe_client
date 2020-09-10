@@ -32,3 +32,7 @@ export type Columns =
 export interface RootState {
     dataTable: DataTableState;
 }    
+
+export type MapColumnToColumnName = {
+    [column in Columns]: string;
+}

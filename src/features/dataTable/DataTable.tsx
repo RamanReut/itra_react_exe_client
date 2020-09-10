@@ -2,10 +2,10 @@ import React, { useMemo, useEffect, useCallback } from 'react'
 import MaterialTable from 'material-table'
 import { types, actions, selectors } from './reducer'
 import { useSelector, useDispatch  } from 'react-redux'
-import { COLUMNS_LOCALIZATIONS } from './constants'
 import TableToolbar from './TableToolbar'
 import TableBackdrop from './TableBackdrop'
 import LoadingError from './LoadingError'
+import { createColumnSettingList } from './dataTableColumnSettings'
 
 export default function DataTable() {
     const dispatch = useDispatch();
@@ -21,7 +21,8 @@ export default function DataTable() {
     const isLoading = useSelector(selectors.isLoading);
     const isLoaingFailed = useSelector(selectors.isLoadingFailed);
 
-    const columns = useMemo(() => createColumnList(visibleColumns), [visibleColumns]);
+    const columns = useMemo(
+        () => createColumnSettingList(visibleColumns), [visibleColumns]);
     const dataExistable = useMemo(() => createExistableData(data), [data]);
 
     useEffect(() => {
@@ -54,47 +55,7 @@ export default function DataTable() {
     );
 }
 
-interface Column {
-    field: string;
-    title: string;
-    type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency';
-}
 
-function createColumnList(columns: Array<types.Columns>): Array<Column> {
-    return modifyColumnList(createColumnLocalizationList(columns));
-}
-
-interface modifier {
-    (list: Array<Column>): void;
-}
-
-const modifiers: Array<modifier> = [
-    modifyRequiredDate,
-];
-
-function modifyColumnList(columns: Array<Column>): Array<Column> {
-    modifiers.forEach((mod) => {
-        mod(columns);
-    });
-    return columns;
-}
-
-function modifyRequiredDate(columns: Array<Column>) {
-    columns.forEach((elem) => {
-        if (elem.field.includes('_date')) {
-            elem.type = 'date';
-        }
-    })
-}
-
-function createColumnLocalizationList(columns: Array<types.Columns>): Array<Column>{
-    return columns.map((column) => {
-        return {
-            field: column,
-            title: COLUMNS_LOCALIZATIONS.get(column) || '',
-        }
-    });
-}
 
 function createExistableData(data: Array<types.Row>) {
     return data.map((elem) => {
