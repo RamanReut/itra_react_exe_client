@@ -79,7 +79,7 @@ function getColumnCheckbox(column: types.Columns) {
 }
 
 function getColumnName(column: types.Columns): string {
-    return COLUMNS_LOCALIZATIONS.get(column) as string;
+    return COLUMNS_LOCALIZATIONS[column];
 }
 
 function getDialog() {

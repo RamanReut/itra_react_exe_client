@@ -37,16 +37,23 @@ beforeEach(() => {
 });
 
 test('all columns should be displayed as checkbox', () => {
-    expect(screen.getAllByRole('checkbox')).toHaveLength(COLUMNS_LOCALIZATIONS.size);
-    COLUMNS_LOCALIZATIONS.forEach((name) => {
-        expect(screen.getByRole('checkbox', { name: name }));
-    });
+    expect(screen.getAllByRole('checkbox'))
+        .toHaveLength(Object.keys(COLUMNS_LOCALIZATIONS).length);
+    for (let column in COLUMNS_LOCALIZATIONS) {
+        expect(
+            screen.getByRole(
+                'checkbox', 
+                { name: COLUMNS_LOCALIZATIONS[column as types.Columns] }
+            )
+        ).toBeInTheDocument();
+    }
 });
 
 test('all column names must be exist in the document', () => {
-    COLUMNS_LOCALIZATIONS.forEach((name) => {
-        expect(screen.getByText(name)).toBeInTheDocument();
-    });
+    for (let column in COLUMNS_LOCALIZATIONS) {
+        expect(screen.getByText(COLUMNS_LOCALIZATIONS[column as types.Columns]))
+            .toBeInTheDocument();
+    }
 });
 
 test('columns in visible prop should be checked', () => {
@@ -90,5 +97,5 @@ function getColumnCheckbox(column: types.Columns) {
 }
 
 function getColumnName(column: types.Columns): string {
-    return COLUMNS_LOCALIZATIONS.get(column) as string;
+    return COLUMNS_LOCALIZATIONS[column];
 }
