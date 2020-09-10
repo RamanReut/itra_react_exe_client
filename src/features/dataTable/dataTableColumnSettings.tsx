@@ -37,7 +37,7 @@ const columnSettings: ColumnSettings = {
         ...getFieldAndTitle('customer_name'),
     },
     email: {
-        ...getFieldAndTitle('customer_name'),
+        ...getFieldAndTitle('email'),
     },
     address: {
         ...getFieldAndTitle('address')
@@ -52,5 +52,5 @@ function getFieldAndTitle(column: types.Columns) {
 }
 
 export function createColumnSettingList(columns: Array<types.Columns>): Array<Column> {
-    return columns.map((column) => columnSettings[column]);
+    return columns.map((column) => ({...columnSettings[column]}));
 }
