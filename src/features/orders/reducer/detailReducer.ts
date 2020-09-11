@@ -22,7 +22,7 @@ const slice = createSlice({
         reset(state: types.DetailState, action: Action) {
             return initialState;
         },
-        setTab(state: types.DetailState, { payload }: PayloadAction<number>) {
+        changeTab(state: types.DetailState, { payload }: PayloadAction<number>) {
             state.tab = payload;
         },
     }

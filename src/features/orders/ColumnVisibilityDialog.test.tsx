@@ -3,96 +3,60 @@ import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
 import { screen, render} from '@testing-library/react'
 import ColumnVisibilityDialog from './ColumnVisibilityDialog'
-import { types } from './reducer'
+import { types, actions, selectors } from './reducer'
 import userEvent from '@testing-library/user-event'
-import { COLUMNS, VISIBLE } from './testConstants'
+import { COLUMNS_LOCALIZATIONS} from './constants'
+import { Provider } from 'react-redux'
+import { store } from '../store'
 
-let visibleColumns: Array<types.Columns> = [];
-
-function _handleClose() {};
-function _handleVisibilityChange (columns: Array<types.Columns>) {
-    visibleColumns = columns;
-};
-
-let handleClose: () => void;
-let handleVisibilityChange: (columns: Array<types.Columns>) => void;
 let rerender: (ui: React.ReactElement) => void;
 
-function Component({
-    columns = COLUMNS,
-    visible = VISIBLE,
-    isOpen = true,
-    onClose = handleClose,
-    onVisibilityChange = handleVisibilityChange,
-} ) {
+function Component() {
     return (
-        <ColumnVisibilityDialog
-            columns={columns}
-            visible={visible}
-            isOpen={isOpen}
-            onClose={onClose}
-            onVisibilityChange={onVisibilityChange}
-        ></ColumnVisibilityDialog>
+        <Provider store={store}>
+            <ColumnVisibilityDialog></ColumnVisibilityDialog>
+        </Provider>
     );
 }
 
 beforeEach(() => {
-    handleClose = jest.fn(_handleClose);
-    handleVisibilityChange = jest.fn(_handleVisibilityChange);
-    visibleColumns = [];
-
+    store.dispatch(actions.ordersTable.openVisibleColumnsDialog());
     const renderResult = render(
         <Component></Component>
     );
     rerender = renderResult.rerender;
 });
 
+afterEach(() => {
+    store.dispatch(actions.ordersTable.reset());
+});
+
 test('after click on cancel button dialog should be closed', () => {
     cancelClick();
-    expect(handleClose).toHaveBeenCalled();
+    rerender(<Component></Component>);
+    expect(getDialog()).not.toBeVisible();
 });
 
 test('after click on ok button dialog should be closed', () => {
     okClick();
-    expect(handleClose).toHaveBeenCalled();
+    rerender(<Component></Component>);
+    expect(getDialog()).not.toBeVisible();
 });
 
-test('after click cancel button handleVisibilityChange should not be called', () => {
+test('after click cancel button visibleColumns should not be change', () => {
+    const isManagerNameInclude = getManagerNameIsInclude();
     clickManagerNameCheckbox();
     cancelClick();
-    expect(handleVisibilityChange).not.toHaveBeenCalled();
+    expect(isManagerNameInclude).toEqual(getManagerNameIsInclude());
 });
 
-test('after click ok button handleVisibilityChange should be called', () => {
+test('after click ok button visibleColumns should be change', () => {
+    const isManagerNameInclude = getManagerNameIsInclude();
     clickManagerNameCheckbox();
-    okClick();
-    expect(handleVisibilityChange).toHaveBeenCalled();
+    cancelClick();
+    expect(isManagerNameInclude).toEqual(getManagerNameIsInclude());
 });
 
-test('after click ok button visibleColumns should be contain manager_name', () => {
-    clickManagerNameCheckbox();
-    okClick();
-    expect(visibleColumns).toContain('manager_name');
-});
-
-test('after click on order_id checkbox should not be checked', () => {
-    clickCheckbox('order_id');
-    expect(getColumnCheckbox('order_id')).not.toBeChecked();
-});
-
-test('after unchecked order_id checkbox and ok click visibleColumns should not contain order_id', 
-    () => {
-        clickCheckbox('order_id');
-        okClick();
-        expect(visibleColumns).not.toContain('order_id');
-    }
-);
-
-test('is isOpen = false then dialog should not be visible', () => {
-    rerender(<Component isOpen={false}></Component>);
-
-    expect(screen.getByRole('dialog')).not.toBeVisible();
-});
 
 function clickManagerNameCheckbox() {
     clickCheckbox('manager_name');
@@ -115,5 +79,13 @@ function getColumnCheckbox(column: types.Columns) {
 }
 
 function getColumnName(column: types.Columns): string {
-    return COLUMNS.get(column) as string;
+    return COLUMNS_LOCALIZATIONS[column];
+}
+
+function getDialog() {
+    return screen.getByRole('dialog');
+}
+
+function getManagerNameIsInclude() {
+    return selectors.ordersTable.visibleColumns(store.getState()).includes('manager_name');
 }

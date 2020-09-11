@@ -1,42 +1,24 @@
 import React, { useCallback } from 'react'
 import Dialog from './ColumnVisibilityDialog'
-import Icon from './ColumnVisibilityIcon'
 import Box from '@material-ui/core/Box'
-import { types } from './reducer'
+import { actions } from './reducer'
+import { useDispatch } from 'react-redux'
+import IconButton from '@material-ui/core/IconButton'
+import ColumnIcon from '@material-ui/icons/ViewColumn'
 
-export interface ColumnVisibilityProps {
-    columns: Map<types.Columns, string>,
-    visible: Array<types.Columns>;
-    onOpenChange: (state: boolean) => void;
-    isOpen: boolean;
-    onVisibilityChange: (visibleColumns: Array<types.Columns>) => void;
-}
+export default function ColumnVisibillity() {
+    const dispatch = useDispatch();
 
-export default function ColumnVisibillity({
-    columns,
-    visible,
-    onOpenChange,
-    isOpen,
-    onVisibilityChange,
-}: ColumnVisibilityProps ) {
-
-    const handleOpen = useCallback(() => {
-        onOpenChange(true);
-    }, [onOpenChange]);
-    const handleClose = useCallback(() => {
-        onOpenChange(false);
-    }, [onOpenChange]);
+    const handleButtonClick = useCallback(() => {
+        dispatch(actions.ordersTable.openVisibleColumnsDialog());
+    }, [dispatch]);
 
     return (
         <Box>
-            <Icon onClick={handleOpen}></Icon>
-            <Dialog
-                onClose={handleClose}
-                isOpen={isOpen}
-                columns={columns}
-                visible={visible}
-                onVisibilityChange={onVisibilityChange}
-            ></Dialog>
+            <IconButton onClick={handleButtonClick}>
+                <ColumnIcon></ColumnIcon>
+            </IconButton>
+            <Dialog></Dialog>
         </Box>
     );
 }

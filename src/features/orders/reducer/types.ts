@@ -8,6 +8,8 @@ export interface OrdersTableState {
     visibleColumns: Array<Columns>;
     isControlColumnsOpen: boolean;
     isLoading: boolean;
+    isLoadingFailed: boolean;
+    checkedColumns: Array<Columns>;
 }
 
 export interface DataIndexable {
@@ -58,4 +60,8 @@ export type Columns =
 
 export interface RootState {
     orders: OrdersState;
+}    
+
+export type MapColumnToColumnName = {
+    [column in Columns]: string;
 }

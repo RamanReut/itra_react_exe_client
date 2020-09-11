@@ -3,101 +3,35 @@ import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { types } from './reducer'
-import ColumnVisibility from './ColumnVisibility'
-import { COLUMNS, VISIBLE } from './testConstants'
+import { actions } from './reducer'
+import { store } from '../store'
+import { Provider } from 'react-redux'
+import ColumnVisibillity from './ColumnVisibility'
 
-let isOpenChange: boolean;
-let handleOpenChange: (state: boolean) => void;
-let handleVisibilityChange: (visibleColumns: Array<types.Columns>) => void;
-let rerender: (ui: React.ReactElement) => void;
-
-function createHandleOpenChange() {
-    return jest.fn((state: boolean) => {isOpenChange=state});
-}
-
-function createHandleVisibilityChange() {
-    return jest.fn((visibleColumns: Array<types.Columns>) => {});
-}
-
-function Component({
-    columns = COLUMNS,
-    visible = VISIBLE,
-    onOpenChange = handleOpenChange,
-    isOpen = true,
-    onVisibilityChange = handleVisibilityChange,
-}) {
+function Component() {
     return (
-        <ColumnVisibility
-            columns={columns}
-            visible={visible}
-            onOpenChange={onOpenChange}
-            isOpen={isOpen}
-            onVisibilityChange={onVisibilityChange}
-        ></ColumnVisibility>
+        <Provider store={store}>
+            <ColumnVisibillity></ColumnVisibillity>
+        </Provider>
     );
 }
 
 beforeEach(() => {
-    handleOpenChange = createHandleOpenChange();
-    handleVisibilityChange = createHandleVisibilityChange();
-    isOpenChange = true;
-
-    const renderResult = render(<Component></Component>);
-    rerender = renderResult.rerender;
+    render(<Component></Component>);
 });
 
-test('if icon button was clicked then handleOpenChange should be called', () => {
-    rerender(<Component isOpen={false}></Component>);
+afterEach(() => {
+    store.dispatch(actions.ordersTable.reset());
+});
+
+test('after mount dialog should be closed', () => {
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+});
+
+test('after click on button, dialog should be displayed', () => {
     userEvent.click(getIconButton());
 
-    expect(handleOpenChange).toHaveBeenCalled();
-});
-
-test('if icon button was clicked then isOpenChange should be true', () => {
-    rerender(<Component isOpen={false}></Component>);
-    userEvent.click(getIconButton());
-
-    expect(isOpenChange).toBeTruthy();
-});
-
-test('if isOpen prop equals false then dialog should not be visible', () => {
-    rerender(<Component isOpen={false}></Component>);
-
-    expect(screen.getByRole('dialog')).not.toBeVisible();
-});
-
-test('if isOpen prop equals true then dialog should be visible', () => {
-    rerender(<Component isOpen={true}></Component>);
-
-    expect(screen.getByRole('dialog')).toBeVisible();
-});
-
-test('all columns should be in the document', () => {
-    COLUMNS.forEach((name) => {
-        expect(screen.getByText(name)).toBeInTheDocument();
-    });
-});
-
-test('', () => {
-    userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-    expect(handleOpenChange).toBeCalled();
-});
-
-test('', () => {
-    userEvent.click(screen.getByRole('button', { name: 'Ok' }));
-    expect(handleOpenChange).toBeCalled();
-});
-
-test('', () => {
-    userEvent.click(
-        screen.getByRole(
-            'checkbox', 
-            { name: COLUMNS.get('manager_name') as string },
-        ), 
-    );
-    userEvent.click(screen.getByRole('button', { name: 'Ok' }));
-    expect(handleVisibilityChange).toBeCalled();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
 });
 
 function getIconButton() {
