@@ -13,4 +13,9 @@ export const ordersTable = createSelector(
 export const detail = createSelector(
     root,
     (state) => state.detail,
-)
+);
+
+export const visibleColumns = createSelector(
+    root,
+    (state) => state.visibleColumns,
+);

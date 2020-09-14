@@ -38,47 +38,7 @@ const slice = createSlice({
         ) {
             state.visibleColumns = payload;
         },
-
-        openVisibleColumnsDialog(
-            state: types.OrdersTableState, 
-            action: Action,
-        ) {
-            state.isControlColumnsOpen = true;
-        },
-
-        closeVisibleColumnsDialog(
-            state: types.OrdersTableState,
-            action: Action,
-        ) {
-             state.isControlColumnsOpen = false;
-        },
-
-        initCheckedColumns(
-            state: types.OrdersTableState,
-            action: Action,
-        ) {
-            state.checkedColumns = state.visibleColumns;
-        },
-
-        checkColumns(
-            state: types.OrdersTableState,
-            { payload }: PayloadAction<types.Columns>,
-        ) { 
-            const i = state.checkedColumns.indexOf(payload);
-            if( i === -1 ) {
-                state.checkedColumns.push(payload);
-            } else {
-                state.checkedColumns.splice(i, 1);
-            }
-        },
-
-        applyVisibleColumns(
-            state: types.OrdersTableState,
-            action: Action,
-        ) {
-            state.visibleColumns = state.checkedColumns;
-            state.isControlColumnsOpen = false;
-        },
+        
         reset(state: types.OrdersTableState, action: Action) {
             return initialState;
         },

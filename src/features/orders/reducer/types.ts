@@ -1,6 +1,7 @@
 export interface OrdersState {
     ordersTable: OrdersTableState;
     detail: DetailState;
+    visibleColumns: ColumnVisibleState;
 }
 
 export interface OrdersTableState {
@@ -64,4 +65,9 @@ export interface RootState {
 
 export type MapColumnToColumnName = {
     [column in Columns]: string;
+}
+
+export interface ColumnVisibleState {
+    isOpen: boolean;
+    checkedColumns: Array<Columns>;
 }
