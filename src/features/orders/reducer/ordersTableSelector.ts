@@ -1,20 +1,32 @@
-import { OrdersSelector } from './rootSelector'
-import * as types from './types'
+import { createSelector } from '@reduxjs/toolkit'
+import { ordersTable } from './rootSelector'
 
-export class OrdersTableSelector extends OrdersSelector {
-    public get visibleColumns(): Array<types.Columns> {
-        return this.ordersTable.visibleColumns;
-    }
+export const visibleColumns = createSelector(
+    ordersTable,
+    (state) => state.visibleColumns,
+);
 
-    public get data(): types.DataIndexable {
-        return this.ordersTable.data;
-    }
+export const data = createSelector(
+    ordersTable,
+    (state) => state.data
+);
 
-    public get isControlColumnsOpen(): boolean {
-        return this.ordersTable.isControlColumnsOpen;
-    }
+export const isControlColumnsOpen = createSelector(
+    ordersTable,
+    (state) => state.isControlColumnsOpen,
+);
 
-    public get isLoading(): boolean {
-        return this.ordersTable.isLoading;
-    }
-}
+export const isLoading = createSelector(
+    ordersTable,
+    (state) => state.isLoading,
+);
+
+export const isLoadingFailed = createSelector(
+    ordersTable,
+    (state) => state.isLoadingFailed,
+);
+
+export const checkedColumns = createSelector(
+    ordersTable,
+    (state) => state.checkedColumns,
+);

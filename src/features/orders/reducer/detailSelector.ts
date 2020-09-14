@@ -1,15 +1,23 @@
-import { OrdersSelector } from './rootSelector'
+import { createSelector } from '@reduxjs/toolkit'
+import { detail, ordersTable } from './rootSelector'
 
-export class DetailSelector extends OrdersSelector {
-    public get isOpen(): boolean {
-        return this.detail.isOpen;
-    }
+export const isOpen = createSelector(
+    detail, 
+    (state) => state.isOpen,
+);
 
-    public get id(): number {
-        return this.detail.id;
-    }
+export const id = createSelector(
+    detail, 
+    (state) => state.id,
+);
 
-   public get tab(): number {
-       return this.detail.tab;
-   }
-}
+export const tab = createSelector(
+    detail, 
+    (state) => state.tab,
+);
+
+export const currentOrder = createSelector(
+    detail,
+    ordersTable,
+    (detail, orders) => orders.data[detail.id],
+);

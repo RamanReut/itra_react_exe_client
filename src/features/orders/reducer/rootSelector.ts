@@ -1,16 +1,21 @@
-import { RootSelector } from '../../../share/reduxTools'
 import * as types from './types'
+import { createSelector } from '@reduxjs/toolkit'
 
-export class OrdersSelector extends RootSelector<types.RootState> {
-    private get orders(): types.OrdersState {
-        return this._state.orders
-    }
-
-    protected get detail(): types.DetailState {
-        return this.orders.detail;
-    }
-
-    protected get ordersTable(): types.OrdersTableState {
-        return this.orders.ordersTable;
-    }
+export function root(state: types.RootState) {
+    return state.orders;
 }
+
+export const ordersTable = createSelector(
+    root,
+    (state) => state.ordersTable,
+);
+
+export const detail = createSelector(
+    root,
+    (state) => state.detail,
+);
+
+export const visibleColumns = createSelector(
+    root,
+    (state) => state.visibleColumns,
+);

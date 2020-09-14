@@ -1,5 +1,5 @@
-import React from 'react'
-import { types } from './reducer'
+import React, { useCallback } from 'react'
+import { actions, detailSelectors } from './reducer'
 import Drawer from '@material-ui/core/Drawer'
 import Box from '@material-ui/core/Box'
 import { makeStyles, Theme } from '@material-ui/core/styles'
@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import OrderIcon from '@material-ui/icons/ShoppingCart'
 import OrderTabPanel from './OrderTabPanel'
+import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -24,30 +25,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export interface OrderDetailProps {
-    isOpen: boolean;
-    id: number;
-    data: types.DataIndexable;
-    onClose: () => void;
-    tab: number;
-    onChangeTab: (id: number) => void;
-}
-
-export default function OrderDetail({
-    isOpen,
-    id,
-    data,
-    onClose,
-    tab,
-    onChangeTab,
-}: OrderDetailProps) {
+export default function OrderDetail() {
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const isOpen = useSelector(detailSelectors.isOpen);
+    const order = useSelector(detailSelectors.currentOrder);
+    const tab = useSelector(detailSelectors.tab);
+    const id = useSelector(detailSelectors.id);
+
+    const handleClose = useCallback(
+        () => dispatch(actions.detail.close()), 
+        [dispatch],
+    );
+    const handleChangeTab = useCallback(
+        (tabId: number) => dispatch(actions.detail.changeTab(tabId)),
+        [dispatch],
+    );
 
     return (
         <Drawer
             anchor='right'
             open={isOpen}
-            onClose={onClose}
+            onClose={handleClose}
             classes={{ paper: classes.background }}
         >
             <Box className={classes.root}>
@@ -82,7 +82,7 @@ export default function OrderDetail({
                             </Grid>
                         </Grid>
                         <Grid item>
-                            <IconButton onClick={onClose}>
+                            <IconButton onClick={handleClose}>
                                 <CloseIcon></CloseIcon>
                             </IconButton>
                         </Grid>
@@ -90,8 +90,8 @@ export default function OrderDetail({
                     <Grid item>
                         <OrderTabPanel
                             tab={tab}
-                            onChangeTab={onChangeTab}
-                            data={data[id]}
+                            onChangeTab={handleChangeTab}
+                            data={order}
                         ></OrderTabPanel>
                     </Grid>
                 </Grid>

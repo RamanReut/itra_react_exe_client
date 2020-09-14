@@ -1,4 +1,4 @@
-import Orders from './OrdersTableContainer'
+import Orders from './OrdersTable'
 export { reducer } from './reducer'
 
 export { Orders }
