@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { types } from './reducer'
@@ -8,6 +8,7 @@ import OrderInfo from './OrderInfo'
 import CustomerInfo from './CustomerInfo'
 import ItemsInfo from './DetailItems'
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import Timeline from './Timeline'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -62,6 +63,15 @@ export default function OrderTabPanel({
     data,
 }: OrderTabPanelProps ) {
     const classes = useStyles();
+    const defaultTabProps = useMemo(() => {
+        return {
+            classes: {
+                root: classes.tab,
+                selected: classes.tabSelected,
+            },
+            disableRipple: true,
+        }
+    }, [classes])
 
     return (
         <Box className={classes.root}>
@@ -70,31 +80,23 @@ export default function OrderTabPanel({
                 value={tab} 
                 onChange={(event, value) => onChangeTab(value as number)}
                 textColor='primary'
-                variant='fullWidth'
+                variant='scrollable'
             >
                 <Tab 
-                    classes={{ 
-                            root: classes.tab,
-                            selected: classes.tabSelected,
-                    }} 
-                    disableRipple
+                    {...defaultTabProps}
                     label='Order'
                 ></Tab> 
                 <Tab 
-                    classes={{ 
-                        root: classes.tab,
-                        selected: classes.tabSelected 
-                    }} 
-                    disableRipple
+                    {...defaultTabProps}
                     label='Customer'
                 ></Tab>
                 <Tab 
-                    classes={{ 
-                        root: classes.tab,
-                        selected: classes.tabSelected 
-                    }} 
-                    disableRipple
+                    {...defaultTabProps}
                     label='Items'
+                ></Tab>
+                <Tab
+                    {...defaultTabProps}
+                    label='Timeline'
                 ></Tab>
             </Tabs>
             <Box className={classes.panelWrapper}>
@@ -106,6 +108,9 @@ export default function OrderTabPanel({
                 </TabPanel>
                 <TabPanel value={tab} index={2}>
                     <ItemsInfo items={data.order_items}></ItemsInfo>
+                </TabPanel>
+                <TabPanel value={tab} index={3}>
+                    <Timeline></Timeline>
                 </TabPanel>
             </Box>
         </Box>
