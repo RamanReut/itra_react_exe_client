@@ -2,6 +2,7 @@ export interface OrdersState {
     ordersTable: OrdersTableState;
     detail: DetailState;
     visibleColumns: ColumnVisibleState;
+    timeline: TimelineState;
 }
 
 export interface OrdersTableState {
@@ -74,4 +75,8 @@ export interface ColumnVisibleState {
 
 export interface MapNumberToString {
     [index: number]: string;
+}
+
+export interface TimelineState {
+    activeStep: number;
 }
