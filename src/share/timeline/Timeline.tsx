@@ -19,22 +19,22 @@ export default function Timeline({
 }: TimelineProps) {
     return (
         <Box>
-            {steps.map((stepProps, index, steps) => {
+            {steps.map((stepProps, index) => {
                 const pickedColor = stepProps.color || color;
 
                 return (
                     <Box key={stepProps.label}>
+                        {
+                            index !== 0 ?
+                                <Connector color={pickedColor}></Connector> :
+                                <div></div>
+                        }
                         <Step
                             {...stepProps}
                             color={pickedColor}
                             onClick={() => onStepChange(index)}
                             isActive={activeStep === index}
                         ></Step>
-                        {
-                            index + 1 !== steps.length ?
-                                <Connector color={pickedColor}></Connector> :
-                                <div></div>
-                        }
                     </Box>
                 );
             })}
