@@ -4,7 +4,7 @@ import { makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import Icon from '@material-ui/core/Icon'
 import classnames from 'classnames'
 import Grid from '@material-ui/core/Grid'
-import { Color } from './types'
+import { Color, StepState } from './types'
 import { colorPicker } from './colorPicker'
 
 const ANIMATION_PAUSE_DIVIDER = 6;
@@ -93,6 +93,7 @@ export interface StepContentProps {
     status?: React.ReactElement;
     content: React.ReactElement;
     color?: Color;
+    state?: StepState;
 }
 
 export default function Step({
@@ -103,6 +104,7 @@ export default function Step({
     isActive,
     onClick,
     color,
+    state = 'enable',
 }: StepProps) {
     const classes = useStyles({ color });
     const theme = useTheme();
@@ -157,7 +159,7 @@ export default function Step({
                 <Box>
                     <Box
                         className={classnames(classes.iconWrapper, classes.minSize)}
-                        onClick={onClick}
+                        onClick={state ? onClick : () => { }}
                     >
                         <Icon>
                             {icon}
@@ -170,11 +172,7 @@ export default function Step({
                 </Box>
             </Box>
             <Grid
-                className={
-                    classnames(
-                        classes.labelWrapper,
-                    )
-                }
+                className={classnames(classes.labelWrapper)}
                 container
                 alignItems='center'
                 spacing={2}
