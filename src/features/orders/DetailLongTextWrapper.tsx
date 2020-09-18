@@ -16,7 +16,11 @@ export default function DetailLongTextWrapper({
             item
             xs={12}
         >
-            <Grid container>
+            <Grid
+                container
+                alignItems='baseline'
+                spacing={1}
+            >
                 <Grid 
                     item
                     xs={4}

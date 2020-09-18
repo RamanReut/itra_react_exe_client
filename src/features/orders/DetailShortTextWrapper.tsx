@@ -17,7 +17,11 @@ export default function TextWrapper({
             xs={12}
             sm={6}
         >
-            <Grid container>
+            <Grid
+                container
+                alignItems='baseline'
+                spacing={1}
+            >
                 <Grid 
                     item
                     xs={4}

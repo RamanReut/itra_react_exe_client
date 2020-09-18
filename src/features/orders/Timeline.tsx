@@ -19,7 +19,7 @@ const useTimelineStyles = makeStyles((theme: Theme) => ({
     contentWrapper: {
         width: '35em',
         [theme.breakpoints.down('xs')]: {
-            width: '10em',
+            width: '15em',
         },
     },
 }));
