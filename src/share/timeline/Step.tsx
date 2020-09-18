@@ -1,13 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React from 'react'
 import Box from '@material-ui/core/Box'
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import Icon from '@material-ui/core/Icon'
 import classnames from 'classnames'
-import Grid from '@material-ui/core/Grid'
 import { Color, StepState } from './types'
 import { colorPicker } from './colorPicker'
-
-const ANIMATION_PAUSE_DIVIDER = 6;
 
 interface StyleProps {
     color: Color;
@@ -35,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         borderWidth: '2px',
         borderRadius: 'calc(1rem + 2px)',
         transitionDuration: `${theme.transitions.duration.standard}ms`,
-        transitionTimingFunction: theme.transitions.easing.easeIn,
+        transitionTimingFunction: theme.transitions.easing.easeInOut,
         transitionProperty: 'width, max-height',
     },
     iconWrapper: {
@@ -51,46 +48,30 @@ const useStyles = makeStyles((theme: Theme) => ({
         left: '2rem',
         top: '0em',
         zIndex: 2,
+        width: 0,
+        display: 'flex',
+        transitionProperty: 'width',
+        transitionDuration: `${theme.transitions.duration.standard}ms`,
+        transitionTimingFunction: theme.transitions.easing.easeIn,
+        alignItems: 'center',
+        height: '2rem',
+    },
+    labelWrapperFullWidth: {
         width: 'calc(100% - 3.5rem)',
-    },
-    labelWrapperAnimation: {
-        animationDuration: `${theme.transitions.duration.standard}ms`,
-        animationTimingFunction: theme.transitions.easing.easeIn,
-        animationPlayState: 'running',
-    },
-    animationPaused: {
-        animationPlayState: 'paused',
-    },
-    labelWrapperExpandAnimation: {
-        animationName: '$labelWrapperExpand',
-    },
-    labelWrapperCollapseAnimation: {
-        animationName: '$labelWrapperCollapse',
-    },
-    '@keyframes labelWrapperCollapse': {
-        from: {
-            flex: 'none',
-        },
-        to: {
-            flex: 1,
-        },
-    },
-    '@keyframes labelWrapperExpand': {
-        from: {
-            flex: 1,
-        },
-        to: {
-            flex: 'none',
-        },
     },
     contentWrapper: {
         margin: '0.3rem'
     },
-    labelText: {
+    labelTextWrapper: {
         color: ({ color }: StyleProps) => colorPicker(theme, color),
+        flexGrow: 0,
     },
-    statusWrapper: {
+    labelGrower: {
+        flexGrow: 1,
+    },
+    labelStatusWrapper: {
         marginLeft: theme.spacing(),
+        flexGrow: 0,
     },
 }));
 
@@ -120,44 +101,6 @@ export default function Step({
     state = 'enable',
 }: StepProps) {
     const classes = useStyles({ color });
-    const theme = useTheme();
-
-    const [isAnimationCanPlayed, setIsAnimationCanPlayed] =
-        useState<boolean>();
-    const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-    const [isAnimationPaused, setIsAnimationPaused] =
-        useState<boolean>(false);
-
-    const handleAnimationEnd = useCallback(
-        () => {
-            setIsAnimationCanPlayed(false);
-        },
-        [setIsAnimationCanPlayed],
-    );
-
-    const handleAnimationDelay = useCallback(
-        () => {
-            setIsAnimationPaused(true);
-            setTimeout(
-                () => {
-                    setIsAnimationPaused(false);
-                },
-                theme.transitions.duration.standard / ANIMATION_PAUSE_DIVIDER,
-            );
-        },
-        [theme, setIsAnimationPaused],
-    );
-
-    useEffect(() => {
-        if (isFirstRender) {
-            setIsAnimationCanPlayed(false);
-            setIsFirstRender(false);
-        } else {
-            setIsAnimationCanPlayed(true);
-            handleAnimationDelay();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isActive, setIsAnimationCanPlayed, setIsFirstRender, handleAnimationDelay]);
 
     return (
         <Box className={classes.root}>
@@ -184,37 +127,20 @@ export default function Step({
                     {content}
                 </Box>
             </Box>
-            <Grid
-                className={classnames(classes.labelWrapper)}
-                container
-                alignItems='center'
-                spacing={2}
-                justify={isActive ? 'space-between' : 'flex-start'}
+            <Box className={
+                classnames(
+                    classes.labelWrapper,
+                    { [classes.labelWrapperFullWidth]: isActive },
+                )}
             >
-                <Grid item>
+                <Box className={classes.labelTextWrapper}>
                     {label}
-                </Grid>
-                <Grid
-                    item
-                    className={
-                        classnames(
-                            { [classes.labelWrapperAnimation]: isAnimationCanPlayed },
-                            {
-                                [classes.labelWrapperExpandAnimation]:
-                                isActive && isAnimationCanPlayed
-                            },
-                            {
-                                [classes.labelWrapperCollapseAnimation]:
-                                !isActive && isAnimationCanPlayed
-                            },
-                            { [classes.animationPaused]: isAnimationPaused && isActive }, 
-                        )
-                    }
-                    onAnimationEnd={handleAnimationEnd}
-                >
+                </Box>
+                <Box className={classes.labelGrower}></Box>
+                <Box className={classes.labelStatusWrapper}>
                     {status}
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
         </Box>
     );
 }
