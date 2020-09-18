@@ -3,7 +3,7 @@ import { ROOT_REDUCER_NAME } from './constants'
 import { TimelineState } from './types'
 
 const initialState = {
-    activeStep: 0,
+    activeStep: -1,
 };
 
 const slice = createSlice({

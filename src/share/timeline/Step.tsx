@@ -53,14 +53,27 @@ const useStyles = makeStyles((theme: Theme) => ({
         zIndex: 2,
         width: 'calc(100% - 3.5rem)',
     },
-    labelWrapperExpandAnimation: {
-        animationName: '$labelWrapperExpand',
+    labelWrapperAnimation: {
         animationDuration: `${theme.transitions.duration.standard}ms`,
         animationTimingFunction: theme.transitions.easing.easeIn,
         animationPlayState: 'running',
     },
     animationPaused: {
         animationPlayState: 'paused',
+    },
+    labelWrapperExpandAnimation: {
+        animationName: '$labelWrapperExpand',
+    },
+    labelWrapperCollapseAnimation: {
+        animationName: '$labelWrapperCollapse',
+    },
+    '@keyframes labelWrapperCollapse': {
+        from: {
+            flex: 'none',
+        },
+        to: {
+            flex: 1,
+        },
     },
     '@keyframes labelWrapperExpand': {
         from: {
@@ -91,7 +104,7 @@ export interface StepContentProps {
     label: string;
     icon: React.ReactElement;
     status?: React.ReactElement;
-    content: React.ReactElement;
+    content?: React.ReactElement;
     color?: Color;
     state?: StepState;
 }
@@ -159,7 +172,7 @@ export default function Step({
                 <Box>
                     <Box
                         className={classnames(classes.iconWrapper, classes.minSize)}
-                        onClick={state ? onClick : () => { }}
+                        onClick={state === 'enable' ? onClick : () => { }}
                     >
                         <Icon>
                             {icon}
@@ -185,12 +198,16 @@ export default function Step({
                     item
                     className={
                         classnames(
+                            { [classes.labelWrapperAnimation]: isAnimationCanPlayed },
                             {
                                 [classes.labelWrapperExpandAnimation]:
-                                    isActive && isAnimationCanPlayed,
-                            }, {
-                            [classes.animationPaused]: isAnimationPaused,
-                        },
+                                isActive && isAnimationCanPlayed
+                            },
+                            {
+                                [classes.labelWrapperCollapseAnimation]:
+                                !isActive && isAnimationCanPlayed
+                            },
+                            { [classes.animationPaused]: isAnimationPaused && isActive }, 
                         )
                     }
                     onAnimationEnd={handleAnimationEnd}

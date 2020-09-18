@@ -7,7 +7,7 @@ export interface DetailLongTextWrapperProps {
     children: string;
 }
 
-export default function DeatilLongTextWrapper({
+export default function DetailLongTextWrapper({
     title,
     children,
 }: DetailLongTextWrapperProps ) {
