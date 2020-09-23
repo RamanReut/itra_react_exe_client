@@ -5,7 +5,6 @@ import React, {
 } from 'react'
 import {
     DatePicker as ExtDatePicker,
-
 } from '@material-ui/pickers'
 import { DateType } from '@date-io/type'
 import {
@@ -15,6 +14,7 @@ import {
 } from '@material-ui/core'
 import { DateRange } from './types'
 import classnames from 'classnames'
+import Toolbar from './Toolbar'
 
 const useStyles = makeStyles((theme: Theme) => ({
     day: {
@@ -99,7 +99,7 @@ export default function DatePicker({
     const handleMonthChange = useCallback((date: DateType | null) => {
         setPickDate(dateTypeToDate(date));
         isPickMonth.current = true;
-    }, [setPickDate])
+    }, [setPickDate]);
 
     return (
         <ExtDatePicker
@@ -133,6 +133,8 @@ export default function DatePicker({
             }}
             onYearChange={handleYearChange}
             onMonthChange={handleMonthChange}
+            ToolbarComponent={Toolbar}
+            views={['year', 'month', 'date']}
         ></ExtDatePicker >
     );
 }
