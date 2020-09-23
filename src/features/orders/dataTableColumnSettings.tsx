@@ -1,5 +1,8 @@
 import { types } from './reducer'
 import { COLUMNS_LOCALIZATIONS, MAP_STATUS_ID_TO_TEXT } from './constants'
+import { Column as TableColumn } from 'material-table'
+import DateFilter from './DateFilter'
+import { dateRangeFilter } from './dateFilters'
 
 type ColumnSettings = {
     [column in types.Columns]: Column;
@@ -9,7 +12,16 @@ interface Column {
     field: string;
     title: string;
     type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency';
-    lookup?: object;
+    lookup?: object;   
+    filterComponent?: (props: {
+        columnDef: TableColumn<types.Row>;
+        onFilterChanged: (rowId: string, value: types.DateRange) => void;
+    }) => React.ReactElement<any>;
+    customFilterAndSearch?: (
+        filter: types.DateRange,
+        rowData: types.Row,
+        columnDef: TableColumn<types.Row>,
+    ) => boolean,
 }
 
 const columnSettings: ColumnSettings = {
@@ -23,14 +35,20 @@ const columnSettings: ColumnSettings = {
     order_date: {
         ...getFieldAndTitle('order_date'),
         type: 'date',
+        filterComponent: DateFilter,
+        customFilterAndSearch: dateRangeFilter,
     },
     required_date: {
         ...getFieldAndTitle('required_date'),
         type: 'date',
+        filterComponent: DateFilter,
+        customFilterAndSearch: dateRangeFilter,
     },
     shipped_date: {
         ...getFieldAndTitle('shipped_date'),
         type: 'date',
+        filterComponent: DateFilter,
+        customFilterAndSearch: dateRangeFilter,
     },
     manager_name: {
         ...getFieldAndTitle('manager_name'),
