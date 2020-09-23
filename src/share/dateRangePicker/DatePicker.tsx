@@ -1,5 +1,12 @@
-import React, { useCallback, useState } from 'react'
-import { DatePicker as ExtDatePicker } from '@material-ui/pickers'
+import React, {
+    useCallback,
+    useState,
+    useRef,
+} from 'react'
+import {
+    DatePicker as ExtDatePicker,
+
+} from '@material-ui/pickers'
 import { DateType } from '@date-io/type'
 import {
     IconButton,
@@ -39,6 +46,10 @@ export default function DatePicker({
     const classes = useStyles();
     const [prevPickDate, setPrevPickDate] =
         useState<Date | null>(range.start || range.end);
+    const [pickDate, setPickDate] =
+        useState<Date | null>(prevPickDate);
+    const isPickYear = useRef<boolean>(false);
+    const isPickMonth = useRef<boolean>(false);
 
     const handleSameDatePick = useCallback((date: Date) => {
         if (range.start && range.end) {
@@ -60,34 +71,47 @@ export default function DatePicker({
         return { start: date, end: null };
     }, [prevPickDate]);
     const handleChange = useCallback((date: DateType | null) => {
-        const jsDate = (date ? date.toJSDate() : null) as Date;
-        let newRange: DateRange;
+        const jsDate = dateTypeToDate(date);
+        if (!isPickYear.current && !isPickMonth.current) {
+            let newRange: DateRange;
 
-        /* Normalize date */
-        jsDate.setHours(0);
-        jsDate.setMinutes(0);
-        jsDate.setSeconds(0);
+            /* Normalize date */
+            jsDate.setHours(0);
+            jsDate.setMinutes(0);
+            jsDate.setSeconds(0);
 
-        if (jsDate.getTime() === prevPickDate?.getTime()) {
-            newRange = handleSameDatePick(jsDate);
+            if (jsDate.getTime() === prevPickDate?.getTime()) {
+                newRange = handleSameDatePick(jsDate);
+            } else {
+                newRange = handleDifferentPickDate(jsDate);
+            }
+            setPrevPickDate(jsDate);
+            onChange(newRange);
         } else {
-            newRange = handleDifferentPickDate(jsDate);
+            isPickMonth.current = false;
+            isPickYear.current = false;
         }
-        setPrevPickDate(jsDate);
-        onChange(newRange);
     }, [prevPickDate, onChange, handleSameDatePick, handleDifferentPickDate]);
+    const handleYearChange = useCallback((date: DateType | null) => {
+        setPickDate(dateTypeToDate(date));
+        isPickYear.current = true;
+    }, [setPickDate]);
+    const handleMonthChange = useCallback((date: DateType | null) => {
+        setPickDate(dateTypeToDate(date));
+        isPickMonth.current = true;
+    }, [setPickDate])
 
     return (
         <ExtDatePicker
             variant='static'
-            value={null}
+            value={pickDate}
             onChange={handleChange}
             renderDay={(
                 day: DateType | null,
                 selectedDay: DateType | null,
                 dayInCurrentMonth: boolean,
             ) => {
-                const date = (day ? day.toJSDate() : null) as Date;
+                const date = dateTypeToDate(day);
 
                 return (
                     <IconButton
@@ -107,8 +131,14 @@ export default function DatePicker({
                     </IconButton>
                 );
             }}
+            onYearChange={handleYearChange}
+            onMonthChange={handleMonthChange}
         ></ExtDatePicker >
     );
+}
+
+function dateTypeToDate(date: DateType | null): Date {
+    return (date ? date.toJSDate() : null) as Date;
 }
 
 function isBetween(range: DateRange, date: Date | null): boolean {
