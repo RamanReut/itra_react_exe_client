@@ -13,8 +13,13 @@ import DatePicker from './DatePicker'
 
 const useStyles = makeStyles((theme: Theme) => ({
     actionsWrapper: {
-        marginLeft: '26px',
-        marginRight: '14px',
+        marginLeft: '4px',
+    },
+    dialogContent: {
+        padding: '0',
+        '&:first-child': {
+            paddingTop: '0',
+        }
     },
 }));
 
@@ -53,7 +58,7 @@ export default function DateRangePickerDialog({
             onClose={onClose}
             maxWidth='lg'
         >
-            <DialogContent>
+            <DialogContent className={classes.dialogContent}>
                 <DatePicker
                     onChange={handlePickerRangeChange}
                     range={{ start: startDate, end: endDate }}

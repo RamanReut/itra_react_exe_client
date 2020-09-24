@@ -13,7 +13,8 @@ import classnames from 'classnames'
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         backgroundColor: theme.palette.primary.main,
-        borderRadius: theme.shape.borderRadius,
+        borderBottomLeftRadius: theme.shape.borderRadius,
+        WebkitBorderBottomRightRadius: theme.shape.borderRadius,
     },
     button: {
         color: theme.palette.primary.contrastText,
