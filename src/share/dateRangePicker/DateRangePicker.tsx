@@ -11,8 +11,6 @@ import { DateRange } from './types'
 import { DateTime } from 'luxon'
 
 export interface DateRangePickerProps {
-    isOpen: boolean;
-    onOpenChange: (isOpen: boolean) => void;
     range: DateRange;
     onRangeChange: (range: DateRange) => void;
 }
