@@ -11,6 +11,7 @@ import {
     IconButton,
     makeStyles,
     Theme,
+    fade,
 } from '@material-ui/core'
 import { DateRange } from './types'
 import classnames from 'classnames'
@@ -23,10 +24,13 @@ const useStyles = makeStyles((theme: Theme) => ({
         margin: '0 2px',
         fontSize: '0.9em',
         color: theme.palette.text.primary,
+        '&:hover': {
+            backgroundColor: theme.palette.primary.light,
+            color: theme.palette.primary.contrastText,
+        }
     },
     dayInRange: {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.primary.contrastText,
+        backgroundColor: fade(theme.palette.primary.light, 0.5),
     },
     activeDay: {
         backgroundColor: theme.palette.primary.main,
