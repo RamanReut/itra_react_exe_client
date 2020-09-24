@@ -49,7 +49,6 @@ export default function DatePicker({
     const [pickDate, setPickDate] =
         useState<Date | null>(prevPickDate);
     const isPickYear = useRef<boolean>(false);
-    const isPickMonth = useRef<boolean>(false);
 
     const handleSameDatePick = useCallback((date: Date) => {
         if (range.start && range.end) {
@@ -72,13 +71,15 @@ export default function DatePicker({
     }, [prevPickDate]);
     const handleChange = useCallback((date: DateType | null) => {
         const jsDate = dateTypeToDate(date);
-        if (!isPickYear.current && !isPickMonth.current) {
+
+        if (!isPickYear.current) {
             let newRange: DateRange;
 
             /* Normalize date */
             jsDate.setHours(0);
             jsDate.setMinutes(0);
             jsDate.setSeconds(0);
+            jsDate.setMilliseconds(0);
 
             if (jsDate.getTime() === prevPickDate?.getTime()) {
                 newRange = handleSameDatePick(jsDate);
@@ -88,7 +89,6 @@ export default function DatePicker({
             setPrevPickDate(jsDate);
             onChange(newRange);
         } else {
-            isPickMonth.current = false;
             isPickYear.current = false;
         }
     }, [prevPickDate, onChange, handleSameDatePick, handleDifferentPickDate]);
@@ -98,8 +98,9 @@ export default function DatePicker({
     }, [setPickDate]);
     const handleMonthChange = useCallback((date: DateType | null) => {
         setPickDate(dateTypeToDate(date));
-        isPickMonth.current = true;
-    }, [setPickDate]);
+        setPrevPickDate(prevPickDate);          // need for fix wrong callback call order
+        onChange(range);                        // onMonthChange calling after onChange in ExtDatePicker
+    }, [setPickDate, prevPickDate, setPrevPickDate, onChange, range]);
 
     return (
         <ExtDatePicker
