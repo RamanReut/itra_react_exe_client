@@ -37,10 +37,8 @@ export default function Path() {
 
     let pathPoints = location.pathname.split('/');
     if ((pathPoints[pathPoints.length - 1]) === '') {
-        console.log(pathPoints.length - 1);
         pathPoints = pathPoints.slice(0, pathPoints.length - 1);
     }
-    console.log(pathPoints);
 
     return (
         <Breadcrumbs 
