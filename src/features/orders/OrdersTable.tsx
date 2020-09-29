@@ -64,9 +64,9 @@ export default function OrdersTable( ) {
 
 function createExpandableData(data: DataIndexable): Array<types.Row> {
     const res = new Array<types.Row>();
-    for (let record in data) {
-        const row: types.Row = data[record];    
+    Object.values(data).forEach((record) => {
+        const row: types.Row = record;    
         res.push({...row});
-    }
+    });
     return res;
 }
