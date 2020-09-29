@@ -60,40 +60,35 @@ export default function OrderTabPanel({
     tab,
     onChangeTab,
     data,
-}: OrderTabPanelProps ) {
+}: OrderTabPanelProps) {
     const classes = useStyles();
+    const defaultTabProps = {
+        classes: {
+            root: classes.tab,
+            selected: classes.tabSelected,
+        },
+        disableRipple: true,
+    };
 
     return (
         <Box className={classes.root}>
-            <Tabs 
+            <Tabs
                 classes={{ indicator: classes.indicator, root: classes.tabs }}
-                value={tab} 
+                value={tab}
                 onChange={(event, value) => onChangeTab(value as number)}
                 textColor='primary'
                 variant='fullWidth'
             >
-                <Tab 
-                    classes={{ 
-                            root: classes.tab,
-                            selected: classes.tabSelected,
-                    }} 
-                    disableRipple
+                <Tab
+                    {...defaultTabProps}
                     label='Order'
-                ></Tab> 
-                <Tab 
-                    classes={{ 
-                        root: classes.tab,
-                        selected: classes.tabSelected 
-                    }} 
-                    disableRipple
+                ></Tab>
+                <Tab
+                    {...defaultTabProps}
                     label='Customer'
                 ></Tab>
-                <Tab 
-                    classes={{ 
-                        root: classes.tab,
-                        selected: classes.tabSelected 
-                    }} 
-                    disableRipple
+                <Tab
+                    {...defaultTabProps}
                     label='Items'
                 ></Tab>
             </Tabs>
