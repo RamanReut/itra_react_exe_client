@@ -60,7 +60,10 @@ export default function OrderDetail() {
                         id={id}
                         onClose={handleClose}
                     ></Header>
-                    <Grid item>
+                    <Grid
+                        item
+                        className={classes.contentWrapper}
+                    >
                         <OrderTabPanel
                             tab={tab}
                             onChangeTab={handleChangeTab}
