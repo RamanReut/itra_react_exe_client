@@ -10,6 +10,13 @@ import LoadingError from './LoadingError'
 import { createColumnSettingList } from './dataTableColumnSettings'
 import { DataIndexable } from './reducer/types'
 
+const TABLE_OPTIONS = {
+    pageSize: 15,
+    pageSizeOptions: [10, 15, 20, 25, 30],
+    filtering: true,
+    search: false,
+}
+
 export default function OrdersTable( ) {
     const dispatch = useDispatch();
 
@@ -47,12 +54,7 @@ export default function OrdersTable( ) {
                 components={{
                     Toolbar: props => (<TableToolbar {...props}></TableToolbar>),
                 }}
-                options={{
-                    pageSize: 15,
-                    pageSizeOptions: [10, 15, 20, 25, 30],
-                    filtering: true,
-                    search: false,
-                }}              
+                options={TABLE_OPTIONS}
                 onRowClick={handleRowClick}
             ></MaterialTable>
             <OrderDetail></OrderDetail>
