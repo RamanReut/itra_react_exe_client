@@ -61,7 +61,7 @@ export default function OrderTabPanel({
     tab,
     onChangeTab,
     data,
-}: OrderTabPanelProps ) {
+}: OrderTabPanelProps) {
     const classes = useStyles();
     const defaultTabProps = {
         classes: {
@@ -73,9 +73,9 @@ export default function OrderTabPanel({
 
     return (
         <Box className={classes.root}>
-            <Tabs 
+            <Tabs
                 classes={{ indicator: classes.indicator, root: classes.tabs }}
-                value={tab} 
+                value={tab}
                 onChange={(event, value) => onChangeTab(value as number)}
                 textColor='primary'
                 variant='scrollable'

@@ -4,6 +4,7 @@ import DetailLongTextWrapper from './DetailLongTextWrapper'
 import DetailShortTextWrapper from './DetailShortTextWrapper'
 import { makeStyles } from '@material-ui/core/styles'
 import { types } from './reducer'
+import { discountToString } from './utils'
 
 const useStyles = makeStyles({
     root: {
@@ -43,7 +44,7 @@ export default function DetailItemInfo({
                 {quantity.toString()}
             </DetailShortTextWrapper>
             <DetailShortTextWrapper title='Discount'>
-                {Math.trunc(discount * 100).toString() + '%'}
+                {discountToString(discount)}
             </DetailShortTextWrapper>
         </Grid>
     );
