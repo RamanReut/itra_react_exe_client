@@ -63,15 +63,13 @@ export default function OrderTabPanel({
     data,
 }: OrderTabPanelProps ) {
     const classes = useStyles();
-    const defaultTabProps = useMemo(() => {
-        return {
-            classes: {
-                root: classes.tab,
-                selected: classes.tabSelected,
-            },
-            disableRipple: true,
-        }
-    }, [classes])
+    const defaultTabProps = {
+        classes: {
+            root: classes.tab,
+            selected: classes.tabSelected,
+        },
+        disableRipple: true,
+    };
 
     return (
         <Box className={classes.root}>
