@@ -26,14 +26,10 @@ export default function OrdersTable( ) {
     const handleRowClick = useCallback((_, { order_id }) => {
         dispatch(actions.detail.open(order_id))
     }, [dispatch]);
-    const handleFetch = useCallback(
-        () => dispatch(actions.ordersTable.fetchData()),
-        [dispatch],
-    );
 
     useEffect(() => {
-        handleFetch();
-    }, [handleFetch])
+        dispatch(actions.ordersTable.fetchData());
+    }, [dispatch]);
 
     if(isLoading) {
         return <TableBackdrop></TableBackdrop>;
