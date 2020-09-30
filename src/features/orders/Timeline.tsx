@@ -13,7 +13,7 @@ import { MAP_STATUS_ID_TO_TEXT } from './constants'
 import RejectedIcon from '@material-ui/icons/Close'
 import { types } from './reducer'
 
-const DISABLE_COLOR = '#9e9e9e';
+const DISABLE_COLOR_OFFSET = 500;
 
 const useTimelineStyles = makeStyles((theme: Theme) => ({
     contentWrapper: {
@@ -80,7 +80,8 @@ export default function Timeline() {
                     ),
                     status: (status > 2) ? <Done></Done> : <div></div>,
                     color: (status > 1) ?
-                        theme.palette.primary.main : DISABLE_COLOR,
+                        theme.palette.primary.main :
+                        theme.palette.grey[DISABLE_COLOR_OFFSET],
                 },
                 lastStepProps(order, theme, classes.contentWrapper),
             ]}
@@ -125,7 +126,9 @@ function lastStepProps(
                 </Box>
             ),
             status: status > 2 ? <Done></Done> : <div></div>,
-            color: status === 4 ? theme.palette.primary.main : DISABLE_COLOR,
+            color: status === 4 ?
+                theme.palette.primary.main :
+                theme.palette.grey[DISABLE_COLOR_OFFSET],
         }
     }
 }
