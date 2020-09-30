@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect } from 'react'
-import { Timeline as TimelineComponent, StepProps } from '../../share/timeline'
+import {
+    Timeline as TimelineComponent,
+    StepProps,
+} from '../../share/timeline'
 import LocalShippingIcon from '@material-ui/icons/LocalShipping'
 import SendIcon from '@material-ui/icons/Send'
 import Icon from '@material-ui/core/Icon'
@@ -57,7 +60,7 @@ export default function Timeline() {
         <TimelineComponent
             steps={[
                 {
-                    label: MAP_STATUS_ID_TO_TEXT[1],
+                    label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Ordered],
                     icon: <LocalShippingIcon></LocalShippingIcon>,
                     content: (
                         <Box className={classes.contentWrapper}>
@@ -66,11 +69,13 @@ export default function Timeline() {
                             </DetailLongTextWrapper>
                         </Box>
                     ),
-                    status: status === 1 ? <div></div> : <Done></Done>,
+                    status: 
+                        status === types.OrderStatus.Ordered ? 
+                            <div></div> : <Done></Done>,
                 }, {
-                    label: MAP_STATUS_ID_TO_TEXT[2],
+                    label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Processing],
                     icon: <SendIcon></SendIcon>,
-                    state: (status > 1) ? 'enable' : 'disable',
+                    state: (status > types.OrderStatus.Ordered) ? 'enable' : 'disable',
                     content: (
                         <Box className={classes.contentWrapper}>
                             <DetailLongTextWrapper title='Required date'>
@@ -78,24 +83,34 @@ export default function Timeline() {
                             </DetailLongTextWrapper>
                         </Box>
                     ),
-                    status: (status > 2) ? <Done></Done> : <div></div>,
-                    color: (status > 1) ?
+                    status: 
+                        (status > types.OrderStatus.Processing) ? 
+                            <Done></Done> : <div></div>,
+                    color: (status > types.OrderStatus.Ordered) ?
                         theme.palette.primary.main :
                         theme.palette.grey[DISABLE_COLOR_OFFSET],
                 },
                 lastStepProps(order, theme, classes.contentWrapper),
             ]}
-            activeStep={activeStep < 0 ? statusToStep(order.order_status) : activeStep}
+            activeStep={
+                activeStep < 0 ?
+                    statusToStep(order.order_status) : activeStep
+            }
             onStepChange={handleStepChange}
         ></TimelineComponent>
     );
 }
 
 function statusToStep(status: number): number {
-    if (status === 3) {
-        return -1;
-    } else {
-        return (status > 2 ? 3 : status) - 1;
+    switch (status) {
+        case types.OrderStatus.Ordered:
+            return 0;
+        case types.OrderStatus.Processing:
+            return 1;
+        case types.OrderStatus.Complete:
+            return 2;
+        default: 
+            return -1;
     }
 }
 
@@ -106,18 +121,18 @@ function lastStepProps(
 ): StepProps {
     const status = order.order_status;
 
-    if (status === 3) {
+    if (status === types.OrderStatus.Cancel) {
         return {
-            label: MAP_STATUS_ID_TO_TEXT[3],
+            label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Cancel],
             icon: <RejectedIcon></RejectedIcon>,
             state: 'disable',
             color: theme.palette.error.main,
         }
     } else {
         return {
-            label: MAP_STATUS_ID_TO_TEXT[4],
+            label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Complete],
             icon: <DoneIcon></DoneIcon>,
-            state: status === 4 ? 'enable' : 'disable',
+            state: status === types.OrderStatus.Complete ? 'enable' : 'disable',
             content: (
                 <Box className={contentWrapper}>
                     <DetailLongTextWrapper title='Shipped date'>
@@ -125,8 +140,10 @@ function lastStepProps(
                     </DetailLongTextWrapper>
                 </Box>
             ),
-            status: status > 2 ? <Done></Done> : <div></div>,
-            color: status === 4 ?
+            status:
+                status > types.OrderStatus.Processing ?
+                    <Done></Done> : <div></div>,
+            color: status === types.OrderStatus.Complete ?
                 theme.palette.primary.main :
                 theme.palette.grey[DISABLE_COLOR_OFFSET],
         }
