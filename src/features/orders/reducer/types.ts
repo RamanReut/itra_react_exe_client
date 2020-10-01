@@ -1,11 +1,8 @@
-import { DateRangePickerState } from '../../../share/dateRangePicker'
-
 export interface OrdersState {
     ordersTable: OrdersTableState;
     detail: DetailState;
     visibleColumns: ColumnVisibleState;
     timeline: TimelineState;
-    filters: FiltersState
 }
 
 export interface OrdersTableState {
@@ -82,12 +79,6 @@ export interface MapNumberToString {
 
 export interface TimelineState {
     activeStep: number;
-}
-
-export interface FiltersState {
-    requiredDate: DateRangePickerState;
-    shippedDate: DateRangePickerState;
-    orderDate: DateRangePickerState;
 }
 
 export interface DateRange {

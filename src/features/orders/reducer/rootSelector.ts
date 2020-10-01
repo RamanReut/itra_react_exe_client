@@ -24,8 +24,3 @@ export const timeline = createSelector(
     root,
     (state) => state.timeline,
 );
-
-export const filters = createSelector(
-    root,
-    (state) => state.filters,
-);
