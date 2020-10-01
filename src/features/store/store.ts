@@ -4,7 +4,6 @@ import { reducer as layout } from '../layout'
 import { reducer as orders } from '../orders';
 
 const rootReducer = combineReducers({
-    //Add here new reducers
     layout,
     orders,
 });
