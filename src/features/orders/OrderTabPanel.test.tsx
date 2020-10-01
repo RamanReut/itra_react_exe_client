@@ -59,15 +59,15 @@ beforeEach(() => {
     tabClicked = '';
 });
 
-test('should be exist order tab', () => {
+test('order tab should exist', () => {
     expect(screen.getByRole('tab', { name: 'Order' })).toBeInTheDocument();
 });
 
-test('should be exist customer tab', () => {
+test('customer tab should exist', () => {
     expect(screen.getByRole('tab', { name: 'Customer' })).toBeInTheDocument();
 });
 
-test('should be exist items tab', () => {
+test('items tab should exist', () => {
     expect(screen.getByRole('tab', { name: 'Items' })).toBeInTheDocument();
 });
 

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { types } from './reducer'
@@ -61,23 +61,21 @@ export default function OrderTabPanel({
     tab,
     onChangeTab,
     data,
-}: OrderTabPanelProps ) {
+}: OrderTabPanelProps) {
     const classes = useStyles();
-    const defaultTabProps = useMemo(() => {
-        return {
-            classes: {
-                root: classes.tab,
-                selected: classes.tabSelected,
-            },
-            disableRipple: true,
-        }
-    }, [classes])
+    const defaultTabProps = {
+        classes: {
+            root: classes.tab,
+            selected: classes.tabSelected,
+        },
+        disableRipple: true,
+    };
 
     return (
         <Box className={classes.root}>
-            <Tabs 
+            <Tabs
                 classes={{ indicator: classes.indicator, root: classes.tabs }}
-                value={tab} 
+                value={tab}
                 onChange={(event, value) => onChangeTab(value as number)}
                 textColor='primary'
                 variant='scrollable'

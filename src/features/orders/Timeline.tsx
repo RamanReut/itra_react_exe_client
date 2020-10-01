@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect } from 'react'
-import { Timeline as TimelineComponent, StepProps } from '../../share/timeline'
+import {
+    Timeline as TimelineComponent,
+    StepProps,
+} from '../../share/timeline'
 import LocalShippingIcon from '@material-ui/icons/LocalShipping'
 import SendIcon from '@material-ui/icons/Send'
 import Icon from '@material-ui/core/Icon'
@@ -13,16 +16,7 @@ import { MAP_STATUS_ID_TO_TEXT } from './constants'
 import RejectedIcon from '@material-ui/icons/Close'
 import { types } from './reducer'
 
-const DISABLE_COLOR = '#9e9e9e';
-
-const useTimelineStyles = makeStyles((theme: Theme) => ({
-    contentWrapper: {
-        width: '35em',
-        [theme.breakpoints.down('xs')]: {
-            width: '15em',
-        },
-    },
-}));
+const DISABLE_COLOR_OFFSET = 500;
 
 const useDoneStyles = makeStyles({
     icon: {
@@ -31,7 +25,6 @@ const useDoneStyles = makeStyles({
 });
 
 export default function Timeline() {
-    const classes = useTimelineStyles();
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -49,85 +42,197 @@ export default function Timeline() {
 
     useEffect(() => {
         dispatch(
-            actions.timeline.changeActiveStep(statusToStep(order.order_status)),
+            actions.timeline.changeActiveStep(
+                MAP_ORDER_STATUS_TO_STEP_NAME[status],
+            ),
         );
-    }, [order, dispatch]);
+    }, [status, dispatch]);
 
     return (
         <TimelineComponent
-            steps={[
-                {
-                    label: MAP_STATUS_ID_TO_TEXT[1],
-                    icon: <LocalShippingIcon></LocalShippingIcon>,
-                    content: (
-                        <Box className={classes.contentWrapper}>
-                            <DetailLongTextWrapper title='Order date'>
-                                {order.order_date}
-                            </DetailLongTextWrapper>
-                        </Box>
-                    ),
-                    status: status === 1 ? <div></div> : <Done></Done>,
-                }, {
-                    label: MAP_STATUS_ID_TO_TEXT[2],
-                    icon: <SendIcon></SendIcon>,
-                    state: (status > 1) ? 'enable' : 'disable',
-                    content: (
-                        <Box className={classes.contentWrapper}>
-                            <DetailLongTextWrapper title='Required date'>
-                                {order.required_date}
-                            </DetailLongTextWrapper>
-                        </Box>
-                    ),
-                    status: (status > 2) ? <Done></Done> : <div></div>,
-                    color: (status > 1) ?
-                        theme.palette.primary.main : DISABLE_COLOR,
-                },
-                lastStepProps(order, theme, classes.contentWrapper),
-            ]}
-            activeStep={activeStep < 0 ? statusToStep(order.order_status) : activeStep}
+            steps={generateSteps(order, theme)}
+            activeStep={
+                activeStep < 0 ?
+                    MAP_ORDER_STATUS_TO_STEP_NAME[status] :
+                    activeStep
+            }
             onStepChange={handleStepChange}
         ></TimelineComponent>
     );
 }
 
-function statusToStep(status: number): number {
-    if (status === 3) {
-        return -1;
-    } else {
-        return (status > 2 ? 3 : status) - 1;
+enum StepName {
+    Ordered = 0,
+    Processing,
+    Complete,
+    Cancel,
+}
+
+interface MapOrderStatusToStepName {
+    [index: number]: number;
+}
+
+const MAP_ORDER_STATUS_TO_STEP_NAME: MapOrderStatusToStepName = {
+    [types.OrderStatus.Ordered]: StepName.Ordered,
+    [types.OrderStatus.Processing]: StepName.Processing,
+    [types.OrderStatus.Complete]: StepName.Complete,
+    [types.OrderStatus.Cancel]: StepName.Cancel,
+}
+
+interface MapStepNameToOrderStatus {
+    [index: number]: number;
+}
+
+const MAP_STEP_NAME_TO_ORDER_STATUS: MapStepNameToOrderStatus = {
+    [StepName.Ordered]: types.OrderStatus.Ordered,
+    [StepName.Processing]: types.OrderStatus.Processing,
+    [StepName.Complete]: types.OrderStatus.Complete,
+    [StepName.Cancel]: types.OrderStatus.Cancel,
+}
+
+function generateSteps(
+    order: types.Record,
+    theme: Theme,
+): StepProps[] {
+    return [
+        createOrderedStep(order, theme),
+        createProcessingStep(order, theme),
+        lastStepProps(order, theme),
+    ]
+}
+
+function createOrderedStep(
+    order: types.Record,
+    theme: Theme,
+): StepProps {
+    return createStep({
+        step: StepName.Ordered,
+        icon: <LocalShippingIcon></LocalShippingIcon>,
+        content: (
+            <DetailLongTextWrapper title='Order date'>
+                {order.order_date}
+            </DetailLongTextWrapper>
+        ),
+        state: 'enable',
+        statusComponent:
+            (order.order_status === types.OrderStatus.Ordered) ?
+                <div></div> : <Done></Done>,
+        color: theme.palette.primary.main,
+    });
+}
+
+function createProcessingStep(
+    order: types.Record,
+    theme: Theme,
+): StepProps {
+    const status = order.order_status;
+
+    return createStep({
+        step: StepName.Processing,
+        icon: <SendIcon></SendIcon>,
+        state: (status > types.OrderStatus.Processing) ? 'enable' : 'disable',
+        content: (
+            <DetailLongTextWrapper title='Required date'>
+                {order.required_date}
+            </DetailLongTextWrapper>
+        ),
+        statusComponent: (status > types.OrderStatus.Processing) ?
+            <Done></Done> : <div></div>,
+        color: (status > types.OrderStatus.Ordered) ?
+            theme.palette.primary.main :
+            theme.palette.grey[DISABLE_COLOR_OFFSET],
+    });
+}
+
+interface CreateStepProps {
+    step: StepName;
+    icon: React.ReactElement;
+    state: 'enable' | 'disable';
+    statusComponent: React.ReactElement;
+    content: React.ReactElement;
+    color: string;
+}
+
+function createStep({
+    step,
+    icon,
+    state,
+    statusComponent,
+    content,
+    color,
+}: CreateStepProps): StepProps {
+    return {
+        label: MAP_STATUS_ID_TO_TEXT[MAP_STEP_NAME_TO_ORDER_STATUS[step]],
+        state: state,
+        icon: icon,
+        status: statusComponent,
+        content: (
+            <ContentWrapper>
+                {content}
+            </ContentWrapper>
+        ),
+        color: color,
     }
 }
 
 function lastStepProps(
     order: types.Record,
     theme: Theme,
-    contentWrapper: string,
 ): StepProps {
     const status = order.order_status;
 
-    if (status === 3) {
+    if (status === types.OrderStatus.Cancel) {
         return {
-            label: MAP_STATUS_ID_TO_TEXT[3],
+            label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Cancel],
             icon: <RejectedIcon></RejectedIcon>,
             state: 'disable',
             color: theme.palette.error.main,
         }
     } else {
         return {
-            label: MAP_STATUS_ID_TO_TEXT[4],
+            label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Complete],
             icon: <DoneIcon></DoneIcon>,
-            state: status === 4 ? 'enable' : 'disable',
+            state: status === types.OrderStatus.Complete ? 'enable' : 'disable',
             content: (
-                <Box className={contentWrapper}>
+                <ContentWrapper>
                     <DetailLongTextWrapper title='Shipped date'>
                         {order.shipped_date}
                     </DetailLongTextWrapper>
-                </Box>
+                </ContentWrapper>
             ),
-            status: status > 2 ? <Done></Done> : <div></div>,
-            color: status === 4 ? theme.palette.primary.main : DISABLE_COLOR,
+            status:
+                status > types.OrderStatus.Processing ?
+                    <Done></Done> : <div></div>,
+            color: status === types.OrderStatus.Complete ?
+                theme.palette.primary.main :
+                theme.palette.grey[DISABLE_COLOR_OFFSET],
         }
     }
+}
+
+const useContentWrapperStyles = makeStyles((theme: Theme) => ({
+    root: {
+        width: '35em',
+        [theme.breakpoints.down('xs')]: {
+            width: '15em',
+        },
+    },
+}));
+
+interface ContentWrapperProps {
+    children: React.ReactElement;
+}
+
+function ContentWrapper({
+    children
+}: ContentWrapperProps) {
+    const classes = useContentWrapperStyles();
+
+    return (
+        <Box className={classes.root}>
+            {children}
+        </Box>
+    );
 }
 
 function Done() {

@@ -12,13 +12,10 @@ import OrderIcon from '@material-ui/icons/ShoppingCart'
 import OrderTabPanel from './OrderTabPanel'
 import { useSelector, useDispatch } from 'react-redux'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useOrderDetailStyles = makeStyles((theme: Theme) => ({
     root: {
         maxWidth: '90vw',
         width: '40em',
-    },
-    detailIdWrapper: {
-        marginLeft: '1em',
     },
     background: {
         backgroundColor: theme.palette.background.default,
@@ -29,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function OrderDetail() {
-    const classes = useStyles();
+    const classes = useOrderDetailStyles();
     const dispatch = useDispatch();
 
     const isOpen = useSelector(detailSelectors.isOpen);
@@ -38,7 +35,7 @@ export default function OrderDetail() {
     const id = useSelector(detailSelectors.id);
 
     const handleClose = useCallback(
-        () => dispatch(actions.detail.close()), 
+        () => dispatch(actions.detail.close()),
         [dispatch],
     );
     const handleChangeTab = useCallback(
@@ -54,42 +51,15 @@ export default function OrderDetail() {
             classes={{ paper: classes.background }}
         >
             <Box className={classes.root}>
-                <Grid 
+                <Grid
                     container
                     direction='column'
                     spacing={0}
                 >
-                    <Grid 
-                        item
-                        container
-                        justify='space-between'
-                        alignItems='center'
-                    >
-                        <Grid item>
-                            <Grid 
-                                container
-                                alignItems='center'
-                                spacing={2}
-                                className={classes.detailIdWrapper}
-                            >
-                                <Grid item>
-                                    <Icon color='primary'>
-                                        <OrderIcon></OrderIcon>
-                                    </Icon>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant='h5' color='primary'>
-                                        {id}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item>
-                            <IconButton onClick={handleClose}>
-                                <CloseIcon></CloseIcon>
-                            </IconButton>
-                        </Grid>
-                    </Grid>
+                    <Header
+                        id={id}
+                        onClose={handleClose}
+                    ></Header>
                     <Grid
                         item
                         className={classes.contentWrapper}
@@ -103,5 +73,57 @@ export default function OrderDetail() {
                 </Grid>
             </Box>
         </Drawer>
+    );
+}
+
+const useHeaderStyle = makeStyles({
+    idWrapper: {
+        marginLeft: '1em',
+    }
+});
+
+interface HeaderProps {
+    id: number;
+    onClose: () => void;
+}
+
+function Header({
+    id,
+    onClose,
+}: HeaderProps) {
+    const classes = useHeaderStyle();
+
+    return (
+        <Grid
+            item
+            container
+            justify='space-between'
+            alignItems='center'
+        >
+            <Grid item>
+                <Grid
+                    container
+                    alignItems='center'
+                    spacing={2}
+                    className={classes.idWrapper}
+                >
+                    <Grid item>
+                        <Icon color='primary'>
+                            <OrderIcon></OrderIcon>
+                        </Icon>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant='h5' color='primary'>
+                            {id}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item>
+                <IconButton onClick={onClose}>
+                    <CloseIcon></CloseIcon>
+                </IconButton>
+            </Grid>
+        </Grid>
     );
 }
