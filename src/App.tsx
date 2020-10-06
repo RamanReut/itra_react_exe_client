@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './App.css';
 import { Layout } from './features/layout';
 import { Orders } from './features/orders';
@@ -19,16 +19,18 @@ function App() {
 
     return (
         <div className={classnames('App', classes.root)}>
-            <Layout>
-                <Switch>
-                    <Route path='/data'>
-                        <Orders></Orders>
-                    </Route>
-                    <Route path='*'>
-                        <NotFound></NotFound>
-                    </Route>
-                </Switch>
-            </Layout>      
+            <Suspense fallback='loading...'>
+                <Layout>
+                    <Switch>
+                        <Route path='/data'>
+                            <Orders></Orders>
+                        </Route>
+                        <Route path='*'>
+                            <NotFound></NotFound>
+                        </Route>
+                    </Switch>
+                </Layout> 
+            </Suspense>     
         </div>
   );
 }
