@@ -1,4 +1,5 @@
 {
+    "title": "Orders",
     "columns": {
         "order_id": "Order ID",
         "order_status": "Order status",

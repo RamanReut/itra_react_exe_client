@@ -56,6 +56,7 @@ export default function OrdersTable( ) {
     return (
         <Box>
             <MaterialTable
+                title={t('title')}
                 columns={columns}
                 data={dataExpandable}
                 components={{

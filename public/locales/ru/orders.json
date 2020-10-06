@@ -1,4 +1,5 @@
 {
+    "title": "Заказы",
     "columns": {
         "order_id": "Номер заказа",
         "order_status": "Статус заказа",
