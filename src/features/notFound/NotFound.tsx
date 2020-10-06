@@ -11,7 +11,7 @@ const useStyles = makeStyles({
 
 export default function NotFound() {
     const classes = useStyles();
-    const { t } = useTranslation('notFound');
+    const { t } = useTranslation();
 
     return (
         <Grid 
@@ -21,7 +21,7 @@ export default function NotFound() {
             alignItems='center'
         >
             <Grid item>
-                404 {t('message')}
+                404 {t('pageNotFound')}
             </Grid>
         </Grid>
     );
