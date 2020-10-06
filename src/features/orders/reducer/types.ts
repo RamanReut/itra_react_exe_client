@@ -2,6 +2,7 @@ export interface OrdersState {
     ordersTable: OrdersTableState;
     detail: DetailState;
     visibleColumns: ColumnVisibleState;
+    timeline: TimelineState;
 }
 
 export interface OrdersTableState {
@@ -38,7 +39,7 @@ export interface OrderItem {
 
 export interface Row {
     order_id: number;
-    order_status: number;
+    order_status: OrderStatus;
     order_date: string;
     required_date: string;
     shipped_date: string;
@@ -46,6 +47,13 @@ export interface Row {
     customer_name: string;
     email: string;
     address: string;
+}
+
+export enum OrderStatus {
+    Ordered = 1,
+    Processing,
+    Cancel,
+    Complete,
 }
 
 export type Columns = 
@@ -70,4 +78,17 @@ export type MapColumnToColumnName = {
 export interface ColumnVisibleState {
     isOpen: boolean;
     checkedColumns: Array<Columns>;
+}
+
+export interface MapNumberToString {
+    [index: number]: string;
+}
+
+export interface TimelineState {
+    activeStep: number;
+}
+
+export interface DateRange {
+    start?: Date,
+    end?: Date,
 }

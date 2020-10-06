@@ -8,6 +8,7 @@ import OrderInfo from './OrderInfo'
 import CustomerInfo from './CustomerInfo'
 import ItemsInfo from './DetailItems'
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import Timeline from './Timeline'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -77,19 +78,23 @@ export default function OrderTabPanel({
                 value={tab}
                 onChange={(event, value) => onChangeTab(value as number)}
                 textColor='primary'
-                variant='fullWidth'
+                variant='scrollable'
             >
-                <Tab
+                <Tab 
                     {...defaultTabProps}
                     label='Order'
-                ></Tab>
-                <Tab
+                ></Tab> 
+                <Tab 
                     {...defaultTabProps}
                     label='Customer'
                 ></Tab>
-                <Tab
+                <Tab 
                     {...defaultTabProps}
                     label='Items'
+                ></Tab>
+                <Tab
+                    {...defaultTabProps}
+                    label='Timeline'
                 ></Tab>
             </Tabs>
             <Box className={classes.panelWrapper}>
@@ -101,6 +106,9 @@ export default function OrderTabPanel({
                 </TabPanel>
                 <TabPanel value={tab} index={2}>
                     <ItemsInfo items={data.order_items}></ItemsInfo>
+                </TabPanel>
+                <TabPanel value={tab} index={3}>
+                    <Timeline></Timeline>
                 </TabPanel>
             </Box>
         </Box>

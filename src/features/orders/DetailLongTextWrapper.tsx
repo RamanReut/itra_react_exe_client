@@ -7,7 +7,7 @@ export interface DetailLongTextWrapperProps {
     children: string;
 }
 
-export default function DeatilLongTextWrapper({
+export default function DetailLongTextWrapper({
     title,
     children,
 }: DetailLongTextWrapperProps ) {
@@ -16,7 +16,11 @@ export default function DeatilLongTextWrapper({
             item
             xs={12}
         >
-            <Grid container>
+            <Grid
+                container
+                alignItems='baseline'
+                spacing={1}
+            >
                 <Grid 
                     item
                     xs={4}

@@ -19,3 +19,8 @@ export const visibleColumns = createSelector(
     root,
     (state) => state.visibleColumns,
 );
+
+export const timeline = createSelector(
+    root,
+    (state) => state.timeline,
+);

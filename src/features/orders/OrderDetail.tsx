@@ -19,7 +19,10 @@ const useOrderDetailStyles = makeStyles((theme: Theme) => ({
     },
     background: {
         backgroundColor: theme.palette.background.default,
-    }
+    },
+    contentWrapper: {
+        width: '100%',
+    },
 }));
 
 export default function OrderDetail() {
@@ -51,13 +54,16 @@ export default function OrderDetail() {
                 <Grid
                     container
                     direction='column'
-                    spacing={2}
+                    spacing={0}
                 >
                     <Header
                         id={id}
                         onClose={handleClose}
                     ></Header>
-                    <Grid item>
+                    <Grid
+                        item
+                        className={classes.contentWrapper}
+                    >
                         <OrderTabPanel
                             tab={tab}
                             onChangeTab={handleChangeTab}
