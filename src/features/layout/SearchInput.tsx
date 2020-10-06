@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import SearchIcon from '@material-ui/icons/Search'
 import Grid from '@material-ui/core/Grid'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {},
@@ -35,6 +36,7 @@ export default function SearchInput({
     onChange,
 }: SearchInputProps ) {
     const classes = useStyles();
+    const { t } = useTranslation();
 
     return (
         <Grid 
@@ -54,7 +56,7 @@ export default function SearchInput({
                     type='search'
                     color='primary'
                     size='small'
-                    placeholder='Quick search...'
+                    placeholder={t('quickSearch')}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position='start'>
