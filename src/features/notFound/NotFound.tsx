@@ -1,6 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
     root: {
@@ -10,6 +11,7 @@ const useStyles = makeStyles({
 
 export default function NotFound() {
     const classes = useStyles();
+    const { t } = useTranslation('notFound');
 
     return (
         <Grid 
@@ -19,7 +21,7 @@ export default function NotFound() {
             alignItems='center'
         >
             <Grid item>
-                404 page not found
+                404 {t('message')}
             </Grid>
         </Grid>
     );
