@@ -5,12 +5,14 @@ import Hidden from '@material-ui/core/Hidden'
 import Box from '@material-ui/core/Box'
 import Drawer from './NavbarDrawer'
 import List from './NavbarList'
-import { CONTENT_HEIGHT } from './constants'
+import { CONTENT_HEIGHT, HEADER_HEIGHT } from './constants'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         height: `${CONTENT_HEIGHT}vh`,
         backgroundColor: theme.palette.background.default,
+        position: 'sticky',
+        top: `${HEADER_HEIGHT}vh`,
     },
     desktopListWrapper: {
         height: 'inherit',
