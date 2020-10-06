@@ -87,3 +87,8 @@ export interface MapNumberToString {
 export interface TimelineState {
     activeStep: number;
 }
+
+export interface DateRange {
+    start?: Date,
+    end?: Date,
+}

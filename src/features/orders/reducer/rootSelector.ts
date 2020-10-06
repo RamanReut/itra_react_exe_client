@@ -23,4 +23,4 @@ export const visibleColumns = createSelector(
 export const timeline = createSelector(
     root,
     (state) => state.timeline,
-)
+);
