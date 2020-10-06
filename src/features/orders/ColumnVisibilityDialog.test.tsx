@@ -20,7 +20,7 @@ function Component() {
 }
 
 beforeEach(() => {
-    store.dispatch(actions.openVisibleColumnsDialog());
+    store.dispatch(actions.ordersTable.openVisibleColumnsDialog());
     const renderResult = render(
         <Component></Component>
     );
@@ -28,7 +28,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    store.dispatch(actions.reset());
+    store.dispatch(actions.ordersTable.reset());
 });
 
 test('after click on cancel button dialog should be closed', () => {
@@ -87,5 +87,5 @@ function getDialog() {
 }
 
 function getManagerNameIsInclude() {
-    return selectors.visibleColumns(store.getState()).includes('manager_name');
+    return selectors.ordersTable.visibleColumns(store.getState()).includes('manager_name');
 }

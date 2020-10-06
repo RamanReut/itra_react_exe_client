@@ -1,32 +1,31 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import ControlColumnVisibility from './ColumnVisibilityControl'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
-import { types, actions, selectors } from './reducer'
+import { types, actions, visibleColumnsSelector } from './reducer'
 import { DialogActions } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, batch } from 'react-redux'
 
 export default function ColumnVisibilityDialog() {
     const dispatch = useDispatch();
 
-    const isOpen = useSelector(selectors.isControlColumnsOpen);
-    const checkedColumns = useSelector(selectors.checkedColumns);
+    const isOpen = useSelector(visibleColumnsSelector.isOpen);
+    const checkedColumns = useSelector(visibleColumnsSelector.checkedColumns);
 
     const handleClose = useCallback(() => {
-        dispatch(actions.closeVisibleColumnsDialog());
+        dispatch(actions.visibleColumns.close());
     }, [dispatch]);
     const handleClick = useCallback((column: types.Columns) => {
-        dispatch(actions.checkColumns(column));
+        dispatch(actions.visibleColumns.toggleCheck(column));
     }, [dispatch]);
     const handleOk = useCallback(() => {
-        dispatch(actions.applyVisibleColumns());
-    }, [dispatch]);
-
-    useEffect(() => {
-        dispatch(actions.initCheckedColumns());
-    }, [dispatch]);
+        batch(() => {
+            dispatch(actions.ordersTable.updateVisibleColumns(checkedColumns));
+            handleClose();
+        });
+    }, [dispatch, checkedColumns, handleClose]);
 
     return ( 
         <Dialog

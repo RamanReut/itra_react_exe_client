@@ -1,5 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
+const BACKGROUND_DEFAULT = "#f5f5f5";
+
 export const theme = createMuiTheme({
     palette: {
         primary: {
@@ -10,7 +12,7 @@ export const theme = createMuiTheme({
         },
         background: {
             paper: "#fff",
-            default: "#f5f5f5",
+            default: BACKGROUND_DEFAULT,
         },
     },
     overrides: {
@@ -23,6 +25,6 @@ export const theme = createMuiTheme({
             root: {
                 borderRadius: '2em',
             },
-        }
+        },
     }
 });

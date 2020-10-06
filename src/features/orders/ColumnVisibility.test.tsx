@@ -21,7 +21,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    store.dispatch(actions.reset());
+    store.dispatch(actions.ordersTable.reset());
 });
 
 test('after mount dialog should be closed', () => {

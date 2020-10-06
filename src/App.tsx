@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Layout } from './features/layout';
-import { DataTable } from './features/dataTable';
+import { Orders } from './features/orders';
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import classnames from 'classnames'
 import { Switch, Route } from 'react-router-dom'
@@ -22,7 +22,7 @@ function App() {
             <Layout>
                 <Switch>
                     <Route path='/data'>
-                        <DataTable></DataTable>
+                        <Orders></Orders>
                     </Route>
                     <Route path='*'>
                         <NotFound></NotFound>

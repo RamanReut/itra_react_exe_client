@@ -1,36 +1,32 @@
-import * as types from './types'
 import { createSelector } from '@reduxjs/toolkit'
-
-export function dataTable(state: types.RootState): types.DataTableState {
-    return state.dataTable;
-}
+import { ordersTable } from './rootSelector'
 
 export const visibleColumns = createSelector(
-    dataTable,
+    ordersTable,
     (state) => state.visibleColumns,
 );
 
 export const data = createSelector(
-    dataTable,
+    ordersTable,
     (state) => state.data
 );
 
 export const isControlColumnsOpen = createSelector(
-    dataTable,
+    ordersTable,
     (state) => state.isControlColumnsOpen,
 );
 
 export const isLoading = createSelector(
-    dataTable,
+    ordersTable,
     (state) => state.isLoading,
 );
 
 export const isLoadingFailed = createSelector(
-    dataTable,
+    ordersTable,
     (state) => state.isLoadingFailed,
 );
 
 export const checkedColumns = createSelector(
-    dataTable,
+    ordersTable,
     (state) => state.checkedColumns,
 );

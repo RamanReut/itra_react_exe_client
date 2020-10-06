@@ -6,7 +6,7 @@ import ColumnVisibility from './ColumnVisibility'
 
 const useStyles = makeStyles({
     labelWrapper: {
-        minWidth: '5em',
+        minWidth: '9em',
     },
 });
 

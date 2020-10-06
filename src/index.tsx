@@ -8,14 +8,18 @@ import { store } from './features/store'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { theme } from './features/theme'
 import { ThemeProvider } from '@material-ui/core/styles'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import LuxonUtils from '@date-io/luxon'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Router>
-          <App />
-        </Router>
+        <MuiPickersUtilsProvider utils={LuxonUtils}>
+          <Router>
+            <App />
+          </Router>
+        </MuiPickersUtilsProvider>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
