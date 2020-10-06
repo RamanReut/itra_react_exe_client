@@ -4,7 +4,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { types } from './reducer'
-import { COLUMNS_LOCALIZATIONS } from './constants'
+import { useTranslation } from 'react-i18next'
 
 export interface ColumnVisibilityControlProps {
     visibleColumns: Array<types.Columns>;
@@ -15,9 +15,12 @@ export default function ColumnVisibilityControlProps({
     visibleColumns,
     onClick,
 }: ColumnVisibilityControlProps) {
+    const { t } = useTranslation('orders');
+    const columnNames: Record<string, string> =
+        t('columns', { returnObjects: true })
     const checkboxProps = useMemo(
-        () => createCheckboxProps(COLUMNS_LOCALIZATIONS, visibleColumns, onClick), 
-        [visibleColumns, onClick]
+        () => createCheckboxProps(columnNames, visibleColumns, onClick),
+        [visibleColumns, onClick, columnNames]
     );
 
     return (
@@ -63,7 +66,7 @@ interface CheckboxProps {
 }
 
 function createCheckboxProps(
-    columns: types.MapColumnToColumnName, 
+    columns: Record<string, string>, 
     visible: Array<types.Columns>, 
     onClick: (id: types.Columns) => void
 ): Array<CheckboxProps> {
