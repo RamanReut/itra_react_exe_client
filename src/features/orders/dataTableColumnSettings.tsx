@@ -1,5 +1,4 @@
 import { types } from './reducer'
-import { MAP_STATUS_ID_TO_TEXT } from './constants'
 import { Column as TableColumn } from 'material-table'
 import DateFilter from './DateFilter'
 import { dateRangeFilter } from './dateFilters'
@@ -10,6 +9,7 @@ type ColumnSettings = {
 
 interface Column {
     field: string;
+    title?: string;
     type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency';
     lookup?: object;   
     filterComponent?: (props: {
@@ -29,7 +29,6 @@ const columnSettings: ColumnSettings = {
     },
     order_status: {
         ...getField('order_status'),
-        lookup: MAP_STATUS_ID_TO_TEXT,
     },
     order_date: {
         ...getField('order_date'),
@@ -72,9 +71,17 @@ function getField(column: types.Columns) {
 export function createColumnSettingList(
     columns: Array<types.Columns>,
     mapTitle: Record<string, string>,
+    mapStatus: Record<string, string>,
 ): Array<Column> {
-    return columns.map((column) => ({
-        ...columnSettings[column],
-        title: mapTitle[column],
-    }));
+    return columns.map((column, key) => {
+        const res: Column = {
+                ...columnSettings[column],
+                title: mapTitle[column],
+        };
+        if (res.field === 'order_status') {
+            res.lookup = mapStatus;
+        }
+        return res;
+    }
+    );
 }

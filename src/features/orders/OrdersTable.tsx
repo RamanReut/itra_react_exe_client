@@ -23,6 +23,8 @@ export default function OrdersTable( ) {
     const { t } = useTranslation('orders');
     const columnNames: Record<string, string> =
         t('columns', { returnObjects: true });
+    const statusNames: Record<string, string> =
+        t('status', { returnObjects: true });
 
     const visibleColumns = useSelector(selectors.ordersTable.visibleColumns);
     const data = useSelector(selectors.ordersTable.data);
@@ -30,8 +32,12 @@ export default function OrdersTable( ) {
     const isLoaingFailed = useSelector(selectors.ordersTable.isLoadingFailed);
 
     const columns = useMemo(
-        () => createColumnSettingList(visibleColumns, columnNames),
-        [visibleColumns, columnNames]
+        () => createColumnSettingList(
+            visibleColumns,
+            columnNames,
+            statusNames
+        ),
+        [visibleColumns, columnNames, statusNames]
     );
     const dataExpandable = useMemo(
         () => createExpandableData(data), [data]);
