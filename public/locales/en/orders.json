@@ -1,0 +1,13 @@
+{
+    "columns": {
+        "order_id": "Order ID",
+        "order_status": "Order status",
+        "order_date": "Order date",
+        "required_date": "Required date",
+        "manager_name": "Manager name",
+        "shipped_date": "Shipped date",
+        "customer_name": "Customer name",
+        "address": "Address",
+        "email": "Email"
+    }
+}

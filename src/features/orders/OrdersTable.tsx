@@ -9,6 +9,7 @@ import TableBackdrop from './TableBackdrop'
 import LoadingError from './LoadingError'
 import { createColumnSettingList } from './dataTableColumnSettings'
 import { DataIndexable } from './reducer/types'
+import { useTranslation } from 'react-i18next'
 
 const TABLE_OPTIONS = {
     pageSize: 15,
@@ -19,6 +20,9 @@ const TABLE_OPTIONS = {
 
 export default function OrdersTable( ) {
     const dispatch = useDispatch();
+    const { t } = useTranslation('orders');
+    const columnNames: Record<string, string> =
+        t('columns', { returnObjects: true });
 
     const visibleColumns = useSelector(selectors.ordersTable.visibleColumns);
     const data = useSelector(selectors.ordersTable.data);
@@ -26,8 +30,11 @@ export default function OrdersTable( ) {
     const isLoaingFailed = useSelector(selectors.ordersTable.isLoadingFailed);
 
     const columns = useMemo(
-        () => createColumnSettingList(visibleColumns), [visibleColumns]);
-    const dataExpandable = useMemo(() => createExpandableData(data), [data]);
+        () => createColumnSettingList(visibleColumns, columnNames),
+        [visibleColumns, columnNames]
+    );
+    const dataExpandable = useMemo(
+        () => createExpandableData(data), [data]);
 
     
     const handleRowClick = useCallback((_, { order_id }) => {

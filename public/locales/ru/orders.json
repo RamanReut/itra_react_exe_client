@@ -1,0 +1,13 @@
+{
+    "columns": {
+        "order_id": "Номер заказа",
+        "order_status": "Статус заказа",
+        "order_date": "Дата заказа",
+        "required_date": "Дата востребования",
+        "manager_name": "Имя менеджера",
+        "shipped_date": "Дата доставки",
+        "customer_name": "Имя покупателя",
+        "address": "Адрес",
+        "email": "Электронная почта"
+    }
+}

@@ -19,4 +19,3 @@ export const COLUMNS_LOCALIZATIONS: types.MapColumnToColumnName = {
     'email':           'Email',
     'address':         'Address',
 };
-

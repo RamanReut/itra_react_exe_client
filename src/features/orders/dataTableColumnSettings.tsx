@@ -1,5 +1,5 @@
 import { types } from './reducer'
-import { COLUMNS_LOCALIZATIONS, MAP_STATUS_ID_TO_TEXT } from './constants'
+import { MAP_STATUS_ID_TO_TEXT } from './constants'
 import { Column as TableColumn } from 'material-table'
 import DateFilter from './DateFilter'
 import { dateRangeFilter } from './dateFilters'
@@ -10,7 +10,6 @@ type ColumnSettings = {
 
 interface Column {
     field: string;
-    title: string;
     type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency';
     lookup?: object;   
     filterComponent?: (props: {
@@ -26,51 +25,56 @@ interface Column {
 
 const columnSettings: ColumnSettings = {
     order_id: {
-        ...getFieldAndTitle('order_id'),
+        ...getField('order_id'),
     },
     order_status: {
-        ...getFieldAndTitle('order_status'),
+        ...getField('order_status'),
         lookup: MAP_STATUS_ID_TO_TEXT,
     },
     order_date: {
-        ...getFieldAndTitle('order_date'),
+        ...getField('order_date'),
         type: 'date',
         filterComponent: DateFilter,
         customFilterAndSearch: dateRangeFilter,
     },
     required_date: {
-        ...getFieldAndTitle('required_date'),
+        ...getField('required_date'),
         type: 'date',
         filterComponent: DateFilter,
         customFilterAndSearch: dateRangeFilter,
     },
     shipped_date: {
-        ...getFieldAndTitle('shipped_date'),
+        ...getField('shipped_date'),
         type: 'date',
         filterComponent: DateFilter,
         customFilterAndSearch: dateRangeFilter,
     },
     manager_name: {
-        ...getFieldAndTitle('manager_name'),
+        ...getField('manager_name'),
     },
     customer_name: {
-        ...getFieldAndTitle('customer_name'),
+        ...getField('customer_name'),
     },
     email: {
-        ...getFieldAndTitle('email'),
+        ...getField('email'),
     },
     address: {
-        ...getFieldAndTitle('address')
+        ...getField('address')
     },
 }
 
-function getFieldAndTitle(column: types.Columns) {
+function getField(column: types.Columns) {
     return {
         field: column,
-        title: COLUMNS_LOCALIZATIONS[column],
     }
 }
 
-export function createColumnSettingList(columns: Array<types.Columns>): Array<Column> {
-    return columns.map((column) => ({...columnSettings[column]}));
+export function createColumnSettingList(
+    columns: Array<types.Columns>,
+    mapTitle: Record<string, string>,
+): Array<Column> {
+    return columns.map((column) => ({
+        ...columnSettings[column],
+        title: mapTitle[column],
+    }));
 }
