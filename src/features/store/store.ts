@@ -2,10 +2,12 @@ import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/
 import thunk from 'redux-thunk'
 import { reducer as layout } from '../layout'
 import { reducer as orders } from '../orders';
+import { reducer as theme } from '../theme'
 
 const rootReducer = combineReducers({
     layout,
     orders,
+    theme,
 });
 
 export type RootState = ReturnType<typeof rootReducer>

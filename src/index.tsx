@@ -6,8 +6,6 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { store } from './features/store'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { theme } from './features/theme'
-import { ThemeProvider } from '@material-ui/core/styles'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import LuxonUtils from '@date-io/luxon'
 import './features/locale'
@@ -15,13 +13,11 @@ import './features/locale'
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <MuiPickersUtilsProvider utils={LuxonUtils}>
-          <Router>
-            <App />
-          </Router>
-        </MuiPickersUtilsProvider>
-      </ThemeProvider>
+      <MuiPickersUtilsProvider utils={LuxonUtils}>
+        <Router>
+          <App />
+        </Router>
+      </MuiPickersUtilsProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
