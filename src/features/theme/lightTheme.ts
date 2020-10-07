@@ -10,10 +10,8 @@ export const lightTheme = createMuiTheme({
         primary: {
             light: "rgba(129, 92, 237, 1)",
             main: "rgba(33, 21, 84, 1)",
-            contrastText: "#fff",
         },
         background: {
-            paper: "#fff",
             default: BACKGROUND_DEFAULT,
         },
         tonalOffset: 0.1,
