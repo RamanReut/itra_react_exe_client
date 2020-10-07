@@ -1,3 +1,8 @@
 {
-    "language": "Language"
+    "language": "Language",
+    "theme": {
+        "theme": "Theme",
+        "dark": "Dark",
+        "light": "Light"
+    }
 }
