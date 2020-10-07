@@ -4,17 +4,11 @@ import Link from '@material-ui/core/Link'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import SeparatorIcon from '@material-ui/icons/NavigateNext'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { TFunction } from 'i18next'
 
 interface MapPathPoint {
     [index: string]: string;
-}
-
-const MAP_PATH_POINT: MapPathPoint = {
-    '': 'Main',
-    'data': 'Data',
-    'analitycs': 'Analitycs',
-    'filter': 'Advance filter',
-    'settings': 'Settings',
 }
 
 const useStylesPath = makeStyles((theme: Theme) => ({
@@ -34,6 +28,7 @@ const useStylesPath = makeStyles((theme: Theme) => ({
 export default function Path() {
     const classes = useStylesPath();
     const location = useLocation();
+    const { t } = useTranslation('pages');
 
     let pathPoints = location.pathname.split('/');
     if ((pathPoints[pathPoints.length - 1]) === '') {
@@ -47,12 +42,15 @@ export default function Path() {
             maxItems={4}
             separator={<SeparatorIcon fontSize='small'></SeparatorIcon>}
         >
-            {createPathPoints(pathPoints)}
+            {createPathPoints(pathPoints, t)}
         </Breadcrumbs>
     );
 }
 
-function createPathPoints(points: string[]): ReactElement[] {
+function createPathPoints(
+    points: string[],
+    t: TFunction,
+): ReactElement[] {
     let curPath = '';
 
     return points.map((elem: string, key: number) => {
@@ -64,7 +62,7 @@ function createPathPoints(points: string[]): ReactElement[] {
                 key={curPath}
                 href={curPath}
             >
-                {MAP_PATH_POINT[elem]}
+                {t(key === 0 ? 'main' : elem)}
             </Link>
         );
     });
