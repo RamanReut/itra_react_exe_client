@@ -10,6 +10,7 @@ const slice = createSlice({
     initialState: initialState,
     reducers: {
         changeTheme(state: ThemeName, { payload }: PayloadAction<ThemeName>) {
+            localStorage.setItem('theme', payload);
             return payload;
         },
     }
