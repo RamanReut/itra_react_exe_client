@@ -16,5 +16,11 @@
         "2": "Processing",
         "3": "Cancel",
         "4": "Complete"
+    },
+    "tabs": {
+        "order": "Order",
+        "customer": "Customer",
+        "items": "Items",
+        "timeline": "Timeline"
     }
 }

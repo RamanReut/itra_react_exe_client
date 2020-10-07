@@ -9,6 +9,7 @@ import CustomerInfo from './CustomerInfo'
 import ItemsInfo from './DetailItems'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import Timeline from './Timeline'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -70,6 +71,7 @@ export default function OrderTabPanel({
         },
         disableRipple: true,
     };
+    const { t } = useTranslation('orders');
 
     return (
         <Box className={classes.root}>
@@ -82,19 +84,19 @@ export default function OrderTabPanel({
             >
                 <Tab 
                     {...defaultTabProps}
-                    label='Order'
+                    label={t('tabs.order')}
                 ></Tab> 
                 <Tab 
                     {...defaultTabProps}
-                    label='Customer'
+                    label={t('tabs.customer')}
                 ></Tab>
                 <Tab 
                     {...defaultTabProps}
-                    label='Items'
+                    label={t('tabs.items')}
                 ></Tab>
                 <Tab
                     {...defaultTabProps}
-                    label='Timeline'
+                    label={t('tabs.timeline')}
                 ></Tab>
             </Tabs>
             <Box className={classes.panelWrapper}>
