@@ -22,5 +22,13 @@
         "customer": "Покупатель",
         "items": "Детали",
         "timeline": "Состояние"
+    },
+    "product": {
+        "product": "Продукт",
+        "brand": "Бренд",
+        "list_price": "Цена",
+        "discount": "Скидка",
+        "model_year": "Год модели",
+        "quantity": "Количество"
     }
 }

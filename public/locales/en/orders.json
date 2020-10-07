@@ -22,5 +22,13 @@
         "customer": "Customer",
         "items": "Items",
         "timeline": "Timeline"
+    },
+    "product": {
+        "product": "Product",
+        "brand": "Brand",
+        "list_price": "List price",
+        "discount": "Discount",
+        "model_year": "Model year",
+        "quantity": "Quantity"
     }
 }

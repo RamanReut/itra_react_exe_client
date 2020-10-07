@@ -5,6 +5,7 @@ import DetailShortTextWrapper from './DetailShortTextWrapper'
 import { makeStyles } from '@material-ui/core/styles'
 import { types } from './reducer'
 import { discountToString } from './utils'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
     root: {
@@ -21,6 +22,7 @@ export default function DetailItemInfo({
     discount
 }: types.OrderItem ) {
     const classes = useStyles();
+    const { t } = useTranslation('orders');
 
     return (
         <Grid 
@@ -28,22 +30,22 @@ export default function DetailItemInfo({
             spacing={1}
             className={classes.root}
         >
-            <DetailLongTextWrapper title='Product'>
+            <DetailLongTextWrapper title={t('product.product')}>
                 {product}
             </DetailLongTextWrapper>
-            <DetailShortTextWrapper title='Brand'>
+            <DetailShortTextWrapper title={t('product.brand')}>
                 {brand}
             </DetailShortTextWrapper>
-            <DetailShortTextWrapper title='Model year'>
+            <DetailShortTextWrapper title={t('product.model_year')}>
                 {model_year.toString()}
             </DetailShortTextWrapper>
-            <DetailShortTextWrapper title='List price'>
+            <DetailShortTextWrapper title={t('product.list_price')}>
                 {list_price.toString()}
             </DetailShortTextWrapper>
-            <DetailShortTextWrapper title='Quantity'>
+            <DetailShortTextWrapper title={t('product.quantity')}>
                 {quantity.toString()}
             </DetailShortTextWrapper>
-            <DetailShortTextWrapper title='Discount'>
+            <DetailShortTextWrapper title={t('product.discount')}>
                 {discountToString(discount)}
             </DetailShortTextWrapper>
         </Grid>
