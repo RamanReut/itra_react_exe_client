@@ -6,6 +6,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import classnames from 'classnames'
 import { Switch, Route } from 'react-router-dom'
 import { NotFound } from './features/notFound'
+import { Settings } from './features/settings'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -24,6 +25,9 @@ function App() {
                     <Switch>
                         <Route path='/data'>
                             <Orders></Orders>
+                        </Route>
+                        <Route path='/settings'>
+                            <Settings></Settings>
                         </Route>
                         <Route path='*'>
                             <NotFound></NotFound>
