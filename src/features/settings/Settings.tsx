@@ -16,7 +16,10 @@ export default function Settings() {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root}>
+        <Paper
+            className={classes.root}
+            elevation={2}
+        >
             <Language></Language>
             <Theme></Theme>
         </Paper>
