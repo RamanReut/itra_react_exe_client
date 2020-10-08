@@ -5,13 +5,17 @@ export function darkTheme(theme: Theme){
         ...theme,
         palette: {
             ...theme.palette,
-            type: 'dark',  
+            type: 'dark', 
+            primary: {
+                main: '#757575',
+            },
             background: {
                 paper: '#424242',
             },
             text: {
                 primary: 'rgb(255, 255, 255)',
             },
-        }
+            contrastThreshold: 0.3,
+        },
     });
 }
