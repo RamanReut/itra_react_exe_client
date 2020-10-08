@@ -1,11 +1,27 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
 import Language from './Language'
+import Theme from './Theme'
+import Paper from '@material-ui/core/Paper'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+    root: {
+        height: '100%',
+        padding: '1em',
+        boxSizing: 'border-box',
+    }
+});
 
 export default function Settings() {
+    const classes = useStyles();
+
     return (
-        <Box>
+        <Paper
+            className={classes.root}
+            elevation={2}
+        >
             <Language></Language>
-        </Box>
+            <Theme></Theme>
+        </Paper>
     );
 }

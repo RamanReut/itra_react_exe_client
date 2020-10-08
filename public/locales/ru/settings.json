@@ -1,3 +1,8 @@
 {
-    "language": "Язык"
+    "language": "Язык",
+    "theme": {
+        "theme": "Тема",
+        "dark": "Тёмная",
+        "light": "Светлая"
+    }
 }

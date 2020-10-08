@@ -7,7 +7,7 @@ import CollapseIcon from '@material-ui/icons/NavigateBefore'
 
 const useStyles = makeStyles((theme: Theme) => ({
     color: {
-        color: theme.palette.background.default,
+        color: theme.palette.primary.contrastText,
     },
 }));
 

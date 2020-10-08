@@ -76,11 +76,14 @@ export default function OrderDetail() {
     );
 }
 
-const useHeaderStyle = makeStyles({
+const useHeaderStyle = makeStyles((theme: Theme) => ({
     idWrapper: {
         marginLeft: '1em',
-    }
-});
+    },
+    closeIcon: {
+        color: theme.palette.text.primary,
+    },
+}));
 
 interface HeaderProps {
     id: number;
@@ -120,7 +123,10 @@ function Header({
                 </Grid>
             </Grid>
             <Grid item>
-                <IconButton onClick={onClose}>
+                <IconButton
+                    onClick={onClose}
+                    className={classes.closeIcon}
+                >
                     <CloseIcon></CloseIcon>
                 </IconButton>
             </Grid>

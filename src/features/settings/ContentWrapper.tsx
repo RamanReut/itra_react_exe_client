@@ -4,9 +4,12 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
+    root: {
+        marginBottom: '0.5em',
+    },
     title: {
         textAlign: 'start',
-    }
+    },
 });
 
 export interface ContentWrapper {
@@ -24,6 +27,7 @@ export default function ContentWrapper({
         <Grid
             container
             alignItems='center'
+            className={classes.root}
         >
             <Grid
                 item

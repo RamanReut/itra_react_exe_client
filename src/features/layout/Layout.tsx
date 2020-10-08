@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     root: {
         height: '100vh',
         overflowX: 'hidden',
+        backgroundColor: theme.palette.background.default,
     },
     childrenWrapper: {
         width: '100%',

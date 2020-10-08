@@ -9,58 +9,65 @@ import { types } from './reducer'
 import classnames from 'classnames'
 import { Omit } from '@material-ui/types'
 
-const useStyles = makeStyles((theme: Theme) => ({
-    gutters: {
-        padding: `0.65em 0em`,
-    },
-    active: {
-        backgroundColor: theme.palette.background.default,
-            color: theme.palette.primary.main,
-            '& svg': {
-                color: theme.palette.primary.main,
-            },
-    },
-    root: {
-        marginLeft: '0.5em',
-        borderRadius: '3em 0 0 3em',
-        overflow: 'hidden',
-        '& svg': {
-            margin: 'auto',
+const useStyles = makeStyles((theme: Theme) => {
+    const itemColor =
+        theme.palette.type === 'light' ?
+            theme.palette.primary.main :
+            theme.palette.text.primary;
+
+    return {
+        gutters: {
+            padding: `0.65em 0em`,
         },
-        '&:hover': {
+        active: {
             backgroundColor: theme.palette.background.default,
-            color: theme.palette.primary.main,
+            color: itemColor,
+                '& svg': {
+                    color: itemColor,
+                },
+        },
+        root: {
+            marginLeft: '0.5em',
+            borderRadius: '3em 0 0 3em',
+            overflow: 'hidden',
             '& svg': {
-                color: theme.palette.primary.main,
+                margin: 'auto',
+            },
+            '&:hover': {
+                backgroundColor: theme.palette.background.default,
+                color: itemColor,
+                '& svg': {
+                    color: itemColor,
+                },
             },
         },
-    },
-    text: {
-        marginRight: '1em',
-        marginLeft: '0.5em',
-        '& span': {
-            overflow: 'hidden',
-            textOverflow: 'clip',
-            whiteSpace: 'nowrap',
+        text: {
+            marginRight: '1em',
+            marginLeft: '0.5em',
+            '& span': {
+                overflow: 'hidden',
+                textOverflow: 'clip',
+                whiteSpace: 'nowrap',
+            },
         },
-    },
-    icon: {
-      width: `${constants.NAVBAR_ICON_SIZE}em`,
-      overflow: 'hidden',
-      color: theme.palette.primary.contrastText,
-    },
-    collapseText: {
-        maxWidth: '0',
-        marginLeft: '0',
-        marginRight: '0',
-        overflow: 'hidden',
-    },
-    collapseItem: {
-        width: `${constants.NAVBAR_ICON_SIZE+0.5}em`,
-        borderRadius: '3em',
-        marginRight: '0.5em',
-    },
-}));
+        icon: {
+          width: `${constants.NAVBAR_ICON_SIZE}em`,
+          overflow: 'hidden',
+          color: theme.palette.primary.contrastText,
+        },
+        collapseText: {
+            maxWidth: '0',
+            marginLeft: '0',
+            marginRight: '0',
+            overflow: 'hidden',
+        },
+        collapseItem: {
+            width: `${constants.NAVBAR_ICON_SIZE+0.5}em`,
+            borderRadius: '3em',
+            marginRight: '0.5em',
+        },
+    }
+});
 
 export interface ItemProps {
     icon: ReactElement,

@@ -6,16 +6,16 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { store } from './features/store'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { theme } from './features/theme'
-import { ThemeProvider } from '@material-ui/core/styles'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { ThemeProvider } from '@material-ui/core/styles'
+import { basicTheme } from './features/theme'
 import LuxonUtils from '@date-io/luxon'
 import './features/locale'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={basicTheme}>
         <MuiPickersUtilsProvider utils={LuxonUtils}>
           <Router>
             <App />
