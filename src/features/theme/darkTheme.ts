@@ -17,5 +17,13 @@ export function darkTheme(theme: Theme){
             },
             contrastThreshold: 0.3,
         },
+        overrides: {
+            ...theme.overrides,
+            MuiSelect: {
+                icon: {
+                    color: 'rgb(255, 255, 255)',
+                }
+            }
+        },
     });
 }
