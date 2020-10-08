@@ -1,13 +1,14 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
     root: {
         height: '100%',
+        color: theme.palette.text.primary,
     },
-});
+}));
 
 export default function NotFound() {
     const classes = useStyles();
