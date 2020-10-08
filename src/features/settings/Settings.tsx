@@ -8,6 +8,7 @@ const useStyles = makeStyles({
     root: {
         height: '100%',
         padding: '1em',
+        boxSizing: 'border-box',
     }
 });
 
