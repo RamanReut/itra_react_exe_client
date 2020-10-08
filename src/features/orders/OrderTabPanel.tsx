@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     panelWrapper: {
         boxShadow: theme.shadows[4],
         padding: '1em',
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theme.palette.background.paper,
         borderRadius: '1em',
         borderColor: theme.palette.background.default,
         borderWidth: '5px',
@@ -34,22 +34,27 @@ const useStyles = makeStyles((theme: Theme) => ({
         margin: 'auto',
     },
     tab: {
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theme.palette.background.paper,
         borderTopRightRadius: '1em',
         borderTopLeftRadius: '1em',
         borderBottomWidth: '5px',
         borderBottomColor: theme.palette.background.default,
         borderBottomStyle: 'solid',
         zIndex: 1,
+        '&$selected': {
+            borderColor: theme.palette.background.default,
+            borderWidth: '5px',
+            borderStyle: 'solid',
+            borderBottomWidth: '0',
+            zIndex: 2,
+            boxShadow: theme.shadows[4],
+            color:
+                theme.palette.type === 'light' ?
+                    theme.palette.primary.main :
+                    theme.palette.text.primary,
+        },
     },
-    tabSelected: {
-        borderColor: theme.palette.background.default,
-        borderWidth: '5px',
-        borderStyle: 'solid',
-        borderBottomWidth: '0',
-        zIndex: 2,
-        boxShadow: theme.shadows[4],
-    },
+    selected: {},
 }));
 
 export interface OrderTabPanelProps {
@@ -67,7 +72,7 @@ export default function OrderTabPanel({
     const defaultTabProps = {
         classes: {
             root: classes.tab,
-            selected: classes.tabSelected,
+            selected: classes.selected,
         },
         disableRipple: true,
     };
