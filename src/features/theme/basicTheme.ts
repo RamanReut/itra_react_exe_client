@@ -6,6 +6,10 @@ export const basicTheme = createMuiTheme({
             light: "rgba(129, 92, 237, 1)",
             main: "rgba(33, 21, 84, 1)",
         },
+        secondary: {
+            light: "rgba(129, 92, 237, 1)",
+            main: "rgba(33, 21, 84, 1)",
+        },
     },
     overrides: {
         MuiAppBar: {

@@ -9,6 +9,9 @@ export function darkTheme(theme: Theme){
             primary: {
                 main: '#757575',
             },
+            secondary: {
+                main: '#757575',
+            },
             background: {
                 paper: '#424242',
             },
