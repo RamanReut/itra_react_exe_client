@@ -9,6 +9,9 @@ export function darkTheme(theme: Theme){
             background: {
                 paper: '#424242',
             },
+            text: {
+                primary: 'rgb(255, 255, 255)',
+            },
         }
     });
 }
