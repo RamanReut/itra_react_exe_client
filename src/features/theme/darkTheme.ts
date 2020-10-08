@@ -9,5 +9,8 @@ export const darkTheme = createMuiTheme({
             light: "rgba(129, 92, 237, 1)",
             main: "rgba(33, 21, 84, 1)",
         },
+        background: {
+            paper: '#424242',
+        },
     }
 })

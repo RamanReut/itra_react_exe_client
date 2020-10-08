@@ -13,6 +13,7 @@ export const lightTheme = createMuiTheme({
         },
         background: {
             default: BACKGROUND_DEFAULT,
+            paper: '#fff',
         },
         tonalOffset: 0.1,
     },
