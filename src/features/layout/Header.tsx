@@ -29,7 +29,10 @@ const useHeaderStyles = makeStyles((theme: Theme) => ({
         [theme.breakpoints.up('sm')]: {
             width: '20em',
         },
-    }
+    },
+    appbar: {
+        backgroundColor: theme.palette.background.default,
+    },
 }));
 
 export interface HeaderProps {
@@ -50,6 +53,7 @@ export default function Header({
             data-testid='header'
             position='sticky'
             color='default'
+            className={classes.appbar}
         >
             <Grid 
                 className={classes.root}
