@@ -9,6 +9,9 @@ declare module '@material-ui/core/styles/createPalette' {
         tab: {
             selected: React.CSSProperties['color'],
         },
+        navbar: {
+            active: React.CSSProperties['color'],
+        },
     }
 
     interface PaletteOptions {
@@ -18,6 +21,9 @@ declare module '@material-ui/core/styles/createPalette' {
         },
         tab?: {
             selected?: React.CSSProperties['color'],
+        },
+        navbar?: {
+            active?: React.CSSProperties['color'],
         },
     }
 }

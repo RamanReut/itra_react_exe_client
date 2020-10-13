@@ -21,7 +21,10 @@ export function lightTheme(theme: Theme) {
                 disable: "rgb(159, 159, 159)",
             },
             tab: {
-                selected: MAIN
+                selected: MAIN,
+            },
+            navbar: {
+                active: MAIN,
             },
             type: 'light',
             background: {

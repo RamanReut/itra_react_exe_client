@@ -9,21 +9,15 @@ import { types } from './reducer'
 import classnames from 'classnames'
 import { Omit } from '@material-ui/types'
 
-const useStyles = makeStyles((theme: Theme) => {
-    const itemColor =
-        theme.palette.type === 'light' ?
-            theme.palette.primary.main :
-            theme.palette.text.primary;
-
-    return {
+const useStyles = makeStyles((theme: Theme) => ({
         gutters: {
             padding: `0.65em 0em`,
         },
         active: {
             backgroundColor: theme.palette.background.default,
-            color: itemColor,
+            color: theme.palette.navbar.active,
                 '& svg': {
-                    color: itemColor,
+                    color: theme.palette.navbar.active,
                 },
         },
         root: {
@@ -35,9 +29,9 @@ const useStyles = makeStyles((theme: Theme) => {
             },
             '&:hover': {
                 backgroundColor: theme.palette.background.default,
-                color: itemColor,
+                color: theme.palette.navbar.active,
                 '& svg': {
-                    color: itemColor,
+                    color: theme.palette.navbar.active,
                 },
             },
         },
@@ -67,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) => {
             marginRight: '0.5em',
         },
     }
-});
+));
 
 export interface ItemProps {
     icon: ReactElement,

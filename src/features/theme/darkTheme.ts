@@ -27,6 +27,9 @@ export function darkTheme(theme: Theme){
             tab: {
                 selected: 'white',
             },
+            navbar: {
+                active: 'white',
+            },
             contrastThreshold: 0.3,
         },
         overrides: {
