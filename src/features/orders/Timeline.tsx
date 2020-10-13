@@ -17,8 +17,6 @@ import { types } from './reducer'
 import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 
-const DISABLE_COLOR_OFFSET = 500;
-
 const useDoneStyles = makeStyles((theme: Theme) => ({
     icon: {
         color: theme.palette.success.main,
@@ -122,10 +120,7 @@ function createOrderedStep(
             statusComponent:
                 (order.order_status === types.OrderStatus.Ordered) ?
                     <div></div> : <Done></Done>,
-            color:
-                theme.palette.type === 'light' ?
-                    theme.palette.primary.main :
-                    theme.palette.text.primary,
+            color: theme.palette.timeline.main as string,
         },
         translate
     );
@@ -233,23 +228,11 @@ function lastStepProps(
 }
 
 function getColor(theme: Theme, isDisable: boolean) {
-    let color: string;
-
-    if (theme.palette.type === 'light') {
-        if (isDisable) {
-            color = theme.palette.grey[DISABLE_COLOR_OFFSET];
-        } else {
-            color = theme.palette.primary.main;
-        }
+    if (isDisable) {
+        return theme.palette.timeline.disable as string;
     } else {
-        if (isDisable) {
-            color = theme.palette.grey[500];
-        } else {
-            color = theme.palette.text.primary;
-        }
+        return theme.palette.timeline.main as string;
     }
-
-    return color;
 }
 
 const useContentWrapperStyles = makeStyles((theme: Theme) => ({
