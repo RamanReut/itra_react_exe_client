@@ -20,6 +20,9 @@ export function lightTheme(theme: Theme) {
                 main: MAIN,
                 disable: "rgb(159, 159, 159)",
             },
+            tab: {
+                selected: MAIN
+            },
             type: 'light',
             background: {
                 default: BACKGROUND_DEFAULT,

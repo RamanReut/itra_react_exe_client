@@ -48,10 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             borderBottomWidth: '0',
             zIndex: 2,
             boxShadow: theme.shadows[4],
-            color:
-                theme.palette.type === 'light' ?
-                    theme.palette.primary.main :
-                    theme.palette.text.primary,
+            color: theme.palette.tab.selected,
         },
     },
     selected: {},

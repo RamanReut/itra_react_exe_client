@@ -24,6 +24,9 @@ export function darkTheme(theme: Theme){
                 main: 'white',
                 disable: 'rgb(157, 157, 157)',
             },
+            tab: {
+                selected: 'white',
+            },
             contrastThreshold: 0.3,
         },
         overrides: {

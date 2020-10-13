@@ -5,13 +5,19 @@ declare module '@material-ui/core/styles/createPalette' {
         timeline: {
             main: React.CSSProperties['color'],
             disable: React.CSSProperties['color'],
-        }
+        },
+        tab: {
+            selected: React.CSSProperties['color'],
+        },
     }
 
     interface PaletteOptions {
         timeline?: {
             main?: React.CSSProperties['color'],
             disable?: React.CSSProperties['color'],
+        },
+        tab?: {
+            selected?: React.CSSProperties['color'],
         },
     }
 }
