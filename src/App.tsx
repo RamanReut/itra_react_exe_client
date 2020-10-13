@@ -10,6 +10,7 @@ import { Settings } from './features/settings'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { themeSelector, lightTheme, darkTheme } from './features/theme'
 import { useSelector } from 'react-redux'
+import './features/theme/types.d'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

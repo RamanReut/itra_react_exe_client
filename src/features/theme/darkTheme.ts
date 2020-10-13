@@ -1,5 +1,7 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles'
 
+const MAIN = '#757575';
+
 export function darkTheme(theme: Theme){
     return createMuiTheme({
         ...theme,
@@ -7,16 +9,20 @@ export function darkTheme(theme: Theme){
             ...theme.palette,
             type: 'dark', 
             primary: {
-                main: '#757575',
+                main: MAIN,
             },
             secondary: {
-                main: '#757575',
+                main: MAIN,
             },
             background: {
                 paper: '#424242',
             },
             text: {
                 primary: 'rgb(255, 255, 255)',
+            },
+            timeline: {
+                main: 'white',
+                disable: 'rgb(157, 157, 157)',
             },
             contrastThreshold: 0.3,
         },
