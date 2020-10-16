@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     input: {
         '& .MuiOutlinedInput-root': {
-            backgroundColor: theme.palette.common.white,
+            backgroundColor: theme.palette.background.paper,
         },
     },
 }));
