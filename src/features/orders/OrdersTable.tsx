@@ -5,6 +5,7 @@ import OrderDetail from './OrderDetail'
 import { types, actions, selectors } from './reducer'
 import { useSelector, useDispatch  } from 'react-redux'
 import TableToolbar from './TableToolbar'
+import RowFilter from './RowFilter'
 import TableBackdrop from './TableBackdrop'
 import LoadingError from './LoadingError'
 import { createColumnSettingList } from './dataTableColumnSettings'
@@ -67,6 +68,7 @@ export default function OrdersTable( ) {
                 data={dataExpandable}
                 components={{
                     Toolbar: props => (<TableToolbar {...props}></TableToolbar>),
+                    FilterRow: props => (<RowFilter {...props}></RowFilter>)
                 }}
                 options={TABLE_OPTIONS}
                 onRowClick={handleRowClick}
