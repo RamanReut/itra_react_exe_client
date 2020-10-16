@@ -1,12 +1,11 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles'
+import { basicTheme } from './basicTheme'
+import { ThemeOptions } from '@material-ui/core/styles'
 
 const MAIN = '#757575';
 
-export function darkTheme(theme: Theme){
-    return createMuiTheme({
-        ...theme,
-        palette: {
-            ...theme.palette,
+export const darkTheme: ThemeOptions = {
+    ...basicTheme,
+    palette: {
             type: 'dark', 
             primary: {
                 main: MAIN,
@@ -33,12 +32,12 @@ export function darkTheme(theme: Theme){
             contrastThreshold: 0.3,
         },
         overrides: {
-            ...theme.overrides,
+            ...basicTheme.overrides,
             MuiSelect: {
                 icon: {
                     color: 'rgb(255, 255, 255)',
                 }
             }
         },
-    });
-}
+};
+

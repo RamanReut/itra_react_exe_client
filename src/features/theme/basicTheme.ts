@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import { ThemeOptions } from '@material-ui/core/styles'
 
-export const basicTheme = createMuiTheme({
+export const basicTheme: ThemeOptions = {
     overrides: {
         MuiAppBar: {
             root: {
@@ -13,4 +13,4 @@ export const basicTheme = createMuiTheme({
             },
         },
     }
-});
+};

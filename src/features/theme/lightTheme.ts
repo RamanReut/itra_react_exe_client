@@ -1,13 +1,12 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles'
+import { basicTheme } from './basicTheme'
+import { ThemeOptions } from '@material-ui/core/styles'
 
 const BACKGROUND_DEFAULT = "#f5f5f5";
 const MAIN = "rgba(33, 21, 84, 1)";
 
-export function lightTheme(theme: Theme) {
-    return createMuiTheme({
-        ...theme,
-        palette: {
-            ...theme.palette,
+export const lightTheme: ThemeOptions = {
+    ...basicTheme,
+    palette: {
             primary: {
                 light: "rgba(129, 92, 237, 1)",
                 main: MAIN,
@@ -33,5 +32,5 @@ export function lightTheme(theme: Theme) {
             },
             tonalOffset: 0.1,
         },
-    });
-}
+};
+

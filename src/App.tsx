@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import { Switch, Route } from 'react-router-dom'
 import { NotFound } from './features/notFound'
 import { Settings } from './features/settings'
-import { ThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { themeSelector, lightTheme, darkTheme } from './features/theme'
 import { useSelector } from 'react-redux'
 import './features/theme/types.d'
@@ -24,9 +24,8 @@ function App() {
     const themeType = useSelector(themeSelector);
 
     const theme = themeType === 'dark' ? darkTheme : lightTheme;
-
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={createMuiTheme(theme)}>
             <div className={classnames('App', classes.root)}>
                 <Suspense fallback='loading...'>
                     <Layout>
