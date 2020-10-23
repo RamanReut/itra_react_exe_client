@@ -12,9 +12,10 @@ import { selectors, actions } from './reducer'
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import DetailLongTextWrapper from './DetailLongTextWrapper'
 import Box from '@material-ui/core/Box'
-import { MAP_STATUS_ID_TO_TEXT } from './constants'
 import RejectedIcon from '@material-ui/icons/Close'
 import { types } from './reducer'
+import { useTranslation } from 'react-i18next'
+import { TFunction } from 'i18next'
 
 const DISABLE_COLOR_OFFSET = 500;
 
@@ -27,6 +28,7 @@ const useDoneStyles = makeStyles({
 export default function Timeline() {
     const dispatch = useDispatch();
     const theme = useTheme();
+    const { t } = useTranslation('orders');
 
     const activeStep = useSelector(selectors.timeline.activeStep);
     const orderId = useSelector(selectors.detail.id);
@@ -50,7 +52,7 @@ export default function Timeline() {
 
     return (
         <TimelineComponent
-            steps={generateSteps(order, theme)}
+            steps={generateSteps(order, theme, t)}
             activeStep={
                 activeStep < 0 ?
                     MAP_ORDER_STATUS_TO_STEP_NAME[status] :
@@ -93,55 +95,64 @@ const MAP_STEP_NAME_TO_ORDER_STATUS: MapStepNameToOrderStatus = {
 function generateSteps(
     order: types.Record,
     theme: Theme,
+    translate: TFunction,
 ): StepProps[] {
     return [
-        createOrderedStep(order, theme),
-        createProcessingStep(order, theme),
-        lastStepProps(order, theme),
+        createOrderedStep(order, theme, translate),
+        createProcessingStep(order, theme, translate),
+        lastStepProps(order, theme, translate),
     ]
 }
 
 function createOrderedStep(
     order: types.Record,
     theme: Theme,
+    translate: TFunction,
 ): StepProps {
-    return createStep({
-        step: StepName.Ordered,
-        icon: <LocalShippingIcon></LocalShippingIcon>,
-        content: (
-            <DetailLongTextWrapper title='Order date'>
-                {order.order_date}
-            </DetailLongTextWrapper>
-        ),
-        state: 'enable',
-        statusComponent:
-            (order.order_status === types.OrderStatus.Ordered) ?
-                <div></div> : <Done></Done>,
-        color: theme.palette.primary.main,
-    });
+    return createStep(
+        {
+            step: StepName.Ordered,
+            icon: <LocalShippingIcon></LocalShippingIcon>,
+            content: (
+                <DetailLongTextWrapper title={translate('columns.order_date')}>
+                    {order.order_date}
+                </DetailLongTextWrapper>
+            ),
+            state: 'enable',
+            statusComponent:
+                (order.order_status === types.OrderStatus.Ordered) ?
+                    <div></div> : <Done></Done>,
+            color: theme.palette.primary.main,
+        },
+        translate
+    );
 }
 
 function createProcessingStep(
     order: types.Record,
     theme: Theme,
+    translate: TFunction,
 ): StepProps {
     const status = order.order_status;
 
-    return createStep({
-        step: StepName.Processing,
-        icon: <SendIcon></SendIcon>,
-        state: (status > types.OrderStatus.Processing) ? 'enable' : 'disable',
-        content: (
-            <DetailLongTextWrapper title='Required date'>
-                {order.required_date}
-            </DetailLongTextWrapper>
-        ),
-        statusComponent: (status > types.OrderStatus.Processing) ?
-            <Done></Done> : <div></div>,
-        color: (status > types.OrderStatus.Ordered) ?
-            theme.palette.primary.main :
-            theme.palette.grey[DISABLE_COLOR_OFFSET],
-    });
+    return createStep(
+        {
+            step: StepName.Processing,
+            icon: <SendIcon></SendIcon>,
+            state: (status > types.OrderStatus.Processing) ? 'enable' : 'disable',
+            content: (
+                <DetailLongTextWrapper title={translate('columns.required_date')}>
+                    {order.required_date}
+                </DetailLongTextWrapper>
+            ),
+            statusComponent: (status > types.OrderStatus.Processing) ?
+                <Done></Done> : <div></div>,
+            color: (status > types.OrderStatus.Ordered) ?
+                theme.palette.primary.main :
+                theme.palette.grey[DISABLE_COLOR_OFFSET],
+        },
+        translate
+    );
 }
 
 interface CreateStepProps {
@@ -153,16 +164,19 @@ interface CreateStepProps {
     color: string;
 }
 
-function createStep({
-    step,
-    icon,
-    state,
-    statusComponent,
-    content,
-    color,
-}: CreateStepProps): StepProps {
+function createStep(
+    {
+        step,
+        icon,
+        state,
+        statusComponent,
+        content,
+        color,
+    }: CreateStepProps,
+    translate: TFunction,
+): StepProps {
     return {
-        label: MAP_STATUS_ID_TO_TEXT[MAP_STEP_NAME_TO_ORDER_STATUS[step]],
+        label: translate(`status.${MAP_STEP_NAME_TO_ORDER_STATUS[step]}`),
         state: state,
         icon: icon,
         status: statusComponent,
@@ -178,24 +192,33 @@ function createStep({
 function lastStepProps(
     order: types.Record,
     theme: Theme,
+    translate: TFunction,
 ): StepProps {
     const status = order.order_status;
 
     if (status === types.OrderStatus.Cancel) {
         return {
-            label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Cancel],
+            label:
+                translate(
+                    `status.${MAP_STEP_NAME_TO_ORDER_STATUS[StepName.Cancel]}`,
+                ),
             icon: <RejectedIcon></RejectedIcon>,
             state: 'disable',
             color: theme.palette.error.main,
         }
     } else {
         return {
-            label: MAP_STATUS_ID_TO_TEXT[types.OrderStatus.Complete],
+            label:
+                translate(
+                    `status.${MAP_STEP_NAME_TO_ORDER_STATUS[StepName.Complete]}`,
+                ),
             icon: <DoneIcon></DoneIcon>,
             state: status === types.OrderStatus.Complete ? 'enable' : 'disable',
             content: (
                 <ContentWrapper>
-                    <DetailLongTextWrapper title='Shipped date'>
+                    <DetailLongTextWrapper
+                        title={translate('columns.shipped_date')}
+                    >
                         {order.shipped_date}
                     </DetailLongTextWrapper>
                 </ContentWrapper>

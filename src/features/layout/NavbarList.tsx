@@ -15,6 +15,7 @@ import Icon from '@material-ui/core/Icon'
 import SvgIcon from '@material-ui/core/SvgIcon'
 import Grid from '@material-ui/core/Grid'
 import NavbarChangePosition from './NavbarChangePosition'
+import { useTranslation } from 'react-i18next'
 
 export const useStyles = makeStyles((theme: Theme) => ({
     onTop: {
@@ -58,6 +59,7 @@ export default function NavbarList({
     onChangePosition
 }: NavbarListProps) {
     const classes = useStyles();
+    const { t } = useTranslation('pages');
 
     return (
         <Box className={classnames(classes.root, { [classes.collapse]: position === 'hide' })}>
@@ -74,31 +76,31 @@ export default function NavbarList({
                     >
                         <Item
                             icon={<HomeIcon></HomeIcon>}
-                            text='Home'
+                            text={t('main')}
                             to='/'
                             state={position}
                         ></Item>
                         <Item
                             icon={<DataIcon></DataIcon>}
-                            text='Data'
+                            text={t('data')}
                             to='/data'
                             state={position}
                         ></Item>
                         <Item
                             icon={<AnalitycsIcon></AnalitycsIcon>}
-                            text='Analitycs'
+                            text={t('analitycs')}
                             to='/analitycs'
                             state={position}
                         ></Item>
                         <Item
                             icon={<FilterIcon></FilterIcon>}
-                            text='Advance filter'
+                            text={t('filter')}
                             to='/filter'
                             state={position}
                         ></Item>
                         <Item
                             icon={<SettingsIcon></SettingsIcon>}
-                            text='Settings'
+                            text={t('settings')}
                             to='/settings'
                             state={position}
                         ></Item>                    

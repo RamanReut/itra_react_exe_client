@@ -80,10 +80,6 @@ export interface ColumnVisibleState {
     checkedColumns: Array<Columns>;
 }
 
-export interface MapNumberToString {
-    [index: number]: string;
-}
-
 export interface TimelineState {
     activeStep: number;
 }

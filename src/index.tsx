@@ -10,6 +10,7 @@ import { theme } from './features/theme'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import LuxonUtils from '@date-io/luxon'
+import './features/locale'
 
 ReactDOM.render(
   <React.StrictMode>
